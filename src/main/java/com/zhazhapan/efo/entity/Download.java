@@ -3,10 +3,7 @@ package com.zhazhapan.efo.entity;
 import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.util.Formatter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -16,21 +13,35 @@ import java.util.Date;
  * @date 2018/1/11
  */
 @Entity
+@Table(name = "download")
 public class Download {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private Date createTime = new Date();
+    @Column
+    private Date createTime;
 
+    @Column(name = "user_id")
     private int userId;
 
+    @Column(name = "file_id")
     private int fileId;
 
     public Download(int userId, int fileId) {
         this.userId = userId;
         this.fileId = fileId;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        jsonObject.put("userId", userId);
+        jsonObject.put("fileId", fileId);
+        jsonObject.put("createTime", createTime);
+        return Formatter.formatJson(jsonObject.toString());
     }
 
     public int getId() {
@@ -63,15 +74,5 @@ public class Download {
 
     public void setFileId(int fileId) {
         this.fileId = fileId;
-    }
-
-    @Override
-    public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("userId", userId);
-        jsonObject.put("fileId", fileId);
-        jsonObject.put("createTime", createTime);
-        return Formatter.formatJson(jsonObject.toString());
     }
 }

@@ -3,10 +3,7 @@ package com.zhazhapan.efo.entity;
 import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.util.Formatter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -16,6 +13,7 @@ import java.util.Date;
  * @date 2018/1/11
  */
 @Entity
+@Table(name = "category")
 public class Category {
 
     @Id
@@ -25,12 +23,23 @@ public class Category {
     /**
      * 分类名称
      */
+    @Column
     private String name;
 
-    private Date createTime = new Date();
+    @Column(name = "create_time")
+    private Date createTime;
 
     public Category(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        jsonObject.put("name", name);
+        jsonObject.put("createTime", createTime);
+        return Formatter.formatJson(jsonObject.toString());
     }
 
     public String getName() {
@@ -56,14 +65,5 @@ public class Category {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("name", name);
-        jsonObject.put("createTime", createTime);
-        return Formatter.formatJson(jsonObject.toString());
     }
 }

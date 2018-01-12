@@ -1,6 +1,8 @@
 package com.zhazhapan.efo;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,10 +10,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author pantao
  */
 @SpringBootApplication
-@MapperScan
+@MapperScan("com.zhazhapan.efo.dao")
 public class EfoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EfoApplication.class, args);
-	}
+    private static Logger logger = LoggerFactory.getLogger(EfoApplication.class);
+
+    public static void main(String[] args) {
+        logger.info("starting efo......");
+        SpringApplication.run(EfoApplication.class, args);
+    }
 }

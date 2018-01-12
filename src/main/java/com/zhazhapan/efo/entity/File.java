@@ -1,11 +1,9 @@
 package com.zhazhapan.efo.entity;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhazhapan.util.Formatter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -15,39 +13,52 @@ import java.util.Date;
  * @date 2018/1/11
  */
 @Entity
+@Table(name = "file")
 public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column
     private String name;
 
+    @Column
     private String suffix;
 
     /**
      * 文件名的base64编码
      */
+    @Column
     private String base64;
 
+    @Column(name = "local_url")
     private String localUrl;
 
+    @Column(name = "visit_url")
     private String visitUrl;
 
+    @Column
     private long size;
 
-    private Date createTime = new Date();
+    @Column(name = "create_time")
+    private Date createTime;
 
     private String description;
 
-    private int checkTimes = 0;
+    @Column(name = "check_times")
+    private int checkTimes;
 
-    private int downloadTimes = 0;
+    @Column(name = "download_times")
+    private int downloadTimes;
 
+    @Column
     private String tag;
 
+    @Column(name = "user_id")
     private int userId;
 
+    @Column(name = "category_id")
     private int categoryId;
 
     public File(String name, String suffix, String base64, String localUrl, String visitUrl, String description, String tag, int userId, int categoryId) {
@@ -61,6 +72,26 @@ public class File {
         this.tag = tag;
         this.userId = userId;
         this.size = new java.io.File(localUrl).length();
+    }
+
+    @Override
+    public String toString() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        jsonObject.put("name", name);
+        jsonObject.put("suffix", suffix);
+        jsonObject.put("base64", base64);
+        jsonObject.put("localUrl", localUrl);
+        jsonObject.put("visitUrl", visitUrl);
+        jsonObject.put("size", size);
+        jsonObject.put("description", description);
+        jsonObject.put("createTime", createTime);
+        jsonObject.put("checkTimes", checkTimes);
+        jsonObject.put("downloadTimes", downloadTimes);
+        jsonObject.put("tag", tag);
+        jsonObject.put("userId", userId);
+        jsonObject.put("categoryId", categoryId);
+        return Formatter.formatJson(jsonObject.toString());
     }
 
     public int getId() {
@@ -173,25 +204,5 @@ public class File {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
-    }
-
-    @Override
-    public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("name", name);
-        jsonObject.put("suffix", suffix);
-        jsonObject.put("base64", base64);
-        jsonObject.put("localUrl", localUrl);
-        jsonObject.put("visitUrl", visitUrl);
-        jsonObject.put("size", size);
-        jsonObject.put("description", description);
-        jsonObject.put("createTime", createTime);
-        jsonObject.put("checkTimes", checkTimes);
-        jsonObject.put("downloadTimes", downloadTimes);
-        jsonObject.put("tag", tag);
-        jsonObject.put("userId", userId);
-        jsonObject.put("categoryId", categoryId);
-        return jsonObject.toString();
     }
 }
