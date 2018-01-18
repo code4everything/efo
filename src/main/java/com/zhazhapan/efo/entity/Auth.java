@@ -2,42 +2,30 @@ package com.zhazhapan.efo.entity;
 
 import com.zhazhapan.efo.util.BeanUtils;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * @author pantao
  * @date 2018/1/18
  */
-@Entity
-@Table(name = "auth")
 public class Auth {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
 
-    @Column
     private int isUploadable;
 
-    @Column
     private int isDeletable;
 
-    @Column
     private int isUpdatable;
 
-    @Column
     private int isDownloadable;
 
-    @Column
     private int isVisible;
 
-    @Column
     private int userId;
 
-    @Column
     private long fileId;
 
-    @Column
     private Timestamp createTime;
 
     public Auth(int userId, long fileId) {

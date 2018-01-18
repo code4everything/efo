@@ -1,10 +1,7 @@
 package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,14 +50,13 @@ public interface UserDAO {
     /**
      * 用户登录
      *
-     * @param username 用户名
-     * @param email 邮箱
+     * @param usernameOrEmail 用户名
      * @param password 密码
      *
      * @return {@link User}
      */
-    @Select("select * from user where (username=#{username} or email=#{email}) and password=sha2(#{password},256)")
-    User doLogin(String username, String email, String password);
+    @Select("select * from user where (username=#{usernameOrEmail} or email=#{usernameOrEmail}) and password=sha2(#{password},256)")
+    User doLogin(@Param("usernameOrEmail") String usernameOrEmail, @Param("password") String password);
 
     /**
      * 添加一个用户
@@ -75,7 +71,7 @@ public interface UserDAO {
      *
      * @param id 编号
      */
-    @UpdateProvider(type = UserSqlProvider.class, method = "updateUserLoginTime")
+    @Update("update user set last_login_time=current_timestamp where id=#{id}")
     void updateUserLoginTime(int id);
 
     /**
@@ -89,5 +85,5 @@ public interface UserDAO {
      * @param isUpdatable 更新权限
      */
     @Update("update user set is_downloadable=#{isDownloadable},is_visible=#{isVisible},is_uploadable=#{isUploadable},is_deletable=#{isDeletable},is_updatable=#{isUpdatable} where id=#{id}")
-    void updateUserAuth(int id, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable);
+    void updateUserAuth(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable);
 }

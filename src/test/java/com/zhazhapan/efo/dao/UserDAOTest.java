@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.entity.User;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.Formatter;
 import com.zhazhapan.util.RandomUtils;
 import org.junit.Test;
@@ -21,6 +22,21 @@ public class UserDAOTest {
     private UserDAO userDAO;
 
     @Test
+    public void testUpdateUserAuth() {
+        userDAO.updateUserAuth(1, 1, 1, 1, 1, 1);
+    }
+
+    @Test
+    public void testUpdateUserLoginTime() {
+        userDAO.updateUserLoginTime(1);
+    }
+
+    @Test
+    public void testDoLogin() {
+        assert Checker.isNotNull(userDAO.doLogin("system", "123456"));
+    }
+
+    @Test
     public void testInsertUser() {
         String username = RandomUtils.getRandomStringOnlyLowerCase(6);
         String realName = RandomUtils.getRandomStringOnlyLowerCase(6);
@@ -37,7 +53,6 @@ public class UserDAOTest {
 
     @Test
     public void testGetUser() {
-        User user = userDAO.getUserById(1);
-        System.out.println(user.toString());
+        System.out.println(userDAO.getUserById(1).toString());
     }
 }

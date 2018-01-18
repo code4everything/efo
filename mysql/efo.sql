@@ -177,3 +177,9 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 insert into user(username,real_name,email,password,permission,is_deletable,is_updatable) values("system","系统","system@local.host",sha2("123456",256),3,1,1);
+
+DROP USER IF EXISTS 'zhazhapan'@'localhost';
+
+CREATE USER 'zhazhapan'@'localhost' IDENTIFIED BY 'zhazhapan';
+
+GRANT INSERT, DELETE, UPDATE, SELECT ON efo.* TO 'zhazhapan'@'localhost';

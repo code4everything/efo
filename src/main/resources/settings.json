@@ -1,0 +1,23 @@
+{
+    "global": {
+        "pageSize": 30
+    },
+    "user": {
+        "pageSize": 30,
+        "verifyEmail": 0,
+        "usernameMatch": {
+            "pattern": "[a-zA-Z][a-zA-Z0-9]{3,15}",
+            "description": "用户名只能使用英文字母和数字，且必须以字母开始，长度为4到16的字符串"
+        },
+        "defaultAuth": {
+            "isDownloadable": 1,
+            "isUploadable": 1,
+            "isDeletable": 0,
+            "isUpdatable": 0,
+            "isVisible": 1
+        }
+    },
+    "download": {
+        "pageSize": 30
+    }
+}

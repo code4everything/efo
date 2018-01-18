@@ -2,7 +2,6 @@ package com.zhazhapan.efo.entity;
 
 import com.zhazhapan.efo.util.BeanUtils;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -11,44 +10,35 @@ import java.sql.Timestamp;
  * @author pantao
  * @date 2018/1/11
  */
-@Entity
-@Table(name = "user")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
     private String username;
 
-    @Column(name = "real_name")
     private String realName;
 
-    @Column
     private String email;
 
-    @Column
     private String password;
 
-    @Column
     private int isUploadable;
-    @Column
+
     private int isDeletable;
-    @Column
+
     private int isUpdatable;
-    @Column
+
     private int isDownloadable;
-    @Column
+
     private int isVisible;
+
     /**
      * 权限级别：0（禁止登录），1（正常，普通用户），2（正常，管理员），3（正常，超级管理员）
      */
-    @Column
     private int permission;
-    @Column(name = "create_time")
+
     private Timestamp createTime;
-    @Column(name = "last_login_time")
+
     private Timestamp lastLoginTime;
 
     public User(String username, String realName, String email, String password) {

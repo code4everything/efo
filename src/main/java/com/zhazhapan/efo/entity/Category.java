@@ -2,7 +2,6 @@ package com.zhazhapan.efo.entity;
 
 import com.zhazhapan.efo.util.BeanUtils;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -11,21 +10,15 @@ import java.sql.Timestamp;
  * @author pantao
  * @date 2018/1/11
  */
-@Entity
-@Table(name = "category")
 public class Category {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     /**
      * 分类名称
      */
-    @Column
     private String name;
 
-    @Column(name = "create_time")
     private Timestamp createTime;
 
     public Category(String name) {

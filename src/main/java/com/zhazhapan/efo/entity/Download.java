@@ -2,7 +2,6 @@ package com.zhazhapan.efo.entity;
 
 import com.zhazhapan.efo.util.BeanUtils;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -11,21 +10,14 @@ import java.sql.Timestamp;
  * @author pantao
  * @date 2018/1/11
  */
-@Entity
-@Table(name = "download")
 public class Download {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
     private Timestamp createTime;
 
-    @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "file_id")
     private int fileId;
 
     public Download(int userId, int fileId) {

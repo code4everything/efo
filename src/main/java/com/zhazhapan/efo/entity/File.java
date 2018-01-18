@@ -2,7 +2,6 @@ package com.zhazhapan.efo.entity;
 
 import com.zhazhapan.efo.util.BeanUtils;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
@@ -11,63 +10,46 @@ import java.sql.Timestamp;
  * @author pantao
  * @date 2018/1/11
  */
-@Entity
-@Table(name = "file")
 public class File {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
     private String name;
 
-    @Column
     private String suffix;
 
-    @Column(name = "local_url")
     private String localUrl;
 
-    @Column(name = "visit_url")
     private String visitUrl;
 
-    @Column
     private long size;
 
-    @Column(name = "create_time")
     private Timestamp createTime;
 
     private String description;
 
-    @Column(name = "check_times")
     private int checkTimes;
 
-    @Column(name = "download_times")
     private int downloadTimes;
 
-    @Column
     private String tag;
 
-    @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "category_id")
     private int categoryId;
 
-    @Column
     private int isUploadable;
-    @Column
+
     private int isDeletable;
-    @Column
+
     private int isUpdatable;
-    @Column
+
     private int isDownloadable;
-    @Column
+
     private int isVisible;
 
-    @Column
     private Timestamp lastModifyTime;
-    
+
     public File(String name, String suffix, String localUrl, String visitUrl, String description, String tag, int userId, int categoryId) {
         this.name = name;
         this.suffix = suffix;
