@@ -1,10 +1,9 @@
 package com.zhazhapan.efo.entity;
 
-import com.alibaba.fastjson.JSONObject;
-import com.zhazhapan.util.Formatter;
+import com.zhazhapan.efo.util.BeanUtils;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * 用户表
@@ -32,38 +31,92 @@ public class User {
     @Column
     private String password;
 
+    @Column
+    private int isUploadable;
+    @Column
+    private int isDeletable;
+    @Column
+    private int isUpdatable;
+    @Column
+    private int isDownloadable;
+    @Column
+    private int isVisible;
     /**
      * 权限级别：0（禁止登录），1（正常，普通用户），2（正常，管理员），3（正常，超级管理员）
      */
     @Column
     private int permission;
-
     @Column(name = "create_time")
-    private Date createTime;
-
+    private Timestamp createTime;
     @Column(name = "last_login_time")
-    private Date lastLoginTime;
+    private Timestamp lastLoginTime;
 
-    public User(String username, String realName, String email, String password, int permission) {
+    public User(String username, String realName, String email, String password) {
         this.username = username;
         this.realName = realName;
         this.email = email;
         this.password = password;
+    }
+
+    public User(int id, String username, String realName, String email, String password, int permission, Timestamp createTime, Timestamp lastLoginTime, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable) {
+        this.id = id;
+        this.username = username;
+        this.realName = realName;
+        this.email = email;
+        this.password = password;
+        this.isUploadable = isUploadable;
+        this.isDeletable = isDeletable;
+        this.isUpdatable = isUpdatable;
+        this.isDownloadable = isDownloadable;
+        this.isVisible = isVisible;
         this.permission = permission;
+        this.createTime = createTime;
+        this.lastLoginTime = lastLoginTime;
     }
 
     @Override
     public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("username", username);
-        jsonObject.put("realName", realName);
-        jsonObject.put("email", email);
-        jsonObject.put("password", password);
-        jsonObject.put("permission", permission);
-        jsonObject.put("createTime", createTime);
-        jsonObject.put("lastLoginTime", lastLoginTime);
-        return Formatter.formatJson(jsonObject.toString());
+        return BeanUtils.toPrettyJson(this);
+    }
+
+    public int getIsUploadable() {
+        return isUploadable;
+    }
+
+    public void setIsUploadable(int isUploadable) {
+        this.isUploadable = isUploadable;
+    }
+
+    public int getIsDeletable() {
+        return isDeletable;
+    }
+
+    public void setIsDeletable(int isDeletable) {
+        this.isDeletable = isDeletable;
+    }
+
+    public int getIsUpdatable() {
+        return isUpdatable;
+    }
+
+    public void setIsUpdatable(int isUpdatable) {
+        this.isUpdatable = isUpdatable;
+    }
+
+    public int getIsDownloadable() {
+        return isDownloadable;
+    }
+
+    public void setIsDownloadable(int isDownloadable) {
+        this.isDownloadable = isDownloadable;
+    }
+
+    public int getIsVisible() {
+        return isVisible;
+    }
+
+    public void setIsVisible(int isVisible) {
+        this.isVisible = isVisible;
     }
 
     public int getId() {
@@ -114,19 +167,19 @@ public class User {
         this.permission = permission;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Date getLastLoginTime() {
+    public Timestamp getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(Date lastLoginTime) {
+    public void setLastLoginTime(Timestamp lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 }

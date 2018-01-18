@@ -1,10 +1,9 @@
 package com.zhazhapan.efo.entity;
 
-import com.alibaba.fastjson.JSONObject;
-import com.zhazhapan.util.Formatter;
+import com.zhazhapan.efo.util.BeanUtils;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * 分类表
@@ -27,19 +26,21 @@ public class Category {
     private String name;
 
     @Column(name = "create_time")
-    private Date createTime;
+    private Timestamp createTime;
 
     public Category(String name) {
         this.name = name;
     }
 
+    public Category(int id, String name, Timestamp createTime) {
+        this.id = id;
+        this.name = name;
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("name", name);
-        jsonObject.put("createTime", createTime);
-        return Formatter.formatJson(jsonObject.toString());
+        return BeanUtils.toPrettyJson(this);
     }
 
     public String getName() {
@@ -50,11 +51,11 @@ public class Category {
         this.name = name;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 

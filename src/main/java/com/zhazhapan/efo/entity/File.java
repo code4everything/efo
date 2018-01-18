@@ -1,10 +1,9 @@
 package com.zhazhapan.efo.entity;
 
-import com.alibaba.fastjson.JSONObject;
-import com.zhazhapan.util.Formatter;
+import com.zhazhapan.efo.util.BeanUtils;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * 文件表
@@ -18,19 +17,13 @@ public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column
     private String name;
 
     @Column
     private String suffix;
-
-    /**
-     * 文件名的base64编码
-     */
-    @Column
-    private String base64;
 
     @Column(name = "local_url")
     private String localUrl;
@@ -42,7 +35,7 @@ public class File {
     private long size;
 
     @Column(name = "create_time")
-    private Date createTime;
+    private Timestamp createTime;
 
     private String description;
 
@@ -61,9 +54,22 @@ public class File {
     @Column(name = "category_id")
     private int categoryId;
 
-    public File(String name, String suffix, String base64, String localUrl, String visitUrl, String description, String tag, int userId, int categoryId) {
+    @Column
+    private int isUploadable;
+    @Column
+    private int isDeletable;
+    @Column
+    private int isUpdatable;
+    @Column
+    private int isDownloadable;
+    @Column
+    private int isVisible;
+
+    @Column
+    private Timestamp lastModifyTime;
+    
+    public File(String name, String suffix, String localUrl, String visitUrl, String description, String tag, int userId, int categoryId) {
         this.name = name;
-        this.base64 = base64;
         this.suffix = suffix;
         this.categoryId = categoryId;
         this.description = description;
@@ -74,27 +80,82 @@ public class File {
         this.size = new java.io.File(localUrl).length();
     }
 
-    @Override
-    public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("name", name);
-        jsonObject.put("suffix", suffix);
-        jsonObject.put("base64", base64);
-        jsonObject.put("localUrl", localUrl);
-        jsonObject.put("visitUrl", visitUrl);
-        jsonObject.put("size", size);
-        jsonObject.put("description", description);
-        jsonObject.put("createTime", createTime);
-        jsonObject.put("checkTimes", checkTimes);
-        jsonObject.put("downloadTimes", downloadTimes);
-        jsonObject.put("tag", tag);
-        jsonObject.put("userId", userId);
-        jsonObject.put("categoryId", categoryId);
-        return Formatter.formatJson(jsonObject.toString());
+    public File(int id, String name, String suffix, String localUrl, String visitUrl, long size, Timestamp createTime, String description, int checkTimes, int downloadTimes, String tag, int userId, int categoryId, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable, Timestamp lastModifyTime) {
+        this.id = id;
+        this.name = name;
+        this.suffix = suffix;
+        this.localUrl = localUrl;
+        this.visitUrl = visitUrl;
+        this.size = size;
+        this.createTime = createTime;
+        this.description = description;
+        this.checkTimes = checkTimes;
+        this.downloadTimes = downloadTimes;
+        this.tag = tag;
+        this.userId = userId;
+        this.categoryId = categoryId;
+        this.isUploadable = isUploadable;
+        this.isDeletable = isDeletable;
+        this.isUpdatable = isUpdatable;
+        this.isDownloadable = isDownloadable;
+        this.isVisible = isVisible;
+        this.lastModifyTime = lastModifyTime;
     }
 
-    public int getId() {
+    public Timestamp getLastModifyTime() {
+        return lastModifyTime;
+    }
+
+    public void setLastModifyTime(Timestamp lastModifyTime) {
+        this.lastModifyTime = lastModifyTime;
+    }
+
+    @Override
+    public String toString() {
+        return BeanUtils.toPrettyJson(this);
+    }
+
+    public int getIsUploadable() {
+        return isUploadable;
+    }
+
+    public void setIsUploadable(int isUploadable) {
+        this.isUploadable = isUploadable;
+    }
+
+    public int getIsDeletable() {
+        return isDeletable;
+    }
+
+    public void setIsDeletable(int isDeletable) {
+        this.isDeletable = isDeletable;
+    }
+
+    public int getIsUpdatable() {
+        return isUpdatable;
+    }
+
+    public void setIsUpdatable(int isUpdatable) {
+        this.isUpdatable = isUpdatable;
+    }
+
+    public int getIsDownloadable() {
+        return isDownloadable;
+    }
+
+    public void setIsDownloadable(int isDownloadable) {
+        this.isDownloadable = isDownloadable;
+    }
+
+    public int getIsVisible() {
+        return isVisible;
+    }
+
+    public void setIsVisible(int isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -116,14 +177,6 @@ public class File {
 
     public void setSuffix(String suffix) {
         this.suffix = suffix;
-    }
-
-    public String getBase64() {
-        return base64;
-    }
-
-    public void setBase64(String base64) {
-        this.base64 = base64;
     }
 
     public String getLocalUrl() {
@@ -150,11 +203,11 @@ public class File {
         this.size = size;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 

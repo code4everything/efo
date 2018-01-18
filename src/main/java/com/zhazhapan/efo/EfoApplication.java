@@ -16,7 +16,6 @@ public class EfoApplication {
     private static Logger logger = LoggerFactory.getLogger(EfoApplication.class);
 
     public static void main(String[] args) {
-        logger.info("starting efo......");
         SpringApplication.run(EfoApplication.class, args);
     }
 }

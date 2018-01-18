@@ -1,10 +1,9 @@
 package com.zhazhapan.efo.entity;
 
-import com.alibaba.fastjson.JSONObject;
-import com.zhazhapan.util.Formatter;
+import com.zhazhapan.efo.util.BeanUtils;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * 下载记录表
@@ -18,10 +17,10 @@ public class Download {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column
-    private Date createTime;
+    private Timestamp createTime;
 
     @Column(name = "user_id")
     private int userId;
@@ -34,17 +33,19 @@ public class Download {
         this.fileId = fileId;
     }
 
-    @Override
-    public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("userId", userId);
-        jsonObject.put("fileId", fileId);
-        jsonObject.put("createTime", createTime);
-        return Formatter.formatJson(jsonObject.toString());
+    public Download(int id, Timestamp createTime, int userId, int fileId) {
+        this.id = id;
+        this.createTime = createTime;
+        this.userId = userId;
+        this.fileId = fileId;
     }
 
-    public int getId() {
+    @Override
+    public String toString() {
+        return BeanUtils.toPrettyJson(this);
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -52,11 +53,11 @@ public class Download {
         this.id = id;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 

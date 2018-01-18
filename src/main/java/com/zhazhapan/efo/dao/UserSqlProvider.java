@@ -2,7 +2,7 @@ package com.zhazhapan.efo.dao;
 
 import org.apache.ibatis.jdbc.SQL;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * @author pantao
@@ -10,10 +10,10 @@ import java.util.Date;
  */
 public class UserSqlProvider {
 
-    public String updateLoginTime() {
+    public String updateUserLoginTime() {
         return new SQL() {{
             UPDATE("user");
-            SET("last_login_time=" + new Date());
+            SET("last_login_time=" + new Timestamp(System.currentTimeMillis()));
             WHERE("id=#{id}");
         }}.toString();
     }
