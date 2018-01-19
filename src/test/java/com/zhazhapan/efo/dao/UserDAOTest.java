@@ -1,5 +1,6 @@
 package com.zhazhapan.efo.dao;
 
+import com.zhazhapan.efo.EfoApplicationTest;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.Formatter;
@@ -18,12 +19,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class UserDAOTest {
 
+    static {
+        EfoApplicationTest.setSettings();
+    }
+
     @Autowired
     private UserDAO userDAO;
 
     @Test
     public void testUpdateUserAuth() {
-        userDAO.updateUserAuth(1, 1, 1, 1, 1, 1);
+        userDAO.updateAuthById(1, 1, 1, 1, 1, 1);
     }
 
     @Test
@@ -48,7 +53,7 @@ public class UserDAOTest {
 
     @Test
     public void testGetAllUser() {
-        System.out.println(Formatter.listToJson(userDAO.getAllUser()));
+        System.out.println(Formatter.listToJson(userDAO.getUserBy(3, 0)));
     }
 
     @Test

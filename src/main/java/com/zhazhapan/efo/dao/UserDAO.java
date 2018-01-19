@@ -1,5 +1,6 @@
 package com.zhazhapan.efo.dao;
 
+import com.zhazhapan.efo.dao.sqlprovider.UserSqlProvider;
 import com.zhazhapan.efo.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -24,28 +25,15 @@ public interface UserDAO {
     User getUserById(int id);
 
     /**
-     * 获取所有用户，包括管理员
+     * 通过权限获取用户
+     *
+     * @param permission 权限
+     * @param offset 偏移
      *
      * @return {@link List}
      */
-    @Select("select * from user")
-    List<User> getAllUser();
-
-    /**
-     * 获取所有管理员
-     *
-     * @return {@link List}
-     */
-    @Select("select * from user where permission=2")
-    List<User> getAllAdministrator();
-
-    /**
-     * 获取所有用户，不包括管理员
-     *
-     * @return {@link List}
-     */
-    @Select("select * from user where permission=1")
-    List<User> getAllUserWithoutAdministrator();
+    @SelectProvider(type = UserSqlProvider.class, method = "getUserBy")
+    List<User> getUserBy(@Param("permission") int permission, @Param("offset") int offset);
 
     /**
      * 用户登录
@@ -63,7 +51,7 @@ public interface UserDAO {
      *
      * @param user {@link User}
      */
-    @Insert("insert into user(username,real_name,email,password) values(#{username},#{realName},#{email},sha2(#{password},256))")
+    @Insert("insert into user(username,real_name,email,password,is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible) values(#{username},#{realName},#{email},sha2(#{password},256),#{isDownloadable},#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
     void insertUser(User user);
 
     /**
@@ -84,6 +72,6 @@ public interface UserDAO {
      * @param isDeletable 删除权限
      * @param isUpdatable 更新权限
      */
-    @Update("update user set is_downloadable=#{isDownloadable},is_visible=#{isVisible},is_uploadable=#{isUploadable},is_deletable=#{isDeletable},is_updatable=#{isUpdatable} where id=#{id}")
-    void updateUserAuth(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable);
+    @UpdateProvider(type = UserSqlProvider.class, method = "updateAuthById")
+    void updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable);
 }

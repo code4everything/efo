@@ -12,6 +12,8 @@ public class BeanUtils {
 
     private static Logger logger = LoggerFactory.getLogger(BeanUtils.class);
 
+    private BeanUtils() {}
+
     public static String toPrettyJson(Object object) {
         String result;
         try {

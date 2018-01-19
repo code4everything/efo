@@ -1,10 +1,25 @@
 {
     "global": {
-        "pageSize": 30
+        "uploadPath": "/Users/pantao/Desktop/upload",
+        "allowRegister": 1,
+        "allowLogin": 1,
+        "anonymousUser": {
+            "visible": 1
+        }
     },
     "user": {
         "pageSize": 30,
-        "verifyEmail": 0,
+        "password": {
+            "minLength": 6,
+            "maxLength": 20
+        },
+        "email": {
+            "verify": 0,
+            "host": "smtp.qq.com",
+            "name": "zhazhapan",
+            "from": "system@local.host",
+            "key": "123456"
+        },
         "usernameMatch": {
             "pattern": "[a-zA-Z][a-zA-Z0-9]{3,15}",
             "description": "用户名只能使用英文字母和数字，且必须以字母开始，长度为4到16的字符串"
@@ -15,9 +30,57 @@
             "isDeletable": 0,
             "isUpdatable": 0,
             "isVisible": 1
-        }
+        },
+        "orderBy": "id desc"
     },
     "download": {
-        "pageSize": 30
+        "pageSize": 30,
+        "orderBy": "id desc"
+    },
+    "auth": {
+        "pageSize": 30,
+        "orderBy": "id desc",
+        "default": {
+            "isDownloadable": 1,
+            "isUploadable": 1,
+            "isDeletable": 1,
+            "isUpdatable": 1,
+            "isVisible": 1
+        }
+    },
+    "file": {
+        "pageSize": 30,
+        "maxSize": "1024 MB",
+        "tag": {
+            "require": 0,
+            "maxLength": 5,
+            "maxSize": 5
+        },
+        "orderBy": "id desc",
+        "coverIfExists": 0,
+        "linkRule": {
+            "custom": "/{year}/{month}/{day}/{author}/{fileName}",
+            "support": [
+                "{year}",
+                "{month}",
+                "{day}",
+                "{author}",
+                "{fileName}",
+                "{date}",
+                "{categoryName}",
+                "{fileId}"
+            ]
+        },
+        "suffixMatch": {
+            "pattern": "[a-zA-Z0-9]{0,10}",
+            "description": "文件后缀只能包括数字和字母且长度不超过10"
+        },
+        "defaultAuth": {
+            "isDownloadable": 1,
+            "isUploadable": 1,
+            "isDeletable": 1,
+            "isUpdatable": 1,
+            "isVisible": 1
+        }
     }
 }

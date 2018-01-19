@@ -41,6 +41,7 @@ public interface CategoryDAO {
      * 更新一个分类名
      *
      * @param name 分类名
+     * @param id 分类ID
      */
     @Update("update category set name=#{name} where id=#{id}")
     void updateNameById(@Param("id") int id, @Param("name") String name);

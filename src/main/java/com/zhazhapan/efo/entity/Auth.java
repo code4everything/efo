@@ -45,6 +45,14 @@ public class Auth {
         this.createTime = createTime;
     }
 
+    public void setAuth(int isDownloadable, int isUploadable, int isDeletable, int isUpdatable, int isVisible) {
+        this.isUploadable = isUploadable;
+        this.isDeletable = isDeletable;
+        this.isUpdatable = isUpdatable;
+        this.isDownloadable = isDownloadable;
+        this.isVisible = isVisible;
+    }
+
     @Override
     public String toString() {
         return BeanUtils.toPrettyJson(this);

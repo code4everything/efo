@@ -2,6 +2,8 @@ package com.zhazhapan.efo.model;
 
 import com.zhazhapan.efo.util.BeanUtils;
 
+import java.sql.Timestamp;
+
 /**
  * @author pantao
  * @date 2018/1/19
@@ -24,7 +26,9 @@ public class DownloadRecord {
 
     private String visitUrl;
 
-    public DownloadRecord(long id, int userId, long fileId, String username, String email, String fileName, String categoryName, String visitUrl) {
+    private Timestamp createTime;
+
+    public DownloadRecord(long id, int userId, long fileId, String username, String email, String fileName, String categoryName, String visitUrl, Timestamp createTime) {
         this.id = id;
         this.userId = userId;
         this.fileId = fileId;
@@ -33,6 +37,7 @@ public class DownloadRecord {
         this.fileName = fileName;
         this.categoryName = categoryName;
         this.visitUrl = visitUrl;
+        this.createTime = createTime;
     }
 
     @Override
@@ -102,5 +107,13 @@ public class DownloadRecord {
 
     public void setVisitUrl(String visitUrl) {
         this.visitUrl = visitUrl;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }

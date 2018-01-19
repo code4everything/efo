@@ -1,8 +1,10 @@
 package com.zhazhapan.efo.dao;
 
+import com.zhazhapan.efo.dao.sqlprovider.DownloadSqlProvider;
 import com.zhazhapan.efo.model.DownloadRecord;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,15 +16,24 @@ import java.util.List;
 @Repository
 public interface DownloadDAO {
 
+    /**
+     * 新增一条下载记录
+     *
+     * @param userId 用户编号
+     * @param fileId 文件编号
+     */
     @Insert("insert into download(user_id,file_id) values(#{userId},#{fileId})")
     void insertDownload(int userId, int fileId);
 
-    @Select("select d.id,d.user_id,d.file_id,u.username,u.email,f.name file_name,c.name category_name,f.visit_url from download d join user u on d.user_id=u.id join file f on d.file_id=f.id join category c on f.category_id=c.id order by d.id desc limit #{offset},#{size}")
-    List<DownloadRecord> getAllDownload(int offset, int size);
-
-    @Select("select d.id,d.user_id,d.file_id,u.username,u.email,f.name file_name,c.name category_name,f.visit_url from download d join user u on d.user_id=u.id join file f on d.file_id=f.id join category c on f.category_id=c.id where d.user_id=#{id} order by id desc limit #{offset},#{size}")
-    List<DownloadRecord> getDownloadByUserId(int id);
-
-    @Select("select d.id,d.user_id,d.file_id,u.username,u.email,f.name file_name,c.name category_name,f.visit_url from download d join user u on d.user_id=u.id join file f on d.file_id=f.id join category c on f.category_id=c.id where d.file_id=#{id} order by id desc limit #{offset},#{size}")
-    List<DownloadRecord> getDownloadByFileId(int id);
+    /**
+     * 查询下载记录
+     *
+     * @param userId 用户编号，不用用户编号作为条件时设置值小于等于0即可
+     * @param fileId 文件编号，不用文件编号作为条件时设置值小于等于0即可
+     * @param offset 偏移
+     *
+     * @return 下载记录
+     */
+    @SelectProvider(type = DownloadSqlProvider.class, method = "getDownloadBy")
+    List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") int fileId, @Param("offset") int offset);
 }
