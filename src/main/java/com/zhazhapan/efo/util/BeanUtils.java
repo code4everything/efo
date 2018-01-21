@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.util;
 
 import com.zhazhapan.util.Formatter;
+import com.zhazhapan.util.enums.FieldModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ public class BeanUtils {
     public static String toPrettyJson(Object object) {
         String result;
         try {
-            result = com.zhazhapan.util.BeanUtils.toPrettyJson(object, com.zhazhapan.util.BeanUtils.FieldModifier.PRIVATE);
+            result = com.zhazhapan.util.BeanUtils.toPrettyJson(object, FieldModifier.PRIVATE);
         } catch (IllegalAccessException e) {
             result = Formatter.formatJson("{\"error\":\"internal error, please try again later\"}");
             logger.error(e.getMessage());
