@@ -9,6 +9,16 @@ import com.zhazhapan.modules.constant.Values;
 public class ConfigConsts {
 
     /**
+     * 上传路径在全局配置中的路径
+     */
+    public static final String UPLOAD_PATH_OF_GLOBAL = "uploadPath";
+
+    /**
+     * 配置文件中全局配置的路径
+     */
+    public static final String GLOBAL_OF_SETTINGS = "global";
+
+    /**
      * 配置文件中用户表的order by路径
      */
     public static final String USER_ORDER_BY_OF_SETTINGS = "user.orderBy";

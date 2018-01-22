@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="image/efo-favicon.png"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/popper.min.js"></script>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/vue.js"></script>
+    <link rel="stylesheet" href="css/style.css"/>
+    <title>登录EFO</title>
+</head>
+<body id="particles-js">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 content-box text-center center-vertical" style="padding: 2rem 3rem;">
+            <h3>欢迎登录</h3><br/>
+            <input type="text" class="form-control" placeholder="用户名/电子邮箱" maxlength="50"/>
+            <br/>
+            <input type="password" maxlength="50" class="form-control" placeholder="登录密码"/>
+            <br/>
+            <button class="btn btn-primary btn-block" onclick="return doLogin();">登录</button>
+            <br/>
+            <div class="text-justify-all">
+                <button class="btn btn-link">还没有账号？</button>
+                <button class="btn btn-link">忘记密码？</button>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center bottom">
+        <div class="col-sm-12" id="footer"></div>
+    </div>
+</div>
+<script src="js/particles.js"></script>
+<script src="js/index.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

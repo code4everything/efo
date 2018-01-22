@@ -1,0 +1,32 @@
+body {
+    background: #F5F5F5;
+}
+
+.content-box {
+    box-shadow: 3px 3px 3px #f3f3f3;
+    background: white;
+}
+
+.center-vertical {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 2rem;
+    height: 21rem;
+    margin: auto;
+}
+
+.bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2rem;
+    height: 0.5rem;
+    margin: auto;
+}
+
+.text-justify-all {
+    text-align: justify;
+    text-align-last: justify;
+}

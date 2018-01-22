@@ -2,9 +2,8 @@ package com.zhazhapan.efo;
 
 import com.zhazhapan.config.JsonParser;
 import org.mybatis.spring.annotation.MapperScan;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
@@ -14,11 +13,12 @@ import java.io.IOException;
  */
 @SpringBootApplication
 @MapperScan("com.zhazhapan.efo.dao")
+@EnableAutoConfiguration
 public class EfoApplication {
 
     public static JsonParser settings = new JsonParser();
 
-    private static Logger logger = LoggerFactory.getLogger(EfoApplication.class);
+    public static String CLASS_PATH = EfoApplication.class.getResource("/").toString().split(":")[1];
 
     public static void main(String[] args) throws IOException {
         settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));

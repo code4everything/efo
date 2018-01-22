@@ -3,6 +3,7 @@
         "uploadPath": "/Users/pantao/Desktop/upload",
         "allowRegister": 1,
         "allowLogin": 1,
+        "loadParticle": 0,
         "anonymousUser": {
             "visible": 1,
             "downloadable": 0
@@ -16,10 +17,11 @@
         },
         "email": {
             "verify": 0,
-            "host": "smtp.qq.com",
-            "name": "zhazhapan",
-            "from": "system@local.host",
-            "key": "123456"
+            "host": "mx1.hostinger.com.hk",
+            "port": 587,
+            "name": "efo",
+            "from": "efo-admin@fakedog.xyz",
+            "key": "ZehVZQMvhsXT72jf"
         },
         "usernameMatch": {
             "pattern": "[a-zA-Z][a-zA-Z0-9]{3,15}",
