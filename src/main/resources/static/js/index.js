@@ -1,4 +1,4 @@
-var footer = "<p> © 2018 zhazhapan.&emsp;&emsp;Powered by efo.</p>";
+var footer = "<p> © 2018 zhazhapan Copyright.&emsp;&emsp;Powered by efo.</p>";
 
 var globalConfig = {};
 
@@ -7,14 +7,14 @@ $(document).ready(function () {
     $.get("/config/global", function (data) {
         layer.closeAll();
         globalConfig = JSON.parse(data);
-        console.info(data);
-        if (globalConfig.loadParticle == 1) {
+        /** @namespace globalConfig.loadParticle */
+        if (globalConfig.loadParticle) {
             // 加载 particle粒子效果
-            particlesJS.load('particles-js', '../static/js/particles.json', function () {
+            particlesJS.load('particles-js', 'js/particles.json', function () {
                 console.log('callback - particles.js config loaded');
             });
         }
     });
-    // add footer
+    // 加载页脚
     $("#footer").html(footer);
 });

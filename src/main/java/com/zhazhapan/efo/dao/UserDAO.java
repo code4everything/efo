@@ -44,7 +44,7 @@ public interface UserDAO {
      * @return {@link User}
      */
     @Select("select * from user where (username=#{usernameOrEmail} or email=#{usernameOrEmail}) and password=sha2(#{password},256)")
-    User doLogin(@Param("usernameOrEmail") String usernameOrEmail, @Param("password") String password);
+    User login(@Param("usernameOrEmail") String usernameOrEmail, @Param("password") String password);
 
     /**
      * 添加一个用户

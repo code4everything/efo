@@ -30,3 +30,11 @@ body {
     text-align: justify;
     text-align-last: justify;
 }
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}

@@ -1,6 +1,7 @@
 package com.zhazhapan.efo;
 
 import com.zhazhapan.config.JsonParser;
+import com.zhazhapan.util.NetUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -17,8 +18,6 @@ import java.io.IOException;
 public class EfoApplication {
 
     public static JsonParser settings = new JsonParser();
-
-    public static String CLASS_PATH = EfoApplication.class.getResource("/").toString().split(":")[1];
 
     public static void main(String[] args) throws IOException {
         settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));

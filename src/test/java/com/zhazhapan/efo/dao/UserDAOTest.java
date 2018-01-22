@@ -38,7 +38,7 @@ public class UserDAOTest {
 
     @Test
     public void testDoLogin() {
-        assert Checker.isNotNull(userDAO.doLogin("system", "123456"));
+        assert Checker.isNotNull(userDAO.login("system", "123456"));
     }
 
     @Test

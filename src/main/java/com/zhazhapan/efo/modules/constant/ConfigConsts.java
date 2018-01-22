@@ -9,6 +9,11 @@ import com.zhazhapan.modules.constant.Values;
 public class ConfigConsts {
 
     /**
+     * 配置文件中登录的路径
+     */
+    public static final String ALLOW_LOGIN_OF_SETTINGS = "global.allowLogin";
+
+    /**
      * 上传路径在全局配置中的路径
      */
     public static final String UPLOAD_PATH_OF_GLOBAL = "uploadPath";
