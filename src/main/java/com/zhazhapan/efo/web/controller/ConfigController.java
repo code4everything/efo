@@ -21,4 +21,9 @@ public class ConfigController {
     public String getGlobalConfig() {
         return configService.getGlobalConfig();
     }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public String getUserConfig() {
+        return configService.getUserConfig();
+    }
 }

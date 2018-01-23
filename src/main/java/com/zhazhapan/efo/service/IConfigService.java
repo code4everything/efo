@@ -12,4 +12,11 @@ public interface IConfigService {
      * @return {@link String}
      */
     String getGlobalConfig();
+
+    /**
+     * 获取用户配置
+     *
+     * @return {@link String}
+     */
+    String getUserConfig();
 }

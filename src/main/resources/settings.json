@@ -7,6 +7,28 @@
         "anonymousUser": {
             "visible": true,
             "downloadable": false
+        },
+        "background": {
+            "useImage": false,
+            "imageIndex": 0,
+            "random": true,
+            "imageList": [
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_1.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_2.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_3.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_4.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_5.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_6.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_7.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_8.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_9.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_10.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_11.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_12.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_13.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_14.jpg",
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_15.jpg"
+            ]
         }
     },
     "user": {
@@ -15,17 +37,18 @@
             "minLength": 6,
             "maxLength": 20
         },
-        "email": {
-            "verify": false,
+        "emailVerify": true,
+        "emailConfig": {
             "host": "mx1.hostinger.com.hk",
             "port": 587,
-            "name": "efo",
+            "personal": "efo",
             "from": "efo-admin@fakedog.xyz",
-            "key": "ZehVZQMvhsXT72jf"
+            "key": "123456",
+            "ssl": false
         },
         "usernameMatch": {
-            "pattern": "[a-zA-Z][a-zA-Z0-9]{3,15}",
-            "description": "用户名只能使用英文字母和数字，且必须以字母开始，长度为4到16的字符串"
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]{3,15}$",
+            "description": "用户名只能使用长度为4到16位的英文字母和数字，且必须以字母开始"
         },
         "defaultAuth": {
             "isDownloadable": true,

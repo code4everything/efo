@@ -31,36 +31,45 @@
                 <br/>
                 <button class="btn btn-primary btn-block" onclick="login();">登录</button>
                 <br/>
-                <div class="text-justify-all">
-                    <button class="btn btn-link" onclick="switchToRegister();">还没有账号？</button>
-                    <button class="btn btn-link" onclick="switchToReset();">忘记密码？</button>
+                <div class="form-inline">
+                    <div class="col-sm-6 text-left">
+                        <button class="btn btn-link" onclick="switchToRegister();">还没有账号？</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button class="btn btn-link" onclick="switchToReset();">忘记密码？</button>
+                    </div>
                 </div>
             </div>
             <div id="register-div" style="display: none;">
                 <h3>注册成为会员</h3><br/>
                 <input type="text" id="username" maxlength="50" class="form-control" placeholder="用户名"/>
+                <label class="form-check-label error">{{description}}</label>
                 <br/>
                 <input type="email" id="email" maxlength="100" class="form-control" placeholder="电子邮箱，可用于登录">
+                <label class="form-check-label error">{{emailErrorTip}}</label>
                 <br/>
                 <div class="form-inline text-justify-all" v-if="emailVerify" style="padding: 0;">
-                    <div class="col-sm-6" style="padding-left: 0;">
-                        <input type="number" id="email-verify" maxlength="6" class="form-control"
-                               placeholder="收到的6位验证码"/>
+                    <div class="col-sm-7" style="padding-left: 0;">
+                        <input type="number" id="email-verify-code" maxlength="6" class="form-control"
+                               placeholder="收到的6位验证码" style="width: 100%;"/>
+                        <label class="form-check-label error">{{registerEmailVerify}}</label>
                     </div>
-                    <div class="col-sm-2"></div>
+                    <!--<div class="col-sm-1"></div>-->
                     <div class="col-sm-4 text-right" style="padding-right: 0;">
-                        <button class="btn btn-outline-info">发送验证码</button>
+                        <button class="btn btn-outline-info sendVerifyCode">发送验证码</button>
                     </div>
                 </div>
                 <br v-if="emailVerify"/>
                 <input type="password" id="reg-password" maxlength="50" class="form-control" placeholder="请输入你的密码">
+                <label class="form-check-label error">{{registerPasswordVerify}}</label>
                 <br/>
                 <input type="password" id="confirm-password" max="50" class="form-control" placeholder="请再次输入你的密码">
+                <label class="form-check-label error">{{registerPasswordConfirm}}</label>
                 <br/>
                 <div class="text-center">
                     <button class="btn btn-outline-warning" style="width: 49%;" onclick="switchToLogin();">已有账号？
                     </button>
-                    <button class="btn btn-primary" style="width: 49%;">注册</button>
+                    <button class="btn btn-primary" style="width: 49%;" onclick="register();">注册</button>
                 </div>
             </div>
             <div id="reset-div" style="display: none;">
@@ -68,11 +77,11 @@
                 <input type="email" class="form-control" id="res-email" maxlength="100" placeholder="注册的邮箱"/>
                 <br/>
                 <div class="form-inline text-justify-all" v-if="emailVerify" style="padding: 0;">
-                    <div class="col-sm-6" style="padding-left: 0;">
+                    <div class="col-sm-7" style="padding-left: 0;">
                         <input type="number" id="res-email-verify" maxlength="6" class="form-control"
-                               placeholder="收到的6位验证码"/>
+                               placeholder="收到的6位验证码" style="width: 100%;"/>
                     </div>
-                    <div class="col-sm-2"></div>
+                    <!--<div class="col-sm-1"></div>-->
                     <div class="col-sm-4 text-right" style="padding-right: 0;">
                         <button class="btn btn-outline-info">发送验证码</button>
                     </div>

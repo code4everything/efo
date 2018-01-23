@@ -1,7 +1,8 @@
 package com.zhazhapan.efo;
 
 import com.zhazhapan.config.JsonParser;
-import com.zhazhapan.util.NetUtils;
+import com.zhazhapan.efo.modules.constant.ConfigConsts;
+import com.zhazhapan.util.MailSender;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,6 +22,7 @@ public class EfoApplication {
 
     public static void main(String[] args) throws IOException {
         settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));
+        MailSender.config(settings.getObjectUseEval(ConfigConsts.EMAIL_CONFIG_OF_SETTINGS));
         SpringApplication.run(EfoApplication.class, args);
     }
 }

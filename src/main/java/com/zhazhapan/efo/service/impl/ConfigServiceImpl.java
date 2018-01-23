@@ -19,4 +19,11 @@ public class ConfigServiceImpl implements IConfigService {
         jsonObject.remove(ConfigConsts.UPLOAD_PATH_OF_GLOBAL);
         return jsonObject.toString();
     }
+
+    @Override
+    public String getUserConfig() {
+        JSONObject jsonObject = EfoApplication.settings.getObjectUseEval(ConfigConsts.USER_OF_SETTINGS);
+        jsonObject.remove(ConfigConsts.EMAIL_CONFIG_OF_USER);
+        return jsonObject.toString();
+    }
 }

@@ -1,9 +1,12 @@
 body {
+    background-size: cover;
     background: #F5F5F5;
+    width: 100vw;
+    height: 100vh;
 }
 
 .content-box {
-    box-shadow: 3px 3px 3px #f3f3f3;
+    /*box-shadow: 3px 3px 3px #f3f3f3;*/
     background: white;
 }
 
@@ -37,4 +40,8 @@ body {
 
 .hide {
     display: none;
+}
+
+.error {
+    color: red;
 }

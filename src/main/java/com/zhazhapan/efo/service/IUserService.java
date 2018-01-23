@@ -8,5 +8,13 @@ import com.zhazhapan.efo.entity.User;
  */
 public interface IUserService {
 
+    /**
+     * 登录
+     *
+     * @param loginName 登录名
+     * @param password 密码
+     *
+     * @return {@link User}
+     */
     User login(String loginName, String password);
 }
