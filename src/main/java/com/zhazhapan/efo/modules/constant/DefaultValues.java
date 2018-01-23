@@ -15,5 +15,10 @@ public class DefaultValues {
      */
     public static final int TWO_INT = 2;
 
+    /**
+     * code字符
+     */
+    public static final String CODE_STRING = "code";
+
     private DefaultValues() {}
 }

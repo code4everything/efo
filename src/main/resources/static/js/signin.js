@@ -1,14 +1,41 @@
-var registerItem = new Vue({
-    el: "#register-div",
+var signinItem = new Vue({
+    el: "#signin-div",
     data: {
-        description: "",
         emailVerify: false,
+        description: "",
         emailErrorTip: "",
-        registerEmailVerify: "",
-        registerPasswordVerify: "",
-        registerPasswordConfirm: ""
+        emailVerifyStatus: "",
+        passwordVerify: "",
+        passwordConfirm: ""
     }
 });
+
+function reset() {
+    var email = $("#res-email").val();
+    var code = $("#res-email-verify").val();
+    var password = $("#res-password").val();
+    var passwordConfirm = $("#res-confirm-password").val();
+    var isValid = isEmail(email) && 6 === code.length && checkPassword(password, passwordConfirm);
+    if (submit() && isValid) {
+        layer.load(1);
+        $.post("/password/reset", {email: email, code: code, password: password}, function (data) {
+            layer.closeAll();
+            var json = JSON.parse(data);
+            if (json.status === "success") {
+                alerts("密码重置成功");
+                switchToLogin();
+            } else {
+                alerts(json.message);
+            }
+        });
+    } else {
+        alerts("格式不合法，无法提交");
+    }
+}
+
+function checkPassword(password, passwordConfirm) {
+    return password.length >= userConfig.password.minLength && password.length <= userConfig.password.maxLength && password === passwordConfirm;
+}
 
 function register() {
     /** @namespace globalConfig.allowRegister */
@@ -18,11 +45,26 @@ function register() {
         var verifyCode = $("#email-verify-code").val();
         var password = $("#reg-password").val();
         var passwordConfirm = $("#confirm-password").val();
-        var canRegister = username.match(userConfig.usernameMatch.pattern) && (!userConfig.emailVerify || 6 === verifyCode.length) && isEmail(email) && password.length >= userConfig.password.minLength && password.length <= userConfig.password.maxLength && password == passwordConfirm;
-        if (canRegister) {
-
+        var canRegister = username.match(userConfig.usernameMatch.pattern) && (!userConfig.emailVerify || 6 === verifyCode.length) && isEmail(email) && checkPassword(password, passwordConfirm);
+        if (submit() && canRegister) {
+            layer.load(1);
+            $.post("/register", {
+                username: username,
+                email: email,
+                password: password,
+                code: verifyCode
+            }, function (data) {
+                layer.closeAll();
+                var json = JSON.parse(data);
+                if (json.status === "success") {
+                    alerts("注册成功");
+                    switchToLogin();
+                } else {
+                    alerts(json.message);
+                }
+            });
         } else {
-            alerts("有非法内容，无法注册");
+            alerts("有非法内容，无法提交");
         }
     } else {
         alerts("该站点已禁止注册，请联系管理员");
@@ -55,7 +97,7 @@ function login() {
 }
 
 function switchToRegister() {
-    switchTo("none", "none", "block", "register", registerItem.emailVerify ? 30 : 26);
+    switchTo("none", "none", "block", "register", signinItem.emailVerify ? 30 : 26);
 }
 
 function switchToLogin() {
@@ -72,45 +114,64 @@ function switchTo(login, reset, register, hash, height) {
     $("#register-div").css("display", register);
     window.location.hash = "#" + hash;
     $(".center-vertical").css("height", height + "rem");
+    signinItem.description = "";
+    signinItem.emailErrorTip = "";
+    signinItem.emailVerifyStatus = "";
+    signinItem.passwordVerify = "";
+    signinItem.passwordConfirm = "";
+}
+
+function submit() {
+    return isEmpty(signinItem.description) && isEmpty(signinItem.emailErrorTip) && isEmpty(signinItem.emailVerifyStatus) && isEmpty(signinItem.passwordVerify) && isEmpty(signinItem.passwordConfirm);
 }
 
 $(document).ready(
     function () {
         $("#username").keyup(function () {
-                if (event.srcElement.value.match(userConfig.usernameMatch.pattern)) {
-                    registerItem.description = "";
+                var username = event.srcElement.value;
+                if (username.match(userConfig.usernameMatch.pattern)) {
+                    $.get("/username/exists", {username: username}, function (data) {
+                        var json = JSON.parse(data);
+                        /** @namespace json.exists */
+                        if (json.exists) {
+                            signinItem.description = "用户名已经存在";
+                        } else {
+                            signinItem.description = "";
+                        }
+                    });
                 } else {
-                    registerItem.description = userConfig.usernameMatch.description;
+                    signinItem.description = userConfig.usernameMatch.description;
                 }
             }
         );
-        $("#email").keyup(function () {
-            registerItem.emailErrorTip = isEmail(event.srcElement.value) ? "" : "邮箱格式不正确";
+        $(".email").keyup(function () {
+            signinItem.emailErrorTip = isEmail(event.srcElement.value) ? "" : "邮箱格式不正确";
         });
-        $("#reg-password").keyup(function () {
+        $(".password").keyup(function () {
             var len = event.srcElement.value.length;
             if (len >= userConfig.password.minLength && len <= userConfig.password.maxLength) {
-                registerItem.registerPasswordVerify = "";
+                signinItem.passwordVerify = "";
             } else {
-                registerItem.registerPasswordVerify = "密码长度限定为" + userConfig.password.minLength + "至" + userConfig.password.maxLength + "位";
+                signinItem.passwordVerify = "密码长度限定为" + userConfig.password.minLength + "至" + userConfig.password.maxLength + "位";
             }
         });
-        $("#confirm-password").keyup(function () {
-            registerItem.registerPasswordConfirm = (event.srcElement.value === $("#reg-password").val()) ? "" : "两次输入的密码不一样";
+        $(".confirm-password").keyup(function () {
+            var ele = event.srcElement;
+            signinItem.passwordConfirm = (ele.value === $(ele).siblings(".password").val()) ? "" : "两次输入的密码不一样";
         });
         $(".sendVerifyCode").click(function () {
             var email = $("#email").val();
             if (isEmail(email)) {
                 var ele = event.srcElement;
                 layer.load(1);
-                $.get("/verifyCode", {email: email}, function (data) {
+                $.get("/code/send", {email: email}, function (data) {
                     layer.closeAll();
                     var json = JSON.parse(data);
                     if (json.status === "success") {
                         layer.msg("发送成功，请前往邮箱查看");
-                        $(ele).addClass("disabled");
+                        $(ele).attr("disabled", "disabled");
                         setTimeout(function () {
-                            $(ele).removeClass("disabled");
+                            $(ele).removeAttr("disabled");
                         }, 60000);
                     } else {
                         alerts("获取验证码失败，请联系管理员");
@@ -118,6 +179,17 @@ $(document).ready(
                 });
             } else {
                 alerts("邮箱格式不合法");
+            }
+        });
+        $(".email-verify-code").keyup(function () {
+            var code = event.srcElement.value;
+            if (code.length === 6) {
+                $.get("/code/verify", {code: code}, function (data) {
+                    var json = JSON.parse(data);
+                    signinItem.emailVerifyStatus = json.status === "success" ? "" : "验证码错误";
+                });
+            } else {
+                signinItem.emailVerifyStatus = "";
             }
         });
     }
@@ -141,7 +213,7 @@ layer.load(1);
 $.get("/config/user", function (data) {
     layer.closeAll();
     userConfig = JSON.parse(data);
-    registerItem.emailVerify = userConfig.emailVerify;
+    signinItem.emailVerify = userConfig.emailVerify;
     /** @namespace userConfig.usernameMatch */
     if (window.location.hash === "#register") {
         switchToRegister();

@@ -28,12 +28,12 @@ public class UserDAOTest {
 
     @Test
     public void testUpdateUserAuth() {
-        userDAO.updateAuthById(1, 1, 1, 1, 1, 1);
+        assert userDAO.updateAuthById(1, 1, 1, 1, 1, 1);
     }
 
     @Test
     public void testUpdateUserLoginTime() {
-        userDAO.updateUserLoginTime(1);
+        assert userDAO.updateUserLoginTime(1);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class UserDAOTest {
         String email = RandomUtils.getRandomEmail();
         String password = RandomUtils.getRandomStringWithoutSymbol(16);
         User user = new User(username, realName, email, password);
-        userDAO.insertUser(user);
+        assert userDAO.insertUser(user);
     }
 
     @Test

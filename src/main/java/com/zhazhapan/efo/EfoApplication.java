@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * @author pantao
@@ -20,9 +21,12 @@ public class EfoApplication {
 
     public static JsonParser settings = new JsonParser();
 
+    public static Pattern usernamePattern;
+
     public static void main(String[] args) throws IOException {
         settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));
         MailSender.config(settings.getObjectUseEval(ConfigConsts.EMAIL_CONFIG_OF_SETTINGS));
+        usernamePattern = Pattern.compile(settings.getStringUseEval(ConfigConsts.USERNAME_PATTERN_OF_SETTINGS));
         SpringApplication.run(EfoApplication.class, args);
     }
 }

@@ -1,3 +1,7 @@
+function isEmpty(string) {
+    return typeof string === "undefined" || string.length < 1;
+}
+
 function isEmail(email) {
     return email.match(/^[0-9a-z\-]+([0-9a-z\-]|(\.[0-9a-z\-]+))*@[0-9a-z\-]+(\.{1}[0-9a-z\-]+)+$/);
 }

@@ -13,6 +13,12 @@ import org.junit.Test;
 public class CommonTest {
 
     @Test
+    public void testJson() {
+        EfoApplicationTest.setSettings();
+        System.out.println(EfoApplication.settings.getBooleanUseEval(ConfigConsts.USER_AUTH_OF_SETTINGS[0]));
+    }
+
+    @Test
     public void testSendEmail() throws Exception {
         EfoApplicationTest.setSettings();
         MailSender.config(EfoApplication.settings.getObjectUseEval(ConfigConsts.EMAIL_CONFIG_OF_SETTINGS));

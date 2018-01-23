@@ -10,6 +10,8 @@ public interface ICommonService {
      * 发送验证码
      *
      * @param email 邮箱
+     *
+     * @return 验证码
      */
-    boolean sendVerifyCode(String email);
+    int sendVerifyCode(String email);
 }
