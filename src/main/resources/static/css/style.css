@@ -7,6 +7,11 @@ html, body {
     background: #F5F5F5;
 }
 
+.avatar {
+    height: 3rem;
+    width: 3rem;
+}
+
 .content-box {
     /*box-shadow: 3px 3px 3px #f3f3f3;*/
     background: white;

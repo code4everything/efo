@@ -8,8 +8,13 @@
             "visible": true,
             "downloadable": false
         },
+        "css": {
+            "contentBox": {
+                "opacity": 1
+            }
+        },
         "background": {
-            "useImage": true,
+            "useImage": false,
             "imageIndex": 0,
             "random": true,
             "imageList": [
@@ -34,7 +39,7 @@
                 "prefix": "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_",
                 "suffix": ".jpg",
                 "start": 1,
-                "end": 100
+                "end": 172
             }
         }
     },

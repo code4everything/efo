@@ -43,6 +43,9 @@ $(document).ready(function () {
                 $(body).css("background-size", "cover");
             }
         }
+        /** @namespace globalConfig.css.contentBox.opacity */
+        /** @namespace globalConfig.css.contentBox */
+        $(".content-box").css("opacity", globalConfig.css.contentBox.opacity);
     });
     // 加载页脚
     $("#footer").html(footer);

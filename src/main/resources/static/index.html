@@ -41,14 +41,33 @@
                placeholder="搜索"/>
     </div>
 </nav>
-<div class="container">
+<br/>
+<div class="container" id="index">
     <div class="row">
-        <div class="col-sm-12">
-            <div class="tab-content">
-                <div class="tab-pane active" id="resource-tab">资源列表</div>
-                <div class="tab-pane" id="uploaded-tab">我的上传</div>
-                <div class="tab-pane" id="downloaded-tab">我的下载</div>
-                <div class="tab-pane" id="bio-tab">我的资料</div>
+        <div class="col-sm-12 tab-content">
+            <div class="tab-pane" id="resource-tab">资源列表</div>
+            <div class="tab-pane" id="uploaded-tab">我的上传</div>
+            <div class="tab-pane" id="downloaded-tab">我的下载</div>
+            <div class="tab-pane active content-box" id="bio-tab">
+                <div class="row">
+                    <div class="col-sm-1 col-1 col-md-1"></div>
+                    <div class="col-sm-6 col-11 col-md-6">
+                        <br/>
+                        <div class="row">
+                            <img src="image/default-user.jpg" id="avatar" class="rounded-circle avatar"/>
+                            <span>{{username}}</span>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-3 text text-left">
+                                <span>真实姓名：</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <input placeholder="我的真实姓名" type="text" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
