@@ -3,7 +3,7 @@ function isEmpty(string) {
 }
 
 function isEmail(email) {
-    return email.match(/^[0-9a-z\-]+([0-9a-z\-]|(\.[0-9a-z\-]+))*@[0-9a-z\-]+(\.{1}[0-9a-z\-]+)+$/);
+    return email.match(/^[0-9a-z\-]+([0-9a-z\-]|(\.[0-9a-z\-]+))*@[0-9a-z\-]+(\.[0-9a-z\-]+)+$/);
 }
 
 function alerts(msg, callback) {

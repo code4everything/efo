@@ -160,7 +160,7 @@ $(document).ready(
             signinItem.passwordConfirm = (ele.value === $(ele).siblings(".password").val()) ? "" : "两次输入的密码不一样";
         });
         $(".sendVerifyCode").click(function () {
-            var email = $("#email").val();
+            var email = $(event.srcElement).parent().parent().siblings(".email").val();
             if (isEmail(email)) {
                 var ele = event.srcElement;
                 layer.load(1);
@@ -170,8 +170,10 @@ $(document).ready(
                     if (json.status === "success") {
                         layer.msg("发送成功，请前往邮箱查看");
                         $(ele).attr("disabled", "disabled");
+                        $(ele).addClass("disabled");
                         setTimeout(function () {
                             $(ele).removeAttr("disabled");
+                            $(ele).removeClass("disabled");
                         }, 60000);
                     } else {
                         alerts("获取验证码失败，请联系管理员");

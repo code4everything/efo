@@ -12,15 +12,16 @@
     <script src="js/utils.js"></script>
     <script src="js/vue.js"></script>
     <link rel="stylesheet" href="css/style.css"/>
-    <title>登录EFO</title>
+    <title>登录</title>
 </head>
 <body id="particles-js">
 <div class="container">
     <div class="row">
-        <div class="col-sm-4"></div>
-        <div id="signin-div" class="col-sm-4 content-box text-center center-vertical" style="padding: 2rem 3rem;">
+        <div class="col-1 col-sm-4"></div>
+        <div id="signin-div" class="col-sm-4 col-10 rounded content-box text-center center-vertical"
+             style="padding: 2rem 3rem;">
             <div id="login-div">
-                <h3>欢迎登录</h3><br/>
+                <h3 class="text-muted">欢迎登录</h3><br/>
                 <input type="text" id="loginName" class="form-control" placeholder="用户名/电子邮箱" maxlength="50"/>
                 <br/>
                 <input type="password" id="password" maxlength="50" class="form-control" placeholder="登录密码"/>
@@ -31,87 +32,90 @@
                 <br/>
                 <button class="btn btn-primary btn-block" onclick="login();">登录</button>
                 <br/>
-                <div class="form-inline">
-                    <div class="col-sm-6 text-left">
-                        <button class="btn btn-link" onclick="switchToRegister();">还没有账号？</button>
+                <div class="form-inline row">
+                    <div class="col-sm-6 col-6 col-md-6 text-left">
+                        <button class="btn btn-link text-success" onclick="switchToRegister();">还没有账号？</button>
                     </div>
-                    <div class="col-sm-6 text-right">
-                        <button class="btn btn-link" onclick="switchToReset();">忘记密码？</button>
+                    <div class="col-sm-6 col-6 col-md-6 text-right">
+                        <button class="btn btn-link text-danger" onclick="switchToReset();">忘记密码？</button>
                     </div>
                 </div>
             </div>
             <div id="register-div" style="display: none;">
-                <h3>欢迎注册</h3><br/>
+                <h3 class="text-muted">欢迎回来</h3><br/>
                 <input type="text" id="username" maxlength="50" class="form-control" placeholder="用户名"/>
-                <label class="form-check-label error">{{description}}</label>
+                <label class="form-check-label text-danger">{{description}}</label>
                 <br/>
                 <input type="email" id="email" maxlength="100" class="form-control email" placeholder="电子邮箱，可用于登录">
-                <label class="form-check-label error">{{emailErrorTip}}</label>
+                <label class="form-check-label text-danger">{{emailErrorTip}}</label>
                 <br/>
-                <div class="form-inline text-justify-all" v-if="emailVerify" style="padding: 0;">
-                    <div class="col-sm-7" style="padding-left: 0;">
+                <div class="form-inline text-justify-all row" v-if="emailVerify">
+                    <div class="col-sm-7 col-6 col-md-7">
                         <input type="number" id="email-verify-code" maxlength="6" class="form-control email-verify-code"
-                               placeholder="收到的6位验证码" style="width: 100%;"/>
+                               placeholder="收到的6位验证码"/>
                     </div>
-                    <!--<div class="col-sm-1"></div>-->
-                    <div class="col-sm-4 text-right" style="padding-right: 0;">
-                        <button class="btn btn-outline-info sendVerifyCode">发送验证码</button>
+                    <div class="col-sm-5 col-md-5 col-6 text-right">
+                        <button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>
                     </div>
                 </div>
-                <label class="form-check-label error">{{emailVerifyStatus}}</label>
+                <label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
                 <br v-if="emailVerify"/>
                 <input type="password" id="reg-password" maxlength="50" class="form-control password"
                        placeholder="请输入你的密码">
-                <label class="form-check-label error">{{passwordVerify}}</label>
+                <label class="form-check-label text-danger">{{passwordVerify}}</label>
                 <br/>
                 <input type="password" id="confirm-password" max="50" class="form-control confirm-password"
                        placeholder="请再次输入你的密码">
-                <label class="form-check-label error">{{passwordConfirm}}</label>
+                <label class="form-check-label text-danger">{{passwordConfirm}}</label>
                 <br/>
-                <div class="text-center">
-                    <button class="btn btn-outline-warning" style="width: 49%;" onclick="switchToLogin();">已有账号？
-                    </button>
-                    <button class="btn btn-primary" style="width: 49%;" onclick="register();">注册</button>
+                <div class="text-center row">
+                    <div class="col-6 col-sm-6">
+                        <button class="btn btn-outline-warning btn-block" onclick="switchToLogin();">已有账号？</button>
+                    </div>
+                    <div class="col-6 col-sm-6">
+                        <button class="btn btn-primary btn-block" onclick="register();">注册</button>
+                    </div>
                 </div>
             </div>
             <div id="reset-div" style="display: none;">
-                <h3>重置密码</h3><br/>
+                <h3 class="text-muted">重置密码</h3><br/>
                 <input type="email" class="form-control email" id="res-email" maxlength="100" placeholder="注册的邮箱"/>
-                <label class="form-check-label error">{{emailErrorTip}}</label>
+                <label class="form-check-label text-danger">{{emailErrorTip}}</label>
                 <br/>
-                <div class="form-inline text-justify-all" style="padding: 0;">
-                    <div class="col-sm-7" style="padding-left: 0;">
+                <div class="form-inline text-justify-all row">
+                    <div class="col-sm-7 col-md-7 col-6">
                         <input type="number" id="res-email-verify" maxlength="6" class="form-control email-verify-code"
-                               placeholder="收到的6位验证码" style="width: 100%;"/>
+                               placeholder="收到的6位验证码"/>
                     </div>
-                    <!--<div class="col-sm-1"></div>-->
-                    <div class="col-sm-4 text-right" style="padding-right: 0;">
-                        <button class="btn btn-outline-info sendVerifyCode">发送验证码</button>
+                    <div class="col-sm-5 col-md-5 col-6 text-right">
+                        <button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>
                     </div>
                 </div>
-                <label class="form-check-label error">{{emailVerifyStatus}}</label>
+                <label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
                 <br/>
                 <input type="password" id="res-password" maxlength="50" class="form-control password"
                        placeholder="请设置你的新密码">
-                <label class="form-check-label error">{{passwordVerify}}</label>
+                <label class="form-check-label text-danger">{{passwordVerify}}</label>
                 <br/>
                 <input type="password" id="res-confirm-password" max="50" class="form-control confirm-password"
                        placeholder="请确认你的新密码">
-                <label class="form-check-label error">{{passwordConfirm}}</label>
+                <label class="form-check-label text-danger">{{passwordConfirm}}</label>
                 <br/>
-                <div class="text-center">
-                    <button class="btn btn-outline-primary" style="width: 49%;" onclick="switchToLogin();">继续登录</button>
-                    <button class="btn btn-danger" style="width: 49%;" onclick="reset();">重置密码</button>
+                <div class="text-center row">
+                    <div class="col-6 col-sm-6">
+                        <button class="btn btn-outline-primary btn-block" onclick="switchToLogin();">继续登录</button>
+                    </div>
+                    <div class="col-6 col-sm-6">
+                        <button class="btn btn-danger btn-block" onclick="reset();">重置密码</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row text-center bottom">
-        <div class="col-sm-12" id="footer"></div>
-    </div>
+    <div class="row text-center bottom" id="footer"></div>
 </div>
 <script src="js/particles.js"></script>
-<script src="js/index.js"></script>
+<script src="js/default.js"></script>
 <script src="js/signin.js"></script>
 </body>
 </html>

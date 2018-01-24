@@ -2,9 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="image/efo-favicon.png"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/popper.min.js"></script>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/vue.js"></script>
+    <link rel="stylesheet" href="css/style.css"/>
     <title>首页</title>
 </head>
-<body>
-
+<body id="particles-js">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-toggle navbar-fixed-top">
+    <img src="image/efo-favicon.png" class="navbar-brand" style="width: 2rem;height: 2.5rem;"/>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="pill" href="#resource-tab">资源列表</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#uploaded-tab">我的上传</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#downloaded-tab">我的下载</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" href="#bio-tab">我的资料</a>
+            </li>
+        </ul>
+    </div>
+    <div class="form-inline w-50">
+        <input class="form-control border-dark bg-dark text-white form-control-sm w-100" type="search"
+               placeholder="搜索"/>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="tab-content">
+                <div class="tab-pane active" id="resource-tab">资源列表</div>
+                <div class="tab-pane" id="uploaded-tab">我的上传</div>
+                <div class="tab-pane" id="downloaded-tab">我的下载</div>
+                <div class="tab-pane" id="bio-tab">我的资料</div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center bottom float-left" id="footer"></div>
+</div>
+<script src="js/particles.js"></script>
+<script src="js/default.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>

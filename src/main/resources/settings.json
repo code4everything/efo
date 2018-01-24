@@ -9,7 +9,7 @@
             "downloadable": false
         },
         "background": {
-            "useImage": false,
+            "useImage": true,
             "imageIndex": 0,
             "random": true,
             "imageList": [
@@ -28,7 +28,14 @@
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_13.jpg",
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_14.jpg",
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_15.jpg"
-            ]
+            ],
+            "listGenerate": {
+                "enable": true,
+                "prefix": "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_",
+                "suffix": ".jpg",
+                "start": 1,
+                "end": 100
+            }
         }
     },
     "user": {

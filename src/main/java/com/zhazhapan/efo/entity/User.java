@@ -41,6 +41,8 @@ public class User {
 
     private Timestamp lastLoginTime;
 
+    private String avatar;
+
     public User(String username, String realName, String email, String password) {
         this.username = username;
         this.realName = realName;
@@ -48,7 +50,7 @@ public class User {
         this.password = password;
     }
 
-    public User(int id, String username, String realName, String email, String password, int permission, Timestamp createTime, Timestamp lastLoginTime, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable) {
+    public User(int id, String username, String realName, String email, String password, int permission, Timestamp createTime, Timestamp lastLoginTime, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable, String avatar) {
         this.id = id;
         this.username = username;
         this.realName = realName;
@@ -62,6 +64,7 @@ public class User {
         this.permission = permission;
         this.createTime = createTime;
         this.lastLoginTime = lastLoginTime;
+        this.avatar = avatar;
     }
 
     public void setAuth(int isDownloadable, int isUploadable, int isDeletable, int isUpdatable, int isVisible) {
@@ -179,5 +182,13 @@ public class User {
 
     public void setLastLoginTime(Timestamp lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
