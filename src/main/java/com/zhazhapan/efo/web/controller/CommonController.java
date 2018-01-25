@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/1/23
  */
 @RestController
+@RequestMapping("/common")
 public class CommonController {
 
     private static Logger logger = LoggerFactory.getLogger(ConfigController.class);

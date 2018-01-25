@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/1/22
  */
 @RestController
+@RequestMapping("/signin")
 public class UserController {
 
     @Autowired

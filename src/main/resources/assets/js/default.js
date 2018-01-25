@@ -1,4 +1,4 @@
-var footer = "<div class='col-sm-12 text-center'><p>© 2018 zhazhapan Copyright.<br/>Powered by efo.</p></div>";
+var footer = "<nav class='navbar navbar-default fixed-bottom justify-content-center' style='z-index:-1;'><div class='navbar-inner navbar-content-center text-center'><p>© 2018 zhazhapan Copyright.&emsp;Powered by efo.</p></div></nav>";
 
 var globalConfig = {};
 
@@ -39,13 +39,16 @@ $(document).ready(function () {
             var url = globalConfig.background.imageList[idx];
             if (typeof url !== "undefined") {
                 var body = $("body");
-                $(body).css("background", "url('" + url + "') no-repeat center center");
+                $(body).css("background", "url('" + url + "') no-repeat center center fixed");
                 $(body).css("background-size", "cover");
             }
         }
         /** @namespace globalConfig.css.contentBox.opacity */
         /** @namespace globalConfig.css.contentBox */
-        $(".content-box").css("opacity", globalConfig.css.contentBox.opacity);
+        $(".content-box").css("background", globalConfig.css.contentBox.background);
+        /** @namespace globalConfig.css.formControl */
+        $(".form-control").css("background", globalConfig.css.formControl.background);
+        $("button").css("opacity", globalConfig.css.button.opacity);
     });
     // 加载页脚
     $("#footer").html(footer);

@@ -18,7 +18,7 @@ function reset() {
     var isValid = isEmail(email) && 6 === code.length && checkPassword(password, passwordConfirm);
     if (submit() && isValid) {
         layer.load(1);
-        $.post("/password/reset", {email: email, code: code, password: password}, function (data) {
+        $.post("/signin/password/reset", {email: email, code: code, password: password}, function (data) {
             layer.closeAll();
             var json = JSON.parse(data);
             if (json.status === "success") {
@@ -48,7 +48,7 @@ function register() {
         var canRegister = username.match(userConfig.usernameMatch.pattern) && (!userConfig.emailVerify || 6 === verifyCode.length) && isEmail(email) && checkPassword(password, passwordConfirm);
         if (submit() && canRegister) {
             layer.load(1);
-            $.post("/register", {
+            $.post("/signin/register", {
                 username: username,
                 email: email,
                 password: password,
@@ -79,7 +79,7 @@ function login() {
         // var remember = document.getElementById("remember").checked;
         if (username && password) {
             layer.load(1);
-            $.post("/login", {username: username, password: password}, function (data) {
+            $.post("/signin/login", {username: username, password: password}, function (data) {
                 layer.closeAll();
                 var json = JSON.parse(data);
                 if (json.status === "success") {
@@ -130,7 +130,7 @@ $(document).ready(
         $("#username").keyup(function () {
                 var username = event.srcElement.value;
                 if (username.match(userConfig.usernameMatch.pattern)) {
-                    $.get("/username/exists", {username: username}, function (data) {
+                    $.get("/signin/username/exists", {username: username}, function (data) {
                         var json = JSON.parse(data);
                         /** @namespace json.exists */
                         if (json.exists) {
@@ -164,7 +164,7 @@ $(document).ready(
             if (isEmail(email)) {
                 var ele = event.srcElement;
                 layer.load(1);
-                $.get("/code/send", {email: email}, function (data) {
+                $.get("/common/code/send", {email: email}, function (data) {
                     layer.closeAll();
                     var json = JSON.parse(data);
                     if (json.status === "success") {
@@ -186,7 +186,7 @@ $(document).ready(
         $(".email-verify-code").keyup(function () {
             var code = event.srcElement.value;
             if (code.length === 6) {
-                $.get("/code/verify", {code: code}, function (data) {
+                $.get("/common/code/verify", {code: code}, function (data) {
                     var json = JSON.parse(data);
                     signinItem.emailVerifyStatus = json.status === "success" ? "" : "验证码错误";
                 });

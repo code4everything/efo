@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <link rel="shortcut icon" href="image/efo-favicon.png"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/popper.min.js"></script>
-    <script src="js/jquery-3.3.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/layer.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/vue.js"></script>
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="shortcut icon" href="/assets/image/efo-favicon.png"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/jquery-3.3.1.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/layer.js"></script>
+    <script src="/assets/js/utils.js"></script>
+    <script src="/assets/js/vue.js"></script>
+    <link rel="stylesheet" href="/assets/css/style.css"/>
     <title>首页</title>
 </head>
 <body id="particles-js">
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-toggle navbar-fixed-top">
-    <img src="image/efo-favicon.png" class="navbar-brand" style="width: 2rem;height: 2.5rem;"/>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-toggler fixed-top">
+    <img src="/assets/image/efo-favicon.png" class="navbar-brand" style="width: 2rem;height: 2.5rem;"/>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="pill" href="#resource-tab">资源列表</a>
+                <a class="nav-link" data-toggle="pill" href="#resource-tab">资源列表</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="pill" href="#uploaded-tab">我的上传</a>
@@ -32,7 +32,7 @@
                 <a class="nav-link" data-toggle="pill" href="#downloaded-tab">我的下载</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="pill" href="#bio-tab">我的资料</a>
+                <a class="nav-link  active" data-toggle="pill" href="#bio-tab">我的资料</a>
             </li>
         </ul>
     </div>
@@ -41,40 +41,138 @@
                placeholder="搜索"/>
     </div>
 </nav>
-<br/>
+<br/><br/><br/>
 <div class="container" id="index">
-    <div class="row">
-        <div class="col-sm-12 tab-content">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-10 tab-content">
             <div class="tab-pane" id="resource-tab">资源列表</div>
             <div class="tab-pane" id="uploaded-tab">我的上传</div>
             <div class="tab-pane" id="downloaded-tab">我的下载</div>
-            <div class="tab-pane active content-box" id="bio-tab">
-                <div class="row">
+            <!--我的资料-->
+            <div class="tab-pane active text-left" id="bio-tab">
+                <!--权限和登陆信息-->
+                <div class="row content-box rounded">
                     <div class="col-sm-1 col-1 col-md-1"></div>
-                    <div class="col-sm-6 col-11 col-md-6">
+                    <div class="col-sm-11 col-11 col-md-6">
                         <br/>
                         <div class="row">
-                            <img src="image/default-user.jpg" id="avatar" class="rounded-circle avatar"/>
-                            <span>{{username}}</span>
+                            <div class="col-sm-3 col-5 text-right">
+                                <span class="text-right">权限：</span>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left">
+                                <div v-if="permission>1">
+                                    <a href="admin.html" target="_blank">管理员</a>
+                                </div>
+                                <div v-else>
+                                    <span class="text-left">普通用户</span>
+                                </div>
+                            </div>
                         </div>
                         <br/>
                         <div class="row">
-                            <div class="col-sm-3 text text-left">
-                                <span>真实姓名：</span>
+                            <div class="col-sm-3 col-5 text-right">
+                                <span class="text-right">登陆时间：</span>
                             </div>
-                            <div class="col-sm-6">
-                                <input placeholder="我的真实姓名" type="text" class="form-control"/>
+                            <div class="col-sm-6 col-7 text-left">
+                                <span class="text-left">{{loginTime}}</span>
                             </div>
                         </div>
+                        <br/>
+                    </div>
+                </div>
+                <br/>
+                <!--基本信息-->
+                <div class="row content-box rounded">
+                    <div class="col-sm-1 col-1 col-md-1"></div>
+                    <div class="col-sm-11 col-11 col-md-6">
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-3 col-5 text-right">
+                                <img src="/assets/image/default-user.jpg" id="avatar" class="rounded-circle avatar"/>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left padding-top-3">
+                                <h3>{{username}}</h3>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-3 col-5 text-right padding-top-1">
+                                <span class="text-right">真实姓名：</span>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left">
+                                <input placeholder="我的真实姓名" id="real-name" type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-3 col-5 text-right padding-top-1">
+                                <span class="text-right">邮箱：</span>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left">
+                                <input placeholder="我的邮箱" id="email" type="email" class="form-control"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-1 col-2"></div>
+                            <div class="col-sm-8 col-10 text-right">
+                                <button class="btn btn-success btn-block">保存</button>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+                <br/>
+                <!--修改密码-->
+                <div class="row content-box rounded">
+                    <div class="col-sm-1 col-1 col-md-1"></div>
+                    <div class="col-sm-11 col-11 col-md-6">
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-3 col-5 text-right padding-top-1">
+                                <span class="text-right">旧密码：</span>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left">
+                                <input placeholder="旧密码" id="old-password" type="password" class="form-control"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-3 col-5 text-right padding-top-1">
+                                <span class="text-right">新密码：</span>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left">
+                                <input placeholder="新密码" id="new-password" type="password" class="form-control"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-3 col-5 text-right padding-top-1">
+                                <span class="text-right">确认新密码：</span>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left">
+                                <input placeholder="确认新密码" id="confirm-new-password" type="password"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-1 col-2"></div>
+                            <div class="col-sm-8 col-10 text-right">
+                                <button class="btn btn-success btn-block">修改密码</button>
+                            </div>
+                        </div>
+                        <br/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row text-center bottom float-left" id="footer"></div>
+    <br/>
+    <div class="row text-center" id="footer"></div>
 </div>
-<script src="js/particles.js"></script>
-<script src="js/default.js"></script>
-<script src="js/index.js"></script>
+<script src="/assets/js/particles.js"></script>
+<script src="/assets/js/default.js"></script>
+<script src="/assets/js/index.js"></script>
 </body>
 </html>

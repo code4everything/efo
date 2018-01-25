@@ -1,38 +1,53 @@
 html, body {
     background-size: cover;
-    width: 100%;
-    height: 100%;
     margin: 0;
     padding: 0;
     background: #F5F5F5;
+    min-height: 100vh;
 }
 
 .avatar {
-    height: 3rem;
-    width: 3rem;
+    height: 4rem;
+    width: 4rem;
 }
 
 .content-box {
-    /*box-shadow: 3px 3px 3px #f3f3f3;*/
     background: white;
+    z-index: 1;
 }
 
 .center-vertical {
     position: absolute;
-    top: 0;
+    top: 1rem;
     left: 0;
     right: 0;
-    bottom: 2rem;
-    height: 21rem;
+    bottom: 3rem;
+    height: auto;
     margin: auto;
 }
 
+.padding-0 {
+    padding: 0;
+}
+
+.padding-top-0 {
+    padding-top: 0;
+}
+
+.padding-top-1 {
+    padding-top: 1%;
+}
+
+.padding-top-3 {
+    padding-top: 3%;
+}
+
 .bottom {
-    position: absolute;
+    position: relative;
     left: 0;
     right: 0;
     bottom: 4rem;
-    height: 0;
+    height: auto;
     margin: auto;
 }
 
