@@ -10,6 +10,10 @@ var signinItem = new Vue({
     }
 });
 
+if (!isEmpty(getCookie("token"))) {
+    login();
+}
+
 function reset() {
     var email = $("#res-email").val();
     var code = $("#res-email-verify").val();
@@ -18,7 +22,7 @@ function reset() {
     var isValid = isEmail(email) && 6 === code.length && checkPassword(password, passwordConfirm);
     if (submit() && isValid) {
         layer.load(1);
-        $.post("/signin/password/reset", {email: email, code: code, password: password}, function (data) {
+        $.post("/user/password/reset", {email: email, code: code, password: password}, function (data) {
             layer.closeAll();
             var json = JSON.parse(data);
             if (json.status === "success") {
@@ -48,7 +52,7 @@ function register() {
         var canRegister = username.match(userConfig.usernameMatch.pattern) && (!userConfig.emailVerify || 6 === verifyCode.length) && isEmail(email) && checkPassword(password, passwordConfirm);
         if (submit() && canRegister) {
             layer.load(1);
-            $.post("/signin/register", {
+            $.post("/user/register", {
                 username: username,
                 email: email,
                 password: password,
@@ -76,14 +80,23 @@ function login() {
     if (globalConfig.allowLogin) {
         var username = $("#loginName").val();
         var password = $("#password").val();
+        var remember = document.getElementById("remember").checked;
+        var token = getCookie("token");
         // var remember = document.getElementById("remember").checked;
         if (username && password) {
             layer.load(1);
-            $.post("/signin/login", {username: username, password: password}, function (data) {
+            $.post("/user/login", {
+                username: username,
+                password: password,
+                auto: remember,
+                token: token
+            }, function (data) {
                 layer.closeAll();
                 var json = JSON.parse(data);
                 if (json.status === "success") {
-                    window.location.href = "index.html";
+                    var exp = new Date();
+                    document.cookie = "token=" + json.token + ";expires=" + exp.setTime(exp.getTime() + 30 * 24 * 60 * 60 * 1000);
+                    window.location.href = "/index";
                 } else {
                     alerts("登录失败，用户名或密码不正确");
                 }
@@ -101,7 +114,7 @@ function switchToRegister() {
 }
 
 function switchToLogin() {
-    switchTo("block", "none", "none", "login", 21);
+    switchTo("block", "none", "none", "login", 24);
 }
 
 function switchToReset() {
@@ -130,7 +143,7 @@ $(document).ready(
         $("#username").keyup(function () {
                 var username = event.srcElement.value;
                 if (username.match(userConfig.usernameMatch.pattern)) {
-                    $.get("/signin/username/exists", {username: username}, function (data) {
+                    $.get("/user/username/exists", {username: username}, function (data) {
                         var json = JSON.parse(data);
                         /** @namespace json.exists */
                         if (json.exists) {

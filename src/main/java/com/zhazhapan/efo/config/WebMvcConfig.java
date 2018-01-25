@@ -22,13 +22,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/index").setViewName("/index");
-        registry.addViewController("/signin").setViewName("/signin");
-        registry.addViewController("/admin").setViewName("/admin");
-    }
-
-    @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
         configurer.setUseSuffixPatternMatch(false);
     }

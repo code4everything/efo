@@ -6,6 +6,8 @@ package com.zhazhapan.efo.modules.constant;
  */
 public class DefaultValues {
 
+    public static final String INDEX_PAGE = "/index";
+
     /**
      * 配置映射的路径
      */

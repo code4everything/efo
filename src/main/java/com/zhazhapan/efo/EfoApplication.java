@@ -10,7 +10,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -26,6 +28,8 @@ public class EfoApplication {
     public static Pattern usernamePattern;
 
     public static List<Class<?>> controllers;
+
+    public static Hashtable<String, Integer> tokens = new Hashtable<>(16);
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));

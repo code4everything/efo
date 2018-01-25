@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface EfoInterceptor {
+public @interface AuthInterceptor {
 
     /**
      * 定义拦截级别，默认为用户级别拦截

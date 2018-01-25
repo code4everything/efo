@@ -23,11 +23,7 @@ public class UserServiceImpl implements IUserService {
     public User login(String loginName, String password) {
         boolean allowLogin = EfoApplication.settings.getBooleanUseEval(ConfigConsts.ALLOW_LOGIN_OF_SETTINGS);
         if (allowLogin && Checker.isNotEmpty(loginName) && Checker.isNotEmpty(password)) {
-            User user = userDAO.login(loginName, password);
-            if (Checker.isNotNull(user)) {
-                userDAO.updateUserLoginTime(user.getId());
-                return user;
-            }
+            return userDAO.login(loginName, password);
         }
         return null;
     }
@@ -56,14 +52,21 @@ public class UserServiceImpl implements IUserService {
     public boolean resetPassword(String email, String password) {
         int min = EfoApplication.settings.getIntegerUseEval(ConfigConsts.PASSWORD_MIN_LENGTH_OF_SETTINGS);
         int max = EfoApplication.settings.getIntegerUseEval(ConfigConsts.PASSWORD_MAX_LENGTH_OF_SETTINGS);
-        if (Checker.isEmail(email) && Checker.isLimited(password, min, max)) {
-            return userDAO.updatePasswordByEmail(password, email);
-        }
-        return false;
+        return Checker.isEmail(email) && Checker.isLimited(password, min, max) && userDAO.updatePasswordByEmail(password, email);
     }
 
     @Override
     public boolean usernameExists(String username) {
         return userDAO.checkUsername(username) > 0;
+    }
+
+    @Override
+    public User getUserById(int id) {
+        return userDAO.getUserById(id);
+    }
+
+    @Override
+    public void updateUserLoginTime(User user) {
+        userDAO.updateUserLoginTime(user.getId());
     }
 }

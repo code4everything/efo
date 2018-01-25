@@ -1,7 +1,7 @@
 package com.zhazhapan.efo.interceptor;
 
 import com.zhazhapan.efo.EfoApplication;
-import com.zhazhapan.efo.annotation.EfoInterceptor;
+import com.zhazhapan.efo.annotation.AuthInterceptor;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
@@ -21,26 +21,35 @@ public class WebInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String url = request.getServletPath();
+        boolean shouldIntercept = url.startsWith(DefaultValues.INDEX_PAGE);
+        InterceptorLevel level = InterceptorLevel.USER;
         if (handler instanceof HandlerMethod) {
-            EfoInterceptor interceptor = ((HandlerMethod) handler).getMethodAnnotation(EfoInterceptor.class);
+            AuthInterceptor interceptor = ((HandlerMethod) handler).getMethodAnnotation(AuthInterceptor.class);
             if (Checker.isNull(interceptor)) {
                 for (Class<?> type : EfoApplication.controllers) {
                     RequestMapping mapping = type.getAnnotation(RequestMapping.class);
-                    if (Checker.isNotNull(mapping) && request.getServletPath().startsWith(mapping.value()[0])) {
-                        interceptor = type.getAnnotation(EfoInterceptor.class);
+                    if (Checker.isNotNull(mapping)) {
+                        for (String path : mapping.value()) {
+                            if (url.startsWith(path)) {
+                                interceptor = type.getAnnotation(AuthInterceptor.class);
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
             }
             if (Checker.isNotNull(interceptor)) {
-                InterceptorLevel level = interceptor.value();
-                User user = (User) request.getSession().getAttribute("user");
-                if (level != InterceptorLevel.NONE) {
-                    boolean isRedirect = Checker.isNull(user) || (level == InterceptorLevel.ADMIN && user.getPermission() > 1);
-                    if (isRedirect) {
-                        response.sendRedirect(DefaultValues.SIGNIN_PAGE);
-                    }
-                }
+                level = interceptor.value();
+                shouldIntercept = true;
+            }
+        }
+        if (shouldIntercept && level != InterceptorLevel.NONE) {
+            User user = (User) request.getSession().getAttribute("user");
+            boolean isRedirect = Checker.isNull(user) || (level == InterceptorLevel.ADMIN && user.getPermission() > 1);
+            if (isRedirect) {
+                response.sendRedirect(DefaultValues.SIGNIN_PAGE);
             }
         }
         return true;

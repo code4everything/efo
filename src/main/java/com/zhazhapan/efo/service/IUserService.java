@@ -47,4 +47,20 @@ public interface IUserService {
      * @return {@link Boolean}
      */
     boolean usernameExists(String username);
+
+    /**
+     * 通过编号获取用户
+     *
+     * @param id 编号
+     *
+     * @return {@link User}
+     */
+    User getUserById(int id);
+
+    /**
+     * 更新用户登录时间
+     *
+     * @param user {@link User}
+     */
+    void updateUserLoginTime(User user);
 }

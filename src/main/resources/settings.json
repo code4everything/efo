@@ -10,17 +10,17 @@
         },
         "css": {
             "contentBox": {
-                "background": "rgba(255,255,255,0.5)"
+                "background": "rgba(255,255,255,1)"
             },
             "formControl": {
-                "background": "rgba(255,255,255,0.5)"
+                "background": "rgba(255,255,255,1)"
             },
             "button": {
-                "opacity": 0.5
+                "opacity": 1
             }
         },
         "background": {
-            "useImage": true,
+            "useImage": false,
             "imageIndex": 0,
             "random": true,
             "imageList": [
@@ -55,7 +55,7 @@
             "minLength": 6,
             "maxLength": 20
         },
-        "emailVerify": true,
+        "emailVerify": false,
         "emailConfig": {
             "host": "mx1.hostinger.com.hk",
             "port": 587,

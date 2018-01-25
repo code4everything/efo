@@ -25,10 +25,10 @@
                 <input type="text" id="loginName" class="form-control" placeholder="用户名/电子邮箱" maxlength="50"/>
                 <br/>
                 <input type="password" id="password" maxlength="50" class="form-control" placeholder="登录密码"/>
-                <!--<br/>-->
-                <!--<div class="text-left form-inline">-->
-                <!--<input type="checkbox" class="form-control input-lg" id="remember"/>&nbsp;记住我-->
-                <!--</div>-->
+                <br/>
+                <div class="text-left form-inline">
+                    <input title="remember me" type="checkbox" class="form-control" id="remember" checked/>&nbsp;记住我
+                </div>
                 <br/>
                 <button class="btn btn-primary btn-block" onclick="login();">登录</button>
                 <br/>
@@ -49,17 +49,21 @@
                 <input type="email" id="email" maxlength="100" class="form-control email" placeholder="电子邮箱，可用于登录">
                 <label class="form-check-label text-danger">{{emailErrorTip}}</label>
                 <br/>
-                <div class="form-inline text-justify-all row" v-if="emailVerify">
-                    <div class="col-sm-7 col-6 col-md-7">
-                        <input type="number" id="email-verify-code" maxlength="6" class="form-control email-verify-code"
-                               placeholder="收到的6位验证码"/>
+                <div v-if="emailVerify">
+
+                    <div class="form-inline text-justify-all row">
+                        <div class="col-sm-7 col-6 col-md-7">
+                            <input type="number" id="email-verify-code" maxlength="6"
+                                   class="form-control email-verify-code"
+                                   placeholder="收到的6位验证码"/>
+                        </div>
+                        <div class="col-sm-5 col-md-5 col-6 text-right">
+                            <button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>
+                        </div>
                     </div>
-                    <div class="col-sm-5 col-md-5 col-6 text-right">
-                        <button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>
-                    </div>
+                    <label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
+                    <br/>
                 </div>
-                <label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
-                <br v-if="emailVerify"/>
                 <input type="password" id="reg-password" maxlength="50" class="form-control password"
                        placeholder="请输入你的密码">
                 <label class="form-check-label text-danger">{{passwordVerify}}</label>
