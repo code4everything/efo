@@ -8,6 +8,29 @@ function checkPassword(password, passwordConfirm) {
     return password.length >= userConfig.password.minLength && password.length <= userConfig.password.maxLength && password === passwordConfirm;
 }
 
+function sendVerifyCode(email, eventSrc) {
+    if (isEmail(email)) {
+        layer.load(1);
+        $.get("/common/code/send", {email: email}, function (data) {
+            layer.closeAll();
+            var json = JSON.parse(data);
+            if (json.status === "success") {
+                layer.msg("发送成功，请前往邮箱查看");
+                $(eventSrc).attr("disabled", "disabled");
+                $(eventSrc).addClass("disabled");
+                setTimeout(function () {
+                    $(eventSrc).removeAttr("disabled");
+                    $(eventSrc).removeClass("disabled");
+                }, 60000);
+            } else {
+                alerts("获取验证码失败，请联系管理员");
+            }
+        });
+    } else {
+        alerts("邮箱格式不合法");
+    }
+}
+
 $(document).ready(function () {
     layer.load(1);
     $.get("/config/global", function (data) {

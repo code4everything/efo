@@ -1,6 +1,6 @@
 package com.zhazhapan.efo.modules.constant;
 
-import com.zhazhapan.modules.constant.Values;
+import com.zhazhapan.modules.constant.ValueConsts;
 
 /**
  * @author pantao
@@ -64,6 +64,11 @@ public class ConfigConsts {
     public static final String ALLOW_LOGIN_OF_SETTINGS = "global.allowLogin";
 
     /**
+     * token在全局中的路径
+     */
+    public static final String TOKEN_PATH_OF_GLOBAL = "tokenPath";
+
+    /**
      * 上传路径在全局配置中的路径
      */
     public static final String UPLOAD_PATH_OF_GLOBAL = "uploadPath";
@@ -106,7 +111,7 @@ public class ConfigConsts {
     /**
      * 默认上传路径，如果配置文件中的上传路径无法创建，将使用默认的上传路径
      */
-    public static final String DEFAULT_UPLOAD_PATH = Values.USER_HOME + Values.SEPARATOR + "Desktop" + Values.SEPARATOR + "upload";
+    public static final String DEFAULT_UPLOAD_PATH = ValueConsts.USER_HOME + ValueConsts.SEPARATOR + "Desktop" + ValueConsts.SEPARATOR + "upload";
 
     private ConfigConsts() {}
 }

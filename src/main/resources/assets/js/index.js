@@ -2,17 +2,39 @@ var app = new Vue({
     el: "#index",
     data: {
         username: "",
-        realName: "",
         permission: 1,
         loginTime: "",
         passwordVerify: "",
         passwordConfirm: "",
-        emailVerify: "",
-        emailErrorTip: ""
+        emailErrorTip: "",
+        emailVerifyStatus: ""
     }
 });
 
 var userInfo = {};
+
+function saveInfo() {
+    var email = $("#email").val();
+    if (isEmail(email)) {
+        var code = $("#email-verify-code").val();
+        if (!userConfig.emailVerify || code.length === 6 || email === userInfo.email) {
+            $.post("/user/basic/update", {
+                avatar: "",
+                realName: $("#real-name").val(),
+                email: email,
+                code: code
+            }, function (data) {
+                var json = JSON.parse(data);
+                userInfo.email = json.email;
+                alerts(json.message);
+            })
+        } else {
+            alerts("验证码格式不正确");
+        }
+    } else {
+        alerts("邮箱格式不正确");
+    }
+}
 
 function updatePassword() {
     var oldPassword = $("#old-password").val();
@@ -47,10 +69,35 @@ $(document).ready(function () {
         }
         app.username = json.username;
         $("#email").val(json.email);
+        $("#real-name").val(json.realName);
         userInfo = json;
     });
+    $(".email-verify-code").keyup(function () {
+        var code = event.srcElement.value;
+        if (code.length === 6) {
+            $.get("/common/code/verify", {code: code}, function (data) {
+                var json = JSON.parse(data);
+                app.emailVerifyStatus = json.status === "success" ? "" : "验证码错误";
+            });
+        } else {
+            app.emailVerifyStatus = "";
+        }
+    });
     $(".email").keyup(function () {
-        app.emailErrorTip = isEmail(event.srcElement.value) ? "" : "邮箱格式不正确";
+        var email = event.srcElement.value;
+        var isChange = email !== userInfo.email;
+        if (isEmail(email)) {
+            if (isChange) {
+                $.get("/user/email/exists", {email: email}, function (data) {
+                    var json = JSON.parse(data);
+                    app.emailErrorTip = json.exists ? "该邮箱已经被注册啦" : "";
+                });
+            }
+            app.emailErrorTip = "";
+        } else {
+            app.emailErrorTip = "邮箱格式不正确";
+        }
+        $(".verify-code-div").css("display", isChange && userConfig.emailVerify ? "block" : "none");
     });
     $(".password").keyup(function () {
         var len = event.srcElement.value.length;
@@ -63,11 +110,13 @@ $(document).ready(function () {
     $(".confirm-password").keyup(function () {
         app.passwordConfirm = (event.srcElement.value === $("#new-password").val()) ? "" : "两次输入的密码不一样";
     });
+    $(".sendVerifyCode").click(function () {
+        sendVerifyCode($("#email").val(), event.srcElement);
+    });
 });
 
 layer.load(1);
 $.get("/config/user", function (data) {
     layer.closeAll();
     userConfig = JSON.parse(data);
-    app.emailVerify = userConfig.emailVerify;
 });

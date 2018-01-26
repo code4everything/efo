@@ -79,7 +79,7 @@ function login() {
                 username: username,
                 password: password,
                 auto: remember,
-                token: ""
+                token: getCookie("token")
             }, function (data) {
                 layer.closeAll();
                 var json = JSON.parse(data);
@@ -138,11 +138,7 @@ $(document).ready(
                     $.get("/user/username/exists", {username: username}, function (data) {
                         var json = JSON.parse(data);
                         /** @namespace json.exists */
-                        if (json.exists) {
-                            signinItem.description = "用户名已经存在";
-                        } else {
-                            signinItem.description = "";
-                        }
+                        signinItem.description = json.exists ? "用户名已经存在" : "";
                     });
                 } else {
                     signinItem.description = userConfig.usernameMatch.description;
@@ -150,7 +146,18 @@ $(document).ready(
             }
         );
         $(".email").keyup(function () {
-            signinItem.emailErrorTip = isEmail(event.srcElement.value) ? "" : "邮箱格式不正确";
+            var email = event.srcElement.value;
+            if (isEmail(email)) {
+                if (location.hash === "#register") {
+                    $.get("/user/email/exists", {email: email}, function (data) {
+                        var json = JSON.parse(data);
+                        signinItem.emailErrorTip = json.exists ? "该邮箱已经被注册啦" : "";
+                    });
+                }
+                signinItem.emailErrorTip = "";
+            } else {
+                signinItem.emailErrorTip = "邮箱格式不正确";
+            }
         });
         $(".password").keyup(function () {
             var len = event.srcElement.value.length;
@@ -165,28 +172,8 @@ $(document).ready(
             signinItem.passwordConfirm = (ele.value === $(ele).siblings(".password").val()) ? "" : "两次输入的密码不一样";
         });
         $(".sendVerifyCode").click(function () {
-            var email = $(event.srcElement).parent().parent().siblings(".email").val();
-            if (isEmail(email)) {
-                var ele = event.srcElement;
-                layer.load(1);
-                $.get("/common/code/send", {email: email}, function (data) {
-                    layer.closeAll();
-                    var json = JSON.parse(data);
-                    if (json.status === "success") {
-                        layer.msg("发送成功，请前往邮箱查看");
-                        $(ele).attr("disabled", "disabled");
-                        $(ele).addClass("disabled");
-                        setTimeout(function () {
-                            $(ele).removeAttr("disabled");
-                            $(ele).removeClass("disabled");
-                        }, 60000);
-                    } else {
-                        alerts("获取验证码失败，请联系管理员");
-                    }
-                });
-            } else {
-                alerts("邮箱格式不合法");
-            }
+            var eventSrc = event.srcElement;
+            sendVerifyCode($(eventSrc).parents(location.hash + "-div").find(".email").val(), eventSrc);
         });
         $(".email-verify-code").keyup(function () {
             var code = event.srcElement.value;

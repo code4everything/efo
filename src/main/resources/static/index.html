@@ -113,10 +113,23 @@
                                 <label class="form-check-label text-danger">{{emailErrorTip}}</label>
                             </div>
                         </div>
+                        <div class="row verify-code-div" style="display: none;">
+                            <div class="col-sm-8 offset-sm-1 offset-2 col-10 row">
+                                <div class="col-sm-7 col-6 col-md-7">
+                                    <input type="number" id="email-verify-code" maxlength="6"
+                                           class="form-control email-verify-code"
+                                           placeholder="收到的6位验证码"/>
+                                    <label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
+                                </div>
+                                <div class="col-sm-4 col-md-54 col-5 offset-1 text-right padding-0">
+                                    <button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-1 col-2"></div>
                             <div class="col-sm-8 col-10 text-right">
-                                <button class="btn btn-primary btn-block">保存</button>
+                                <button class="btn btn-primary btn-block" onclick="saveInfo();">保存</button>
                             </div>
                         </div>
                         <br/>

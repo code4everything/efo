@@ -1,7 +1,15 @@
 {
     "global": {
-        "uploadPath": "/Users/pantao/Desktop/upload",
-        "tokenPath": "/Users/pantao/Desktop/token.json",
+        "uploadPath": {
+            "windows": "C:\\Users\\pantao\\Documents\\upload",
+            "mac": "/Users/pantao/Desktop/upload",
+            "linux": "/home/pantao/Desktop/upload"
+        },
+        "tokenPath": {
+            "windows": "C:\\Users\\pantao\\Documents\\token.json",
+            "mac": "/Users/pantao/Desktop/token.json",
+            "linux": "/home/pantao/Desktop/token.json"
+        },
         "allowRegister": true,
         "allowLogin": true,
         "loadParticle": false,
@@ -35,7 +43,7 @@
             }
         ],
         "background": {
-            "useImage": true,
+            "useImage": false,
             "imageIndex": 0,
             "random": true,
             "imageList": [
@@ -70,7 +78,7 @@
             "minLength": 6,
             "maxLength": 20
         },
-        "emailVerify": false,
+        "emailVerify": true,
         "emailConfig": {
             "host": "mx1.hostinger.com.hk",
             "port": 587,

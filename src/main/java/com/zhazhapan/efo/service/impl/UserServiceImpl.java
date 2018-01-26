@@ -1,7 +1,7 @@
 package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.EfoApplication;
-import com.zhazhapan.efo.config.TokenConfigurer;
+import com.zhazhapan.efo.config.TokenConfig;
 import com.zhazhapan.efo.dao.UserDAO;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
@@ -32,16 +32,16 @@ public class UserServiceImpl implements IUserService {
         User user = null;
         if (allowLogin) {
             if (Checker.isNotEmpty(token) && EfoApplication.tokens.containsKey(token)) {
-                user = EfoApplication.tokens.get(token);
+                user = userDAO.getUserById(EfoApplication.tokens.get(token));
                 if (Checker.isNotNull(response)) {
-                    Cookie cookie = new Cookie("token", TokenConfigurer.generateToken(token, user));
+                    Cookie cookie = new Cookie("token", TokenConfig.generateToken(token, user.getId()));
                     cookie.setMaxAge(30 * 24 * 60 * 60);
                     response.addCookie(cookie);
                 }
             }
             if (Checker.isNull(user) && Checker.isNotEmpty(loginName) && Checker.isNotEmpty(password)) {
                 user = userDAO.login(loginName, password);
-                removeTokenByValue(user);
+                removeTokenByValue(user.getId());
             }
             updateUserLoginTime(user);
         }
@@ -67,8 +67,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean resetPassword(String email, String password) {
-
+    public boolean resetPasswordByEmail(String email, String password) {
         return Checker.isEmail(email) && checkPassword(password) && userDAO.updatePasswordByEmail(password, email);
     }
 
@@ -77,6 +76,16 @@ public class UserServiceImpl implements IUserService {
         int min = settings.getIntegerUseEval(ConfigConsts.PASSWORD_MIN_LENGTH_OF_SETTINGS);
         int max = settings.getIntegerUseEval(ConfigConsts.PASSWORD_MAX_LENGTH_OF_SETTINGS);
         return Checker.isLimited(password, min, max);
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        return userDAO.checkEmail(email) > 0;
+    }
+
+    @Override
+    public boolean updateBasicInfoById(int id, String avatar, String realName, String email) {
+        return userDAO.updateBasicInfo(id, avatar, realName, email);
     }
 
     @Override
@@ -98,24 +107,24 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void removeTokenByValue(User user) {
-        if (Checker.isNotNull(user)) {
+    public void removeTokenByValue(int userId) {
+        if (userId > 0) {
             String removeKey = "";
             for (String key : tokens.keySet()) {
-                if (tokens.get(key).getId() == user.getId()) {
+                if (tokens.get(key) == userId) {
                     removeKey = key;
                     break;
                 }
             }
             if (Checker.isNotEmpty(removeKey)) {
                 tokens.remove(removeKey);
-                TokenConfigurer.saveToken();
+                TokenConfig.saveToken();
             }
         }
     }
 
     @Override
-    public boolean updatePassword(String password, int id) {
+    public boolean updatePasswordById(String password, int id) {
         return checkPassword(password) && userDAO.updatePasswordById(id, password);
     }
 }

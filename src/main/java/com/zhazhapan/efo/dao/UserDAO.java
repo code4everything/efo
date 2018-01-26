@@ -15,6 +15,19 @@ import java.util.List;
 public interface UserDAO {
 
     /**
+     * 通过ID更新用户基本信息
+     *
+     * @param id 编号
+     * @param avatar 头像
+     * @param realName 真实姓名
+     * @param email 邮箱
+     *
+     * @return 是否更新成功
+     */
+    @Update("update user set avatar=#{avatar},real_name=#{realName},email=#{email} where id=#{id}")
+    boolean updateBasicInfo(@Param("id") int id, @Param("avatar") String avatar, @Param("realName") String realName, @Param("email") String email);
+
+    /**
      * 通过id获取一个用户
      *
      * @param id 编号
@@ -112,4 +125,14 @@ public interface UserDAO {
      */
     @Select("select count(*) from user where username=#{username}")
     int checkUsername(String username);
+
+    /**
+     * 检查邮箱
+     *
+     * @param email 邮箱
+     *
+     * @return {@link Integer}
+     */
+    @Select("select count(*) from user where email=#{email}")
+    int checkEmail(String email);
 }

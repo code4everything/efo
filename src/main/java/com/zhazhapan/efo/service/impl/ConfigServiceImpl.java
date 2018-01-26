@@ -15,14 +15,15 @@ public class ConfigServiceImpl implements IConfigService {
 
     @Override
     public String getGlobalConfig() {
-        JSONObject jsonObject = EfoApplication.settings.getObjectUseEval(ConfigConsts.GLOBAL_OF_SETTINGS);
+        JSONObject jsonObject = (JSONObject) EfoApplication.settings.getObjectUseEval(ConfigConsts.GLOBAL_OF_SETTINGS).clone();
         jsonObject.remove(ConfigConsts.UPLOAD_PATH_OF_GLOBAL);
+        jsonObject.remove(ConfigConsts.TOKEN_PATH_OF_GLOBAL);
         return jsonObject.toString();
     }
 
     @Override
     public String getUserConfig() {
-        JSONObject jsonObject = EfoApplication.settings.getObjectUseEval(ConfigConsts.USER_OF_SETTINGS);
+        JSONObject jsonObject = (JSONObject) EfoApplication.settings.getObjectUseEval(ConfigConsts.USER_OF_SETTINGS).clone();
         jsonObject.remove(ConfigConsts.EMAIL_CONFIG_OF_USER);
         return jsonObject.toString();
     }

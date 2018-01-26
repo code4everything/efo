@@ -1,5 +1,6 @@
 package com.zhazhapan.efo.config;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.efo.interceptor.WebInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,5 +40,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public WebInterceptor webInterceptor() {
         return new WebInterceptor();
+    }
+
+    @Bean
+    public JSONObject jsonObject() {
+        return new JSONObject();
     }
 }

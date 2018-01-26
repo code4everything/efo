@@ -29,28 +29,29 @@ public class CommonController {
     @Autowired
     HttpServletRequest request;
 
+    @Autowired
+    private JSONObject jsonObject;
+
     @RequestMapping(value = "/code/send", method = RequestMethod.GET)
     public String sendVerifyCode(String email) {
-        JSONObject object = new JSONObject();
         int code = commonService.sendVerifyCode(email);
         if (code > 0) {
             request.getSession().setAttribute(DefaultValues.CODE_STRING, code);
             logger.info("verify code: " + code);
-            object.put("status", "success");
+            jsonObject.put("status", "success");
         } else {
-            object.put("status", "error");
+            jsonObject.put("status", "error");
         }
-        return object.toString();
+        return jsonObject.toString();
     }
 
     @RequestMapping(value = "/code/verify", method = RequestMethod.GET)
     public String verifyCode(String code) {
-        JSONObject object = new JSONObject();
         if (Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues.CODE_STRING)))) {
-            object.put("status", "success");
+            jsonObject.put("status", "success");
         } else {
-            object.put("status", "error");
+            jsonObject.put("status", "error");
         }
-        return object.toString();
+        return jsonObject.toString();
     }
 }

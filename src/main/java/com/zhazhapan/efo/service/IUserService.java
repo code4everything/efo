@@ -41,7 +41,7 @@ public interface IUserService {
      *
      * @return {@link Boolean}
      */
-    boolean resetPassword(String email, String password);
+    boolean resetPasswordByEmail(String email, String password);
 
     /**
      * 检查用户名是否存在
@@ -71,9 +71,9 @@ public interface IUserService {
     /**
      * 通知值删除Token
      *
-     * @param user {@link User}
+     * @param userId {@link Integer}
      */
-    void removeTokenByValue(User user);
+    void removeTokenByValue(int userId);
 
     /**
      * 更新密码
@@ -83,7 +83,7 @@ public interface IUserService {
      *
      * @return 是否更新成功
      */
-    boolean updatePassword(String password, int id);
+    boolean updatePasswordById(String password, int id);
 
     /**
      * 检查密码是否合法
@@ -93,4 +93,25 @@ public interface IUserService {
      * @return {@link Boolean}
      */
     boolean checkPassword(String password);
+
+    /**
+     * 检查邮箱是否存在
+     *
+     * @param email 邮箱
+     *
+     * @return {@link Boolean}
+     */
+    boolean emailExists(String email);
+
+    /**
+     * 更新用户基本信息
+     *
+     * @param id 编号
+     * @param avatar 头像
+     * @param realName 真实姓名
+     * @param email 邮箱
+     *
+     * @return 是否更新成功
+     */
+    boolean updateBasicInfoById(int id, String avatar, String realName, String email);
 }
