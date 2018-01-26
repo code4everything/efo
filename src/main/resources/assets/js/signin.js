@@ -10,10 +10,6 @@ var signinItem = new Vue({
     }
 });
 
-if (!isEmpty(getCookie("token"))) {
-    login();
-}
-
 function reset() {
     var email = $("#res-email").val();
     var code = $("#res-email-verify").val();
@@ -35,10 +31,6 @@ function reset() {
     } else {
         alerts("格式不合法，无法提交");
     }
-}
-
-function checkPassword(password, passwordConfirm) {
-    return password.length >= userConfig.password.minLength && password.length <= userConfig.password.maxLength && password === passwordConfirm;
 }
 
 function register() {
@@ -81,21 +73,21 @@ function login() {
         var username = $("#loginName").val();
         var password = $("#password").val();
         var remember = document.getElementById("remember").checked;
-        var token = getCookie("token");
-        // var remember = document.getElementById("remember").checked;
         if (username && password) {
             layer.load(1);
             $.post("/user/login", {
                 username: username,
                 password: password,
                 auto: remember,
-                token: token
+                token: ""
             }, function (data) {
                 layer.closeAll();
                 var json = JSON.parse(data);
                 if (json.status === "success") {
-                    var exp = new Date();
-                    document.cookie = "token=" + json.token + ";expires=" + exp.setTime(exp.getTime() + 30 * 24 * 60 * 60 * 1000);
+                    if (remember) {
+                        var exp = new Date();
+                        document.cookie = "token=" + json.token + ";expires=" + exp.setTime(exp.getTime() + 30 * 24 * 60 * 60 * 1000);
+                    }
                     window.location.href = "/index";
                 } else {
                     alerts("登录失败，用户名或密码不正确");
@@ -221,8 +213,6 @@ switch (window.location.hash) {
         switchToLogin();
         break;
 }
-
-var userConfig = {};
 
 layer.load(1);
 $.get("/config/user", function (data) {

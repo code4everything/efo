@@ -2,6 +2,12 @@ var footer = "<nav class='navbar navbar-default fixed-bottom justify-content-cen
 
 var globalConfig = {};
 
+var userConfig = {};
+
+function checkPassword(password, passwordConfirm) {
+    return password.length >= userConfig.password.minLength && password.length <= userConfig.password.maxLength && password === passwordConfirm;
+}
+
 $(document).ready(function () {
     layer.load(1);
     $.get("/config/global", function (data) {
@@ -17,15 +23,15 @@ $(document).ready(function () {
         /** @namespace globalConfig.background.useImage */
         if (globalConfig.background.useImage) {
             var idx = 0;
-            /** @namespace globalConfig.background.listGenerate */
-            if (globalConfig.background.listGenerate.enable) {
-                var start = globalConfig.background.listGenerate.start;
-                var end = globalConfig.background.listGenerate.end;
+            /** @namespace globalConfig.background.listGenerator */
+            if (globalConfig.background.listGenerator.enable) {
+                var start = globalConfig.background.listGenerator.start;
+                var end = globalConfig.background.listGenerator.end;
                 var len = end - start + 1;
                 var list = new Array(len);
                 for (var i = 0; i < len; i++) {
-                    /** @namespace globalConfig.background.listGenerate.suffix */
-                    list[i] = globalConfig.background.listGenerate.prefix + (start++) + globalConfig.background.listGenerate.suffix;
+                    /** @namespace globalConfig.background.listGenerator.suffix */
+                    list[i] = globalConfig.background.listGenerator.prefix + (start++) + globalConfig.background.listGenerator.suffix;
                 }
                 globalConfig.background.imageList = list;
             }
@@ -43,12 +49,16 @@ $(document).ready(function () {
                 $(body).css("background-size", "cover");
             }
         }
-        /** @namespace globalConfig.css.contentBox.opacity */
-        /** @namespace globalConfig.css.contentBox */
-        $(".content-box").css("background", globalConfig.css.contentBox.background);
-        /** @namespace globalConfig.css.formControl */
-        $(".form-control").css("background", globalConfig.css.formControl.background);
-        $("button").css("opacity", globalConfig.css.button.opacity);
+        for (var m = 0; m < globalConfig.css.length; m++) {
+            var node = globalConfig.css[m];
+            var element = node.selector;
+            var item = node.style;
+            for (var j = 0; j < element.length; j++) {
+                for (var k = 0; k < item.length; k++) {
+                    $(element[j]).css(item[k].key, item[k].value);
+                }
+            }
+        }
     });
     // 加载页脚
     $("#footer").html(footer);

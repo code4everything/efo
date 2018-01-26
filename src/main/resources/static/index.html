@@ -110,13 +110,13 @@
                             </div>
                             <div class="col-sm-6 col-7 text-left">
                                 <input placeholder="我的邮箱" id="email" type="email" class="form-control email"/>
+                                <label class="form-check-label text-danger">{{emailErrorTip}}</label>
                             </div>
                         </div>
-                        <br/>
                         <div class="row">
                             <div class="col-sm-1 col-2"></div>
                             <div class="col-sm-8 col-10 text-right">
-                                <button class="btn btn-success btn-block">保存</button>
+                                <button class="btn btn-primary btn-block">保存</button>
                             </div>
                         </div>
                         <br/>
@@ -144,9 +144,9 @@
                             <div class="col-sm-6 col-7 text-left">
                                 <input placeholder="新密码" id="new-password" type="password"
                                        class="password form-control"/>
+                                <label class="form-check-label text-danger">{{passwordVerify}}</label>
                             </div>
                         </div>
-                        <br/>
                         <div class="row">
                             <div class="col-sm-3 col-5 text-right padding-top-1">
                                 <span class="text-right">确认新密码：</span>
@@ -154,13 +154,15 @@
                             <div class="col-sm-6 col-7 text-left">
                                 <input placeholder="确认新密码" id="confirm-new-password" type="password"
                                        class="form-control confirm-password"/>
+                                <label class="form-check-label text-danger">{{passwordConfirm}}</label>
                             </div>
                         </div>
-                        <br/>
                         <div class="row">
                             <div class="col-sm-1 col-2"></div>
                             <div class="col-sm-8 col-10 text-right">
-                                <button class="btn btn-success btn-block">修改密码</button>
+                                <button class="btn btn-warning btn-block" onclick="updatePassword();">修改密码</button>
+                                <br/>
+                                <a href="signin.html#reset" class="btn btn-block btn-danger" target="_blank">忘记密码</a>
                             </div>
                         </div>
                         <br/>

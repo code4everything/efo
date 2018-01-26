@@ -1,3 +1,17 @@
+function getQuery(key) {
+    var queryString = location.search;
+    if (queryString.indexOf("?") === 0) {
+        queryString = queryString.substr(1);
+        var query = queryString.split("&");
+        for (var i = 0; i < query.length; i++) {
+            if (query[i].indexOf(key + "=") > -1) {
+                return query[i].split("=")[1];
+            }
+        }
+    }
+    return "";
+}
+
 function getCookie(name) {
     if (document.cookie.length > 0) {
         var start = document.cookie.indexOf(name + "=");

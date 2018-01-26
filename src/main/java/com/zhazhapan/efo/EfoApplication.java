@@ -1,6 +1,8 @@
 package com.zhazhapan.efo;
 
 import com.zhazhapan.config.JsonParser;
+import com.zhazhapan.efo.config.TokenConfigurer;
+import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.util.MailSender;
 import com.zhazhapan.util.ReflectUtils;
@@ -12,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -29,13 +30,14 @@ public class EfoApplication {
 
     public static List<Class<?>> controllers;
 
-    public static Hashtable<String, Integer> tokens = new Hashtable<>(16);
+    public static Hashtable<String, User> tokens;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));
         MailSender.config(settings.getObjectUseEval(ConfigConsts.EMAIL_CONFIG_OF_SETTINGS));
         usernamePattern = Pattern.compile(settings.getStringUseEval(ConfigConsts.USERNAME_PATTERN_OF_SETTINGS));
         controllers = ReflectUtils.getClasses("com.zhazhapan.efo.web.controller");
+        tokens = TokenConfigurer.loadToken();
         SpringApplication.run(EfoApplication.class, args);
     }
 }

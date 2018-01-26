@@ -2,6 +2,8 @@ package com.zhazhapan.efo.service;
 
 import com.zhazhapan.efo.entity.User;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author pantao
  * @date 2018/1/22
@@ -13,10 +15,12 @@ public interface IUserService {
      *
      * @param loginName 登录名
      * @param password 密码
+     * @param token 自动登录
+     * @param response 响应
      *
      * @return {@link User}
      */
-    User login(String loginName, String password);
+    User login(String loginName, String password, String token, HttpServletResponse response);
 
     /**
      * 注册
@@ -63,4 +67,30 @@ public interface IUserService {
      * @param user {@link User}
      */
     void updateUserLoginTime(User user);
+
+    /**
+     * 通知值删除Token
+     *
+     * @param user {@link User}
+     */
+    void removeTokenByValue(User user);
+
+    /**
+     * 更新密码
+     *
+     * @param password 密码
+     * @param id 用户编号
+     *
+     * @return 是否更新成功
+     */
+    boolean updatePassword(String password, int id);
+
+    /**
+     * 检查密码是否合法
+     *
+     * @param password 密码
+     *
+     * @return {@link Boolean}
+     */
+    boolean checkPassword(String password);
 }

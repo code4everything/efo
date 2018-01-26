@@ -9,6 +9,11 @@ import com.zhazhapan.modules.constant.Values;
 public class ConfigConsts {
 
     /**
+     * token的路径
+     */
+    public static final String TOKEN_OF_SETTINGS = "global.tokenPath";
+
+    /**
      * 是否验证邮箱的路径
      */
     public static final String EMAIL_VERIFY_OF_SETTINGS = "user.emailVerify";
