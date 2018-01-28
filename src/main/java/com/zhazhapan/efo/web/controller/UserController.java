@@ -57,7 +57,6 @@ public class UserController {
         if (userService.updateBasicInfoById(user.getId(), avatar, realName, user.getEmail())) {
             user.setAvatar(avatar);
             user.setRealName(realName);
-            request.getSession().setAttribute("user", user);
             jsonObject.put("status", "success");
         } else {
             jsonObject.put("message", "服务器发生错误，请稍后重新尝试");
