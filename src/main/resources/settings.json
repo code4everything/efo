@@ -1,14 +1,15 @@
 {
     "global": {
         "uploadPath": {
-            "windows": "C:\\Users\\pantao\\Documents\\upload",
-            "mac": "/Users/pantao/Desktop/upload",
-            "linux": "/home/pantao/Desktop/upload"
+            "windows": "upload",
+            "mac": "upload",
+            "linux": "upload"
         },
+        "updateForm": "yyyyMMdd",
         "tokenPath": {
-            "windows": "C:\\Users\\pantao\\Documents\\token.json",
-            "mac": "/Users/pantao/Desktop/token.json",
-            "linux": "/home/pantao/Desktop/token.json"
+            "windows": "token.json",
+            "mac": "token.json",
+            "linux": "token.json"
         },
         "allowRegister": true,
         "allowLogin": true,
@@ -43,7 +44,7 @@
             }
         ],
         "background": {
-            "useImage": false,
+            "useImage": true,
             "imageIndex": 0,
             "random": true,
             "imageList": [

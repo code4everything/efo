@@ -65,7 +65,7 @@ public class WebInterceptor implements HandlerInterceptor {
                     }
                 }
             }
-            boolean isRedirect = Checker.isNull(user) || (level == InterceptorLevel.ADMIN && user.getPermission() > 1);
+            boolean isRedirect = Checker.isNull(user) || (level == InterceptorLevel.ADMIN && user.getPermission() < 2);
             if (isRedirect) {
                 response.sendRedirect(DefaultValues.SIGNIN_PAGE);
                 return false;

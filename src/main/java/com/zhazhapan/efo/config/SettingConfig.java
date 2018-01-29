@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.config;
 
 import com.zhazhapan.efo.EfoApplication;
+import com.zhazhapan.efo.util.CommonUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 
@@ -37,7 +38,7 @@ public class SettingConfig {
         } else {
             path += LINUX;
         }
-        return EfoApplication.settings.getStringUseEval(path);
+        return CommonUtils.checkPath(EfoApplication.settings.getStringUseEval(path));
     }
 
     /**

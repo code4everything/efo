@@ -9,6 +9,11 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class ConfigConsts {
 
     /**
+     * 上传形式路径
+     */
+    public static final String UPLOAD_FORM_OF_SETTING = "global.uploadForm";
+
+    /**
      * token的路径
      */
     public static final String TOKEN_OF_SETTINGS = "global.tokenPath";

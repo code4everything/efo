@@ -15,6 +15,13 @@ public class BeanUtils {
 
     private BeanUtils() {}
 
+    /**
+     * 将Bean转换成JSON
+     *
+     * @param object Bean对象
+     *
+     * @return {@link String}
+     */
     public static String toPrettyJson(Object object) {
         String result;
         try {

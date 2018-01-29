@@ -1,6 +1,5 @@
 package com.zhazhapan.efo.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -12,13 +11,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @date 2018/1/22
  */
 @Controller
-public class EfoErrorController implements ErrorController {
+public class CustomErrorController implements ErrorController {
 
     @RequestMapping("/exception")
     public String handleError() {
-        JSONObject object = new JSONObject();
-        object.put("error", "internal error, please try again later");
-        return object.toString();
+        return "error";
     }
 
     @RequestMapping("/error")

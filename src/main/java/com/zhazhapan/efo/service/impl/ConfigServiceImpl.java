@@ -18,6 +18,7 @@ public class ConfigServiceImpl implements IConfigService {
         JSONObject jsonObject = (JSONObject) EfoApplication.settings.getObjectUseEval(ConfigConsts.GLOBAL_OF_SETTINGS).clone();
         jsonObject.remove(ConfigConsts.UPLOAD_PATH_OF_GLOBAL);
         jsonObject.remove(ConfigConsts.TOKEN_PATH_OF_GLOBAL);
+        jsonObject.remove(ConfigConsts.UPLOAD_FORM_OF_SETTING);
         return jsonObject.toString();
     }
 

@@ -1,11 +1,26 @@
 package com.zhazhapan.efo.modules.constant;
 
+import com.zhazhapan.modules.constant.ValueConsts;
+
 /**
  * @author pantao
  * @date 2018/1/19
  */
 public class DefaultValues {
 
+    /**
+     * 冒号
+     */
+    public static final String COLON = ":";
+
+    /**
+     * 默认存储路径
+     */
+    public static final String STORAGE_PATH = ValueConsts.USER_HOME + ValueConsts.SEPARATOR + "Desktop" + ValueConsts.SEPARATOR;
+
+    /**
+     * 首页映射路径
+     */
     public static final String INDEX_PAGE = "/index";
 
     /**
