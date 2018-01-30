@@ -6,6 +6,7 @@ import com.zhazhapan.efo.EfoApplication;
 import com.zhazhapan.efo.annotation.AuthInterceptor;
 import com.zhazhapan.efo.config.TokenConfig;
 import com.zhazhapan.efo.entity.User;
+import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.impl.UserServiceImpl;
@@ -38,7 +39,7 @@ public class UserController {
     private JSONObject jsonObject;
 
     @AuthInterceptor
-    @RequestMapping(value = "/basic/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/basic/update", method = RequestMethod.PUT)
     public String updateBasicInfo(String avatar, String realName, String email, String code) {
         User user = (User) request.getSession().getAttribute("user");
         jsonObject.put("message", "保存成功");
@@ -66,7 +67,7 @@ public class UserController {
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "/password/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/password/update", method = RequestMethod.PUT)
     public String updatePassword(String oldPassword, String newPassword) {
         User user = (User) request.getSession().getAttribute("user");
         jsonObject.put("status", "error");
@@ -97,9 +98,11 @@ public class UserController {
         return object.toString();
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @AuthInterceptor(InterceptorLevel.NONE)
+    @RequestMapping(value = "/login", method = RequestMethod.PUT)
     public String login(String username, String password, boolean auto, String token) {
-        User user = userService.login(username, password, token, null);
+        //使用密码登录
+        User user = userService.login(username, password, null, null);
         if (Checker.isNull(user)) {
             jsonObject.put("status", "failed");
         } else {
@@ -115,6 +118,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(String username, String email, String password, String code) {
         boolean emilVerify = EfoApplication.settings.getBooleanUseEval(ConfigConsts.EMAIL_VERIFY_OF_SETTINGS);
@@ -135,7 +139,8 @@ public class UserController {
         return jsonObject.toString();
     }
 
-    @RequestMapping(value = "/password/reset", method = RequestMethod.POST)
+    @AuthInterceptor(InterceptorLevel.NONE)
+    @RequestMapping(value = "/password/reset", method = RequestMethod.PUT)
     public String resetPassword(String email, String code, String password) {
         jsonObject.put("status", "error");
         if (isCodeValidate(code)) {
@@ -150,12 +155,14 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/username/exists", method = RequestMethod.GET)
     public String usernameExists(String username) {
         jsonObject.put("exists", userService.usernameExists(username));
         return jsonObject.toString();
     }
 
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/email/exists", method = RequestMethod.GET)
     public String emailExists(String email) {
         jsonObject.put("exists", userService.emailExists(email));

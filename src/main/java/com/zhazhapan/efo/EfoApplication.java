@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * @author pantao
@@ -25,8 +24,6 @@ public class EfoApplication {
 
     public static JsonParser settings = new JsonParser();
 
-    public static Pattern usernamePattern;
-
     public static List<Class<?>> controllers;
 
     public static Hashtable<String, Integer> tokens;
@@ -34,7 +31,6 @@ public class EfoApplication {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));
         MailSender.config(settings.getObjectUseEval(ConfigConsts.EMAIL_CONFIG_OF_SETTINGS));
-        usernamePattern = Pattern.compile(settings.getStringUseEval(ConfigConsts.USERNAME_PATTERN_OF_SETTINGS));
         controllers = ReflectUtils.getClasses("com.zhazhapan.efo.web.controller");
         tokens = TokenConfig.loadToken();
         SpringApplication.run(EfoApplication.class, args);

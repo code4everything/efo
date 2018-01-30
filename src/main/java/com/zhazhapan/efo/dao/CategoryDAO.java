@@ -17,34 +17,42 @@ public interface CategoryDAO {
      * 添加一个分类
      *
      * @param name 分类名
+     *
+     * @return 是否添加成功
      */
     @Insert("insert into category(name) values(#{name})")
-    void insertCategory(String name);
+    boolean insertCategory(String name);
 
     /**
      * 通过编号删除一个分类
      *
      * @param id 编号
+     *
+     * @return 是否删除成功
      */
     @Delete("delete from category where id=#{id}")
-    void removeCategoryById(int id);
+    boolean removeCategoryById(int id);
 
     /**
      * 通过名称删除一个分类
      *
      * @param name 分类名称
+     *
+     * @return 是否删除成功
      */
     @Delete("delete from category where name=#{name}")
-    void removeCategoryByName(String name);
+    boolean removeCategoryByName(String name);
 
     /**
      * 更新一个分类名
      *
      * @param name 分类名
      * @param id 分类ID
+     *
+     * @return 是否更新成功
      */
     @Update("update category set name=#{name} where id=#{id}")
-    void updateNameById(@Param("id") int id, @Param("name") String name);
+    boolean updateNameById(@Param("id") int id, @Param("name") String name);
 
     /**
      * 通过分类名更新分类名

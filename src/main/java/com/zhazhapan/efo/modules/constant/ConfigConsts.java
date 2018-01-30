@@ -9,6 +9,21 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class ConfigConsts {
 
     /**
+     * 自定义文件上传链接
+     */
+    public static final String CUSTOM_LINK_RULE_OF_SETTING = "file.linkRule.custom";
+
+    /**
+     * 最大上传大小路径
+     */
+    public static final String FILE_MAX_SIZE_OF_SETTING = "file.maxSize";
+
+    /**
+     * 上传路径在全局中的路径
+     */
+    public static final String UPLOAD_PATH_OF_SETTING = "global.uploadPath";
+
+    /**
      * 上传形式路径
      */
     public static final String UPLOAD_FORM_OF_SETTING = "global.uploadForm";

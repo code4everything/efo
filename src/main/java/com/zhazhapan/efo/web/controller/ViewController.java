@@ -19,11 +19,13 @@ public class ViewController {
         return "/upload";
     }
 
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
         return "/index";
     }
 
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String signin() {
         return "/signin";

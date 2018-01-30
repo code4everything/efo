@@ -4,6 +4,19 @@ var globalConfig = {};
 
 var userConfig = {};
 
+/**
+ * 服务器响应提示
+ */
+function responseTip(data) {
+    layer.closeAll();
+    var json = JSON.parse(data);
+    if (json.status === "success") {
+        alerts("保存成功");
+    } else {
+        alerts("保存失败，请稍后重新尝试");
+    }
+}
+
 function checkPassword(password, passwordConfirm) {
     return password.length >= userConfig.password.minLength && password.length <= userConfig.password.maxLength && password === passwordConfirm;
 }

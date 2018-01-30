@@ -1,6 +1,8 @@
 package com.zhazhapan.efo.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhazhapan.efo.annotation.AuthInterceptor;
+import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.impl.CommonServiceImpl;
 import com.zhazhapan.util.Checker;
@@ -32,6 +34,7 @@ public class CommonController {
     @Autowired
     private JSONObject jsonObject;
 
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/code/send", method = RequestMethod.GET)
     public String sendVerifyCode(String email) {
         int code = commonService.sendVerifyCode(email);
@@ -45,6 +48,7 @@ public class CommonController {
         return jsonObject.toString();
     }
 
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/code/verify", method = RequestMethod.GET)
     public String verifyCode(String code) {
         if (Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues.CODE_STRING)))) {

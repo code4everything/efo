@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/assets/img/efo-favicon.png"/>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/css/nav.css"/>
-    <link rel="stylesheet" href="/assets/font/iconfont.css">
+    <link rel="stylesheet" href="/assets/fonts/iconfont.css">
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/js/jquery-3.3.1.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
@@ -18,36 +18,69 @@
     <title>管理</title>
 </head>
 <body id="particles-js">
-<div class="nav">
+<div class="nav float-left float-sm-left">
     <div class="nav-top">
-        <div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)"><img src="/assets/img/mini.png"></div>
+        <div id="mini" style="border-bottom:1px solid rgba(255,255,255,0.1)"><img src="/assets/img/mini.png"></div>
     </div>
     <ul>
         <li class="nav-item">
-            <a href="#"><span>上传管理</span></a>
+            <a href="#upload-manager"><span class="glyphicon glyphicon-cloud-upload">上传管理</span></a>
         </li>
         <li class="nav-item">
-            <a href="#"><span>下载管理</span></a>
+            <a href="#download-manager"><span class="glyphicon glyphicon-cloud-download">下载管理</span></a>
         </li>
         <li class="nav-item">
-            <a href="#"><span>权限管理</span></a>
+            <a href="#auth-manager"><span>权限管理</span></a>
         </li>
         <li class="nav-item">
-            <a href="#"><span>分类管理</span></a>
+            <a href="#category-manager"><span>分类管理</span></a>
         </li>
         <li class="nav-item">
-            <a href="#"><span>用户管理</span></a>
+            <a href="#user-manager"><span>用户管理</span></a>
         </li>
         <li class="nav-item">
-            <a href="#"><span>系统设置</span></a>
+            <a href="#admin-manager"><span>管理员管理</span></a>
+        </li>
+        <li class="nav-item">
+            <a href="#system-setting"><span class="glyphicon glyphicon-cog">系统设置</span></a>
         </li>
     </ul>
 </div>
-<div class="container">
-    <div class="row">
+<br/>
+<div class="row" id="upload-manager">上传管理</div>
+<div class="row" id="download-manager">下载管理</div>
+<div class="row" id="auth-manager">权限管理</div>
+<div class="row" id="category-manager">
+    <div class="col-sm-3 col-12 offset-sm-1 content-box rounded">
+        <br/>
+        <h4 class="text-center">添加新分类</h4>
+        <input type="hidden" value="0" id="category-id"/>
+        <input class="form-control" id="category-name" title="分类名称" placeholder="新分类名称" type="text"/>
+        <br/>
+        <button class="btn btn-primary btn-block" onclick="saveCategory();">保存</button>
+        <Br/>
     </div>
-    <div class="row text-center" id="footer"></div>
+    <div class="col-sm-6 offset-sm-1 col-12 content-box rounded">
+        <br/>
+        <table class="table table-bordered table-hover table-responsive table-condensed">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>名称</th>
+                <th class="text-center">动作</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br/>
+    </div>
 </div>
+<div class="row" id="user-manager">用户管理</div>
+<div class="row" id="admin-manager">管理员管理</div>
+<div class="row" id="system-setting">系统设置</div>
+<div class="row text-center" id="footer"></div>
 <script src="/assets/js/particles.js"></script>
+<script src="/assets/js/default.js"></script>
+<script src="/assets/js/admin.js"></script>
 </body>
 </html>

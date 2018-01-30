@@ -5,7 +5,7 @@
             "mac": "upload",
             "linux": "upload"
         },
-        "updateForm": "yyyyMMdd",
+        "uploadForm": "yyyyMMdd",
         "tokenPath": {
             "windows": "token.json",
             "mac": "token.json",
@@ -134,9 +134,7 @@
                 "{day}",
                 "{author}",
                 "{fileName}",
-                "{date}",
-                "{categoryName}",
-                "{fileId}"
+                "{categoryName}"
             ]
         },
         "suffixMatch": {

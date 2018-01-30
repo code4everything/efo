@@ -18,14 +18,19 @@ function reset() {
     var isValid = isEmail(email) && 6 === code.length && checkPassword(password, passwordConfirm);
     if (submit() && isValid) {
         layer.load(1);
-        $.post("/user/password/reset", {email: email, code: code, password: password}, function (data) {
-            layer.closeAll();
-            var json = JSON.parse(data);
-            if (json.status === "success") {
-                alerts("密码重置成功");
-                switchToLogin();
-            } else {
-                alerts(json.message);
+        $.ajax({
+            url: "/user/password/reset",
+            type: "PUT",
+            data: {email: email, code: code, password: password},
+            success: function (data) {
+                layer.closeAll();
+                var json = JSON.parse(data);
+                if (json.status === "success") {
+                    alerts("密码重置成功");
+                    switchToLogin();
+                } else {
+                    alerts(json.message);
+                }
             }
         });
     } else {
@@ -75,22 +80,24 @@ function login() {
         var remember = document.getElementById("remember").checked;
         if (username && password) {
             layer.load(1);
-            $.post("/user/login", {
-                username: username,
-                password: password,
-                auto: remember,
-                token: getCookie("token")
-            }, function (data) {
-                layer.closeAll();
-                var json = JSON.parse(data);
-                if (json.status === "success") {
-                    if (remember) {
-                        var exp = new Date();
-                        document.cookie = "token=" + json.token + ";expires=" + exp.setTime(exp.getTime() + 30 * 24 * 60 * 60 * 1000);
+            $.ajax({
+                url: "/user/login", type: "PUT", data: {
+                    username: username,
+                    password: password,
+                    auto: remember,
+                    token: getCookie("token")
+                }, success: function (data) {
+                    layer.closeAll();
+                    var json = JSON.parse(data);
+                    if (json.status === "success") {
+                        if (remember) {
+                            var exp = new Date();
+                            document.cookie = "token=" + json.token + ";expires=" + exp.setTime(exp.getTime() + 30 * 24 * 60 * 60 * 1000);
+                        }
+                        window.location.href = "/index";
+                    } else {
+                        alerts("登录失败，用户名或密码不正确");
                     }
-                    window.location.href = "/index";
-                } else {
-                    alerts("登录失败，用户名或密码不正确");
                 }
             });
         } else {

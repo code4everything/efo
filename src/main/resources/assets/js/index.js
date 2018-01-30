@@ -18,16 +18,24 @@ function saveInfo() {
     if (isEmail(email)) {
         var code = $("#email-verify-code").val();
         if (!userConfig.emailVerify || code.length === 6 || email === userInfo.email) {
-            $.post("/user/basic/update", {
-                avatar: "",
-                realName: $("#real-name").val(),
-                email: email,
-                code: code
-            }, function (data) {
-                var json = JSON.parse(data);
-                userInfo.email = json.email;
-                alerts(json.message);
-            })
+            layer.load(1);
+            $.ajax({
+                url: '/user/basic/update',
+                type: 'PUT',
+                dataType: "",
+                data: {
+                    avatar: "",
+                    realName: $("#real-name").val(),
+                    email: email,
+                    code: code
+                },
+                success: function (data) {
+                    layer.closeAll();
+                    var json = JSON.parse(data);
+                    userInfo.email = json.email;
+                    alerts(json.message);
+                }
+            });
         } else {
             alerts("验证码格式不正确");
         }
@@ -42,14 +50,19 @@ function updatePassword() {
     var confirmNewPassword = $("#confirm-new-password").val();
     if (oldPassword && checkPassword(newPassword, confirmNewPassword)) {
         layer.load(1);
-        $.post("/user/password/update", {oldPassword: oldPassword, newPassword: newPassword}, function (data) {
-            layer.closeAll();
-            var json = JSON.parse(data);
-            if (json.status === "success") {
-                alerts("密码修改成功");
-                location.href = "/signin.html#login";
-            } else {
-                alerts(json.message);
+        $.ajax({
+            url: "/user/password/update",
+            type: "PUT",
+            data: {oldPassword: oldPassword, newPassword: newPassword},
+            success: function (data) {
+                layer.closeAll();
+                var json = JSON.parse(data);
+                if (json.status === "success") {
+                    alerts("密码修改成功");
+                    location.href = "/signin.html#login";
+                } else {
+                    alerts(json.message);
+                }
             }
         });
     } else {

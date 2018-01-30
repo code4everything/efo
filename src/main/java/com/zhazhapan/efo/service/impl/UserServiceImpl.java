@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.regex.Pattern;
 
-import static com.zhazhapan.efo.EfoApplication.*;
+import static com.zhazhapan.efo.EfoApplication.settings;
+import static com.zhazhapan.efo.EfoApplication.tokens;
 
 /**
  * @author pantao
@@ -41,7 +43,9 @@ public class UserServiceImpl implements IUserService {
             }
             if (Checker.isNull(user) && Checker.isNotEmpty(loginName) && Checker.isNotEmpty(password)) {
                 user = userDAO.login(loginName, password);
-                removeTokenByValue(user.getId());
+                if (Checker.isNotNull(user)) {
+                    removeTokenByValue(user.getId());
+                }
             }
             updateUserLoginTime(user);
         }
@@ -52,7 +56,7 @@ public class UserServiceImpl implements IUserService {
     public boolean register(String username, String email, String password) {
         boolean allowRegister = settings.getBooleanUseEval(ConfigConsts.ALLOW_REGISTER_OF_SETTINGS);
         if (allowRegister) {
-            boolean isValid = Checker.isEmail(email) && checkPassword(password) && usernamePattern.matcher(username).matches();
+            boolean isValid = Checker.isEmail(email) && checkPassword(password) && Pattern.compile(settings.getStringUseEval(ConfigConsts.USERNAME_PATTERN_OF_SETTINGS)).matcher(username).matches();
             if (isValid) {
                 User user = new User(username, "", email, password);
                 int[] auth = new int[5];
@@ -80,17 +84,17 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean emailExists(String email) {
-        return userDAO.checkEmail(email) > 0;
+        return Checker.isEmail(email) && userDAO.checkEmail(email) > 0;
     }
 
     @Override
     public boolean updateBasicInfoById(int id, String avatar, String realName, String email) {
-        return userDAO.updateBasicInfo(id, avatar, realName, email);
+        return Checker.isEmail(email) && userDAO.updateBasicInfo(id, Checker.checkNull(avatar), Checker.checkNull(realName), email);
     }
 
     @Override
     public boolean usernameExists(String username) {
-        return userDAO.checkUsername(username) > 0;
+        return Checker.isNotEmpty(username) && userDAO.checkUsername(username) > 0;
     }
 
     @Override
