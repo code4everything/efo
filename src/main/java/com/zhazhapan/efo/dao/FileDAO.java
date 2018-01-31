@@ -13,12 +13,54 @@ import org.springframework.stereotype.Repository;
 public interface FileDAO {
 
     /**
+     * 通过访问路径删除
+     *
+     * @param visitUrl 访问路径
+     *
+     * @return 是否删除成功
+     */
+    @Delete("delete from file where visit_url=#{visitUrl}")
+    boolean deleteByVisitUrl(String visitUrl);
+
+    /**
+     * 通过本地路径删除
+     *
+     * @param localUrl 本地路径
+     *
+     * @return 是否删除成功
+     */
+    @Delete("delete from file where local_url=#{localUrl}")
+    boolean deleteByLocalUrl(String localUrl);
+
+    /**
+     * 检查本地路径
+     *
+     * @param localUrl 本地路径
+     *
+     * @return {@link Integer}
+     */
+    @Select("select count(*) from file where local_url=#{localUrl}")
+    int checkLocalUrl(String localUrl);
+
+    /**
+     * 检查访问路径
+     *
+     * @param visitUrl 访问路径
+     *
+     * @return {@link Integer}
+     */
+    @Select("select count(*) from file where visit_url=#{visitUrl}")
+    int checkVisitUrl(String visitUrl);
+
+    /**
      * 添加一个文件
      *
      * @param file {@link File}
+     *
+     * @return 是否添加成功
      */
     @Insert("insert into file(name,suffix,local_url,visit_url,size,description,tag,user_id,category_id,is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible) values(#{name},#{suffix},#{localUrl},#{visitUrl},#{size},#{description},#{tag},#{userId},#{categoryId},#{isDownloadable},#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
-    void insertFile(File file);
+    boolean insertFile(File file);
 
     /**
      * 删除一个文件

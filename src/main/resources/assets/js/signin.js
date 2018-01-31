@@ -10,6 +10,10 @@ var signinItem = new Vue({
     }
 });
 
+if (!window.location.href.replace(/https?:\/\/[a-zA-Z0-9.]*(:\d+)?/g, "").startsWith("/signin")) {
+    window.location.href = "/signin#login";
+}
+
 function reset() {
     var email = $("#res-email").val();
     var code = $("#res-email-verify").val();

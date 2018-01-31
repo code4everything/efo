@@ -5,30 +5,22 @@ import com.zhazhapan.efo.config.SettingConfig;
 import com.zhazhapan.efo.dao.CategoryDAO;
 import com.zhazhapan.efo.dao.FileDAO;
 import com.zhazhapan.efo.entity.Category;
+import com.zhazhapan.efo.entity.File;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IFileService;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.*;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -47,74 +39,58 @@ public class FileServiceImpl implements IFileService {
     CategoryDAO categoryDAO;
 
     @Override
-    public boolean upload(HttpServletRequest request) {
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        int categoryId = com.zhazhapan.efo.util.Utils.stringToInt(request.getParameter("categoryId"));
-        String tag = WebUtils.scriptFilter(request.getParameter("tag"));
-        String description = WebUtils.scriptFilter(request.getParameter("description"));
-        User user = (User) request.getSession().getAttribute("user");
-        Category category = categoryDAO.getCategoryById(categoryId);
-        Date date = new Date();
-        boolean result = true;
-        long maxSize = Formatter.sizeToLong(EfoApplication.settings.getStringUseEval(ConfigConsts.FILE_MAX_SIZE_OF_SETTING));
-        logger.info("is multipart: " + isMultipart);
-        if (isMultipart) {
-            FileItemFactory factory = new DiskFileItemFactory();
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            List<FileItem> fileItems = null;
-            try {
-                fileItems = upload.parseRequest(request);
-            } catch (FileUploadException e) {
-                logger.error("parse request error: " + e.getMessage());
-            }
-            if (Checker.isNotNull(fileItems)) {
-                logger.info("file item length: " + fileItems.size());
-                for (FileItem item : fileItems) {
-                    logger.info("is form field: " + item.isFormField());
-                    if (!item.isFormField()) {
-                        String name = item.getName();
-                        long size = item.getSize();
-                        if (Checker.isNotNull(name) && size <= maxSize && Pattern.compile(EfoApplication.settings.getStringUseEval(ConfigConsts.USERNAME_PATTERN_OF_SETTINGS)).matcher(name).matches()) {
-                            File tempFile = new File(item.getName());
-                            if (tempFile.exists()) {
-                                String localUrl = SettingConfig.getUploadStoragePath() + ValueConsts.SEPARATOR + name;
-                                File file = new File(localUrl);
-                                try {
-                                    FileExecutor.createNewFile(file);
-                                    item.write(file);
-                                    String suffix = FileExecutor.getFileSuffix(name);
-                                    String visitUrl = EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING).replace("{year}", Utils.getYear(date)).replace("{month}", Utils.getMonth(date)).replace("{day}", Utils.getDay(date)).replace("{author}", Checker.isNull(user) ? "" : user.getUsername()).replace("{fileName}", name).replace("{categoryName}", Checker.checkNull(Checker.isNull(category) ? "" : category.getName()));
-                                    fileDAO.insertFile(new com.zhazhapan.efo.entity.File(name, suffix, localUrl, visitUrl, description, tag, Checker.isNull(user) ? 0 : user.getId(), categoryId));
-                                } catch (Exception e) {
-                                    logger.error("save file error: " + e.getMessage());
-                                    result = false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    @Override
     public void download() {
 
     }
 
     @Override
-    public boolean upload(int categoryId, String tag, String description, MultipartFile multipartFile) {
-        if (!multipartFile.isEmpty()) {
-            byte[] bytes;
+    public boolean upload(int categoryId, String tag, String description, MultipartFile multipartFile, User user) {
+        String name = multipartFile.getOriginalFilename();
+        String suffix = FileExecutor.getFileSuffix(name);
+        String localUrl = SettingConfig.getUploadStoragePath() + ValueConsts.SEPARATOR + name;
+        Category category = categoryDAO.getCategoryById(categoryId);
+        long maxSize = Formatter.sizeToLong(EfoApplication.settings.getStringUseEval(ConfigConsts.FILE_MAX_SIZE_OF_SETTING));
+        long size = multipartFile.getSize();
+        boolean canUpload = !multipartFile.isEmpty() && size <= maxSize && Pattern.compile(EfoApplication.settings.getStringUseEval(ConfigConsts.FILE_SUFFIX_MATCH_OF_SETTING)).matcher(suffix).matches() && (Checker.isNotExists(localUrl) || EfoApplication.settings.getBooleanUseEval(ConfigConsts.FILE_COVER_OF_SETTING));
+        logger.info("is empty [" + multipartFile.isEmpty() + "], file size [" + size + "], max file size [" + maxSize + "]");
+        if (canUpload) {
+            Date date = new Date();
+            String visitUrl = EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING).replace("{year}", Utils.getYear(date)).replace("{month}", Utils.getMonth(date)).replace("{day}", Utils.getDay(date)).replace("{author}", Checker.isNull(user) ? "" : user.getUsername()).replace("{fileName}", name).replace("{categoryName}", Checker.checkNull(Checker.isNull(category) ? "" : category.getName()));
+            if (localUrlExists(localUrl)) {
+                fileDAO.deleteByLocalUrl(localUrl);
+            }
+            if (visitUrlExists(visitUrl)) {
+                fileDAO.deleteByVisitUrl(visitUrl);
+            }
             try {
-                bytes = multipartFile.getBytes();
-                Path path = Paths.get("");
+                byte[] bytes = multipartFile.getBytes();
+                FileExecutor.createNewFile(localUrl);
+                Path path = Paths.get(localUrl);
                 Files.write(path, bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
+                logger.info("local url of upload file: " + localUrl);
+                File file = new File(name, suffix, localUrl, visitUrl, WebUtils.scriptFilter(description), WebUtils.scriptFilter(tag), Checker.isNull(user) ? 0 : user.getId(), categoryId);
+                int[] auth = SettingConfig.getAuth(ConfigConsts.FILE_DEFAULT_AUTH_OF_SETTING);
+                file.setAuth(auth[0], auth[1], auth[2], auth[3], auth[4]);
+                boolean isSuccess = fileDAO.insertFile(file);
+                if (!isSuccess) {
+                    FileExecutor.deleteFile(localUrl);
+                }
+                return isSuccess;
+            } catch (Exception e) {
+                FileExecutor.deleteFile(localUrl);
+                logger.error("save file error: " + e.getMessage());
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean localUrlExists(String localUrl) {
+        return fileDAO.checkLocalUrl(localUrl) > 0;
+    }
+
+    @Override
+    public boolean visitUrlExists(String visitUrl) {
+        return fileDAO.checkVisitUrl(visitUrl) > 0;
     }
 }

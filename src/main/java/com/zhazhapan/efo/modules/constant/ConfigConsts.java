@@ -9,6 +9,16 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class ConfigConsts {
 
     /**
+     * 文件后缀匹配
+     */
+    public static final String FILE_SUFFIX_MATCH_OF_SETTING = "file.suffixMatch.pattern";
+
+    /**
+     * 是否覆盖文件
+     */
+    public static final String FILE_COVER_OF_SETTING = "file.coverIfExists";
+
+    /**
      * 自定义文件上传链接
      */
     public static final String CUSTOM_LINK_RULE_OF_SETTING = "file.linkRule.custom";
@@ -39,9 +49,19 @@ public class ConfigConsts {
     public static final String EMAIL_VERIFY_OF_SETTINGS = "user.emailVerify";
 
     /**
-     * 用户默认权限路径数组
+     * 用户默认权限
      */
-    public static final String[] USER_AUTH_OF_SETTINGS = {"user.defaultAuth.isDownloadable", "user.defaultAuth.isUploadable", "user.defaultAuth.isDeletable", "user.defaultAuth.isUpdatable", "user.defaultAuth.isVisible"};
+    public static final String FILE_DEFAULT_AUTH_OF_SETTING = "file.defaultAuth";
+
+    /**
+     * 用户默认权限
+     */
+    public static final String USER_DEFAULT_AUTH_OF_SETTING = "user.defaultAuth";
+
+    /**
+     * 默认权限路径
+     */
+    public static final String[] AUTH_OF_SETTINGS = {"isDownloadable", "isUploadable", "isDeletable", "isUpdatable", "isVisible"};
 
     /**
      * 密码最短长度的路径

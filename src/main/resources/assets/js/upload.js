@@ -1,7 +1,14 @@
 $("#file-input").fileinput({
-    uploadUrl: "/file/upload?categoryId=" + $("#category-id").val() + "&tag=" + $("#tag").val() + "&description=" + $("#description").val(),
+    uploadUrl: "/file/upload",
     uploadAsync: true,
     maxFileCount: 100,
+    uploadExtraData: function () {
+        return {
+            categoryId: $("#category-id").val(),
+            tag: $("#tag").val(),
+            description: $("#description").val()
+        };
+    },
     maxFilePreviewSize: 10240
 }).on('fileuploaded', function (event, data, previewId, index) {
     var json = data.response;

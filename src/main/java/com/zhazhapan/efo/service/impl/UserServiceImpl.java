@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.EfoApplication;
+import com.zhazhapan.efo.config.SettingConfig;
 import com.zhazhapan.efo.config.TokenConfig;
 import com.zhazhapan.efo.dao.UserDAO;
 import com.zhazhapan.efo.entity.User;
@@ -59,10 +60,7 @@ public class UserServiceImpl implements IUserService {
             boolean isValid = Checker.isEmail(email) && checkPassword(password) && Pattern.compile(settings.getStringUseEval(ConfigConsts.USERNAME_PATTERN_OF_SETTINGS)).matcher(username).matches();
             if (isValid) {
                 User user = new User(username, "", email, password);
-                int[] auth = new int[5];
-                for (int i = 0; i < ConfigConsts.USER_AUTH_OF_SETTINGS.length; i++) {
-                    auth[i] = settings.getBooleanUseEval(ConfigConsts.USER_AUTH_OF_SETTINGS[i]) ? 1 : 0;
-                }
+                int[] auth = SettingConfig.getAuth(ConfigConsts.USER_DEFAULT_AUTH_OF_SETTING);
                 user.setAuth(auth[0], auth[1], auth[2], auth[3], auth[4]);
                 return userDAO.insertUser(user);
             }

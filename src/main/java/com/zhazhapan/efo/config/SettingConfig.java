@@ -5,9 +5,14 @@ import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.util.CommonUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.FileExecutor;
 import com.zhazhapan.util.Formatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+
+import static com.zhazhapan.efo.EfoApplication.settings;
 
 /**
  * @author pantao
@@ -21,6 +26,8 @@ public class SettingConfig {
 
     private static final String LINUX = "linux";
 
+    private static Logger logger = LoggerFactory.getLogger(SettingConfig.class);
+
     private static OsName currentOS;
 
     static {
@@ -33,10 +40,22 @@ public class SettingConfig {
         }
     }
 
+    public static int[] getAuth(String jsonPath) {
+        int[] auth = new int[5];
+        for (int i = 0; i < ConfigConsts.AUTH_OF_SETTINGS.length; i++) {
+            String key = jsonPath + ValueConsts.DOT_SIGN + ConfigConsts.AUTH_OF_SETTINGS[i];
+            auth[i] = settings.getBooleanUseEval(key) ? 1 : 0;
+        }
+        return auth;
+    }
+
     public static String getUploadStoragePath() {
         String parent = getStoragePath(ConfigConsts.UPLOAD_PATH_OF_SETTING);
         String formatWay = EfoApplication.settings.getStringUseEval(ConfigConsts.UPLOAD_FORM_OF_SETTING);
-        return parent + ValueConsts.SEPARATOR + Formatter.datetimeToCustomString(new Date(), formatWay);
+        String path = parent + ValueConsts.SEPARATOR + Formatter.datetimeToCustomString(new Date(), formatWay);
+        FileExecutor.createFolder(path);
+        logger.info("upload path: " + path);
+        return path;
     }
 
     public static String getStoragePath(String path) {

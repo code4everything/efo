@@ -2,6 +2,7 @@ package com.zhazhapan.efo.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.efo.annotation.AuthInterceptor;
+import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.service.impl.FileServiceImpl;
 import com.zhazhapan.efo.util.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class FileController {
     @AuthInterceptor
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String upload(int categoryId, String tag, String description, @RequestParam("file") MultipartFile multipartFile) {
-        return ControllerUtils.getResponse(fileService.upload(categoryId, tag, description, multipartFile));
+        User user = (User) request.getSession().getAttribute("user");
+        return ControllerUtils.getResponse(fileService.upload(categoryId, tag, description, multipartFile, user));
     }
 }
