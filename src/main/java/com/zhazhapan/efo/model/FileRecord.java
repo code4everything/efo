@@ -2,17 +2,21 @@ package com.zhazhapan.efo.model;
 
 import com.zhazhapan.efo.util.BeanUtils;
 
+import java.sql.Timestamp;
+
 /**
  * @author pantao
  * @date 2018/1/19
  */
 public class FileRecord {
 
-    private int id;
+    private long id;
 
     private int userId;
 
     private String username;
+
+    private String avatar;
 
     private String fileName;
 
@@ -40,12 +44,19 @@ public class FileRecord {
 
     private int isVisible;
 
-    public FileRecord(int id, int userId, String username, String fileName, long size, String categoryName, String description, String tag, int checkTimes, int downloadTimes, String visitUrl, int isUploadable, int isDeletable, int isUpdatable, int isDownloadable, int isVisible) {
+    private Timestamp createTime;
+
+    public FileRecord(long id, int userId, String username, String avatar, String fileName, long size, Timestamp
+            createTime, String categoryName, String description, String tag, int checkTimes, int downloadTimes,
+                      String visitUrl, int isUploadable, int isDeletable, int isUpdatable, int isDownloadable, int
+                              isVisible) {
         this.id = id;
         this.userId = userId;
         this.username = username;
+        this.avatar = avatar;
         this.fileName = fileName;
         this.size = size;
+        this.createTime = createTime;
         this.categoryName = categoryName;
         this.description = description;
         this.tag = tag;
@@ -64,12 +75,33 @@ public class FileRecord {
         return BeanUtils.toPrettyJson(this);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Timestamp getCreateTime() {
+
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 
     public int getUserId() {

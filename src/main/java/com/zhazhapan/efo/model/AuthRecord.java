@@ -10,11 +10,11 @@ import java.sql.Timestamp;
  */
 public class AuthRecord {
 
-    private int id;
+    private long id;
 
     private int userId;
 
-    private int fileId;
+    private long fileId;
 
     private String username;
 
@@ -34,7 +34,8 @@ public class AuthRecord {
 
     private Timestamp createTime;
 
-    public AuthRecord(int id, int userId, int fileId, String username, String fileName, String localUrl, int isDownloadable, int isUploadable, int isDeletable, int isUpdatable, int isVisible, Timestamp createTime) {
+    public AuthRecord(long id, int userId, long fileId, String username, String fileName, String localUrl, int
+            isDownloadable, int isUploadable, int isDeletable, int isUpdatable, int isVisible, Timestamp createTime) {
         this.id = id;
         this.userId = userId;
         this.fileId = fileId;
@@ -54,11 +55,11 @@ public class AuthRecord {
         return BeanUtils.toPrettyJson(this);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -70,11 +71,11 @@ public class AuthRecord {
         this.userId = userId;
     }
 
-    public int getFileId() {
+    public long getFileId() {
         return fileId;
     }
 
-    public void setFileId(int fileId) {
+    public void setFileId(long fileId) {
         this.fileId = fileId;
     }
 

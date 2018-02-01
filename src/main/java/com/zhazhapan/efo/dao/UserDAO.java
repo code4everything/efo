@@ -25,7 +25,8 @@ public interface UserDAO {
      * @return 是否更新成功
      */
     @Update("update user set avatar=#{avatar},real_name=#{realName},email=#{email} where id=#{id}")
-    boolean updateBasicInfo(@Param("id") int id, @Param("avatar") String avatar, @Param("realName") String realName, @Param("email") String email);
+    boolean updateBasicInfo(@Param("id") int id, @Param("avatar") String avatar, @Param("realName") String realName,
+                            @Param("email") String email);
 
     /**
      * 通过id获取一个用户
@@ -56,7 +57,8 @@ public interface UserDAO {
      *
      * @return {@link User}
      */
-    @Select("select * from user where (username=#{usernameOrEmail} or email=#{usernameOrEmail}) and password=sha2(#{password},256)")
+    @Select("select * from user where (username=#{usernameOrEmail} or email=#{usernameOrEmail}) and password=sha2" +
+            "(#{password},256)")
     User login(@Param("usernameOrEmail") String usernameOrEmail, @Param("password") String password);
 
     /**
@@ -66,7 +68,9 @@ public interface UserDAO {
      *
      * @return 是否插入成功
      */
-    @Insert("insert into user(username,real_name,email,password,is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible) values(#{username},#{realName},#{email},sha2(#{password},256),#{isDownloadable},#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
+    @Insert("insert into user(username,real_name,email,password,is_downloadable,is_uploadable,is_deletable," +
+            "is_updatable,is_visible) values(#{username},#{realName},#{email},sha2(#{password},256)," +
+            "#{isDownloadable},#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
     boolean insertUser(User user);
 
     /**
@@ -92,7 +96,9 @@ public interface UserDAO {
      * @return {@link Boolean}
      */
     @UpdateProvider(type = UserSqlProvider.class, method = "updateAuthById")
-    boolean updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable);
+    boolean updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable")
+            int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param
+            ("isUpdatable") int isUpdatable);
 
     /**
      * 通过编号哦更新密码

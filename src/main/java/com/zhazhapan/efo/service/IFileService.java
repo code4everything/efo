@@ -1,7 +1,12 @@
 package com.zhazhapan.efo.service;
 
 import com.zhazhapan.efo.entity.User;
+import com.zhazhapan.efo.model.FileRecord;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.List;
 
 /**
  * @author pantao
@@ -10,9 +15,62 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IFileService {
 
     /**
+     * 通过编号删除
+     *
+     * @param id 编号
+     *
+     * @return 是否删除成功
+     */
+    boolean removeById(long id);
+
+    /**
+     * 通过访问路径删除
+     *
+     * @param visitUrl 访问路径
+     *
+     * @return 是否删除成功
+     */
+    boolean removeByVisitUrl(String visitUrl);
+
+    /**
+     * 通过本地路径删除
+     *
+     * @param localUrl 访问路径
+     *
+     * @return 是否删除成功
+     */
+    boolean removeByLocalUrl(String localUrl);
+
+    /**
+     * 获取资源
+     *
+     * @param visitUrl 访问路径
+     * @param request {@link HttpServletRequest}
+     *
+     * @return {@link File}
+     */
+    String getResource(String visitUrl, HttpServletRequest request);
+
+    /**
+     * 通过访问路径获取本地文件路径
+     *
+     * @param visitUrl 访问路径
+     *
+     * @return {@link String}
+     */
+    String getLocalUrlByVisitUrl(String visitUrl);
+
+    /**
      * 下载文件
      */
     void download();
+
+    /**
+     * 获取所有文件
+     *
+     * @return {@link List}
+     */
+    List<FileRecord> getAll();
 
     /**
      * 上传文件

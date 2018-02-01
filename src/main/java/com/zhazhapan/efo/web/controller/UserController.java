@@ -170,6 +170,7 @@ public class UserController {
     }
 
     private boolean isCodeValidate(String code) {
-        return Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues.CODE_STRING)));
+        return Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues
+                .CODE_STRING)));
     }
 }

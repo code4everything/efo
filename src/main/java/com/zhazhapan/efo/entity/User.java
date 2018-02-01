@@ -50,7 +50,9 @@ public class User {
         this.password = password;
     }
 
-    public User(int id, String username, String realName, String email, String password, int permission, Timestamp createTime, Timestamp lastLoginTime, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable, String avatar) {
+    public User(int id, String username, String realName, String email, String password, int permission, Timestamp
+            createTime, Timestamp lastLoginTime, int isDownloadable, int isUploadable, int isVisible, int
+            isDeletable, int isUpdatable, String avatar) {
         this.id = id;
         this.username = username;
         this.realName = realName;

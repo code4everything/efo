@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  */
 public class Auth {
 
-    private int id;
+    private long id;
 
     private int isUploadable;
 
@@ -33,7 +33,8 @@ public class Auth {
         this.fileId = fileId;
     }
 
-    public Auth(int id, int isUploadable, int isDeletable, int isUpdatable, int userId, long fileId, int isVisible, int isDownloadable, Timestamp createTime) {
+    public Auth(long id, int isUploadable, int isDeletable, int isUpdatable, int userId, long fileId, int isVisible,
+                int isDownloadable, Timestamp createTime) {
         this.id = id;
         this.isUploadable = isUploadable;
         this.isDeletable = isDeletable;
@@ -58,11 +59,11 @@ public class Auth {
         return BeanUtils.toPrettyJson(this);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -28,7 +28,8 @@ public class DownloadRecord {
 
     private Timestamp createTime;
 
-    public DownloadRecord(long id, int userId, long fileId, String username, String email, String fileName, String categoryName, String visitUrl, Timestamp createTime) {
+    public DownloadRecord(long id, int userId, long fileId, String username, String email, String fileName, String
+            categoryName, String visitUrl, Timestamp createTime) {
         this.id = id;
         this.userId = userId;
         this.fileId = fileId;

@@ -50,7 +50,8 @@ public class File {
 
     private Timestamp lastModifyTime;
 
-    public File(String name, String suffix, String localUrl, String visitUrl, String description, String tag, int userId, int categoryId) {
+    public File(String name, String suffix, String localUrl, String visitUrl, String description, String tag, int
+            userId, int categoryId) {
         this.name = name;
         this.suffix = suffix;
         this.categoryId = categoryId;
@@ -62,7 +63,10 @@ public class File {
         this.size = new java.io.File(localUrl).length();
     }
 
-    public File(int id, String name, String suffix, String localUrl, String visitUrl, long size, Timestamp createTime, String description, int checkTimes, int downloadTimes, String tag, int userId, int categoryId, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable, Timestamp lastModifyTime) {
+    public File(long id, String name, String suffix, String localUrl, String visitUrl, long size, Timestamp
+            createTime, String description, int checkTimes, int downloadTimes, String tag, int userId, int
+            categoryId, int isDownloadable, int isUploadable, int isVisible, int isDeletable, int isUpdatable,
+                Timestamp lastModifyTime) {
         this.id = id;
         this.name = name;
         this.suffix = suffix;

@@ -19,9 +19,12 @@ public interface AuthDAO {
      * 添加一条权限记录
      *
      * @param auth {@link Auth}
+     *
+     * @return 是否添加成功
      */
-    @Insert("insert into auth(user_id,file_id,is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible) values(#{userId},#{fileId},#{isDownloadable},#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
-    void insertAuth(Auth auth);
+    @Insert("insert into auth(user_id,file_id,is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible) " +
+            "values(#{userId},#{fileId},#{isDownloadable},#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
+    boolean insertAuth(Auth auth);
 
     /**
      * 删除一条权限记录
@@ -43,9 +46,11 @@ public interface AuthDAO {
      * 删除一条权限记录
      *
      * @param fileId 编号
+     *
+     * @return 是否删除成功
      */
     @Delete("delete from auth where file_id=#{fileId}")
-    void removeAuthByFileId(int fileId);
+    boolean removeAuthByFileId(long fileId);
 
     /**
      * 更新权限记录
@@ -58,7 +63,9 @@ public interface AuthDAO {
      * @param isUpdatable 更新权限
      */
     @UpdateProvider(type = AuthSqlProvider.class, method = "updateAuthById")
-    void updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable);
+    void updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int
+            isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param
+            ("isUpdatable") int isUpdatable);
 
     /**
      * 获取权限记录
@@ -71,5 +78,6 @@ public interface AuthDAO {
      * @return {@link List}
      */
     @SelectProvider(type = AuthSqlProvider.class, method = "getAuthBy")
-    List<AuthRecord> getAuthBy(@Param("id") int id, @Param("userId") int userId, @Param("fileId") int fileId, @Param("offset") int offset);
+    List<AuthRecord> getAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId,
+                               @Param("offset") int offset);
 }

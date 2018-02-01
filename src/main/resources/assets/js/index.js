@@ -13,6 +13,9 @@ var app = new Vue({
 
 var userInfo = {};
 
+/**
+ * 保存用户信息
+ */
 function saveInfo() {
     var email = $("#email").val();
     if (isEmail(email)) {
@@ -44,6 +47,9 @@ function saveInfo() {
     }
 }
 
+/**
+ * 更新密码
+ */
 function updatePassword() {
     var oldPassword = $("#old-password").val();
     var newPassword = $("#new-password").val();
@@ -126,10 +132,43 @@ $(document).ready(function () {
     $(".sendVerifyCode").click(function () {
         sendVerifyCode($("#email").val(), event.srcElement);
     });
+    getResource();
 });
 
+/**
+ * 加载用户信息
+ */
 layer.load(1);
 $.get("/config/user", function (data) {
     layer.closeAll();
     userConfig = JSON.parse(data);
 });
+
+function getResource() {
+    layer.load(1);
+    $.get("/file/all", function (data) {
+        layer.closeAll();
+        setResources(JSON.parse(data));
+        $('[data-toggle="tooltip"]').tooltip();
+        setCSS();
+    });
+}
+
+function setResources(resources) {
+    var contentHtml = "";
+    $.each(resources, function (i, resource) {
+        /** @namespace resource.fileName */
+        /** @namespace resource.createTime */
+        /** @namespace resource.categoryName */
+        /** @namespace resource.checkTimes */
+        /** @namespace resource.downloadTimes */
+        /** @namespace resource.visitUrl */
+        contentHtml += "<div class='row content-box rounded'><div class='col-12 col-sm-12'><br/><div class='row'>" +
+            "<div class='col-sm-1 col-12'><img src='" + (resource.avatar ? resource.avatar : "/assets/img/default-user.jpg") + "' class='avatar'/>" +
+            "</div><div class='col-sm-11 col-12'><h4><a data-toggle='tooltip' href='" + resource.visitUrl + "' target='_blank' title='" + resource.description + "'>" + resource.fileName + "</a>" +
+            "</h4><p>上传者：<b>" + resource.username + "</b>&emsp;上传时间：<b>" + new Date(resource.createTime).format("yyyy-MM-dd hh:mm:ss") + "</b>&emsp;文件大小：<b>" + resource.size + "</b>&emsp;分类：<b>" + resource.categoryName + "</b>" +
+            "&emsp;标签：<b>" + resource.tag + "</b>&emsp;查看次数：<b>" + resource.checkTimes + "</b>&emsp;下载次数：<b>" + resource.downloadTimes + "</b>" +
+            "</p></div></div><br/></div></div><br/>";
+    });
+    $("#resources-content").html(contentHtml);
+}

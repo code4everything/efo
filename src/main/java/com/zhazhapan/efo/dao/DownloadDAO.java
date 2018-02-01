@@ -23,7 +23,7 @@ public interface DownloadDAO {
      * @param fileId 文件编号
      */
     @Insert("insert into download(user_id,file_id) values(#{userId},#{fileId})")
-    void insertDownload(int userId, int fileId);
+    void insertDownload(int userId, long fileId);
 
     /**
      * 查询下载记录
@@ -35,5 +35,6 @@ public interface DownloadDAO {
      * @return 下载记录
      */
     @SelectProvider(type = DownloadSqlProvider.class, method = "getDownloadBy")
-    List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") int fileId, @Param("offset") int offset);
+    List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") int fileId, @Param("offset") int
+            offset);
 }

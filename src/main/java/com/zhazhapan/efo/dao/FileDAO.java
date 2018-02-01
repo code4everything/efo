@@ -2,8 +2,11 @@ package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.dao.sqlprovider.FileSqlProvider;
 import com.zhazhapan.efo.entity.File;
+import com.zhazhapan.efo.model.FileRecord;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author pantao
@@ -13,6 +16,46 @@ import org.springframework.stereotype.Repository;
 public interface FileDAO {
 
     /**
+     * 通过编号删除文件
+     *
+     * @param id 编号
+     *
+     * @return 是否删除成功
+     */
+    @Delete("delete from file where id=#{id}")
+    boolean removeById(long id);
+
+    /**
+     * 通过本地路径获取文件编号
+     *
+     * @param visitUrl 本地路径
+     *
+     * @return 编号
+     */
+    @Select("select id from file where visit_url=#{visitUrl}")
+    long getIdByVisitUrl(String visitUrl);
+
+    /**
+     * 通过本地路径获取文件编号
+     *
+     * @param localUrl 本地路径
+     *
+     * @return 编号
+     */
+    @Select("select id from file where local_url=#{localUrl}")
+    long getIdByLocalUrl(String localUrl);
+
+    /**
+     * 通过访问路径获取本地文件路径
+     *
+     * @param visitUrl 访问路径
+     *
+     * @return {@link String}
+     */
+    @Select("select local_url from file where visit_url=#{visitUrl}")
+    String getLocalUrlByVisitUrl(String visitUrl);
+
+    /**
      * 通过访问路径删除
      *
      * @param visitUrl 访问路径
@@ -20,7 +63,7 @@ public interface FileDAO {
      * @return 是否删除成功
      */
     @Delete("delete from file where visit_url=#{visitUrl}")
-    boolean deleteByVisitUrl(String visitUrl);
+    boolean removeByVisitUrl(String visitUrl);
 
     /**
      * 通过本地路径删除
@@ -30,7 +73,7 @@ public interface FileDAO {
      * @return 是否删除成功
      */
     @Delete("delete from file where local_url=#{localUrl}")
-    boolean deleteByLocalUrl(String localUrl);
+    boolean removeByLocalUrl(String localUrl);
 
     /**
      * 检查本地路径
@@ -59,7 +102,10 @@ public interface FileDAO {
      *
      * @return 是否添加成功
      */
-    @Insert("insert into file(name,suffix,local_url,visit_url,size,description,tag,user_id,category_id,is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible) values(#{name},#{suffix},#{localUrl},#{visitUrl},#{size},#{description},#{tag},#{userId},#{categoryId},#{isDownloadable},#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
+    @Insert("insert into file(name,suffix,local_url,visit_url,size,description,tag,user_id,category_id," +
+            "is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible) values(#{name},#{suffix}," +
+            "#{localUrl},#{visitUrl},#{size},#{description},#{tag},#{userId},#{categoryId},#{isDownloadable}," +
+            "#{isUploadable},#{isDeletable},#{isUpdatable},#{isVisible})")
     boolean insertFile(File file);
 
     /**
@@ -97,7 +143,9 @@ public interface FileDAO {
      * @param isUpdatable 上传权限
      */
     @UpdateProvider(type = FileSqlProvider.class, method = "updateAuthById")
-    void updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable);
+    void updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int
+            isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param
+            ("isUpdatable") int isUpdatable);
 
     /**
      * 更新文件名
@@ -158,7 +206,7 @@ public interface FileDAO {
      * @param id 编号
      */
     @Update("update file set download_times=download_times+1 where id=#{id}")
-    void updateDownloadTimesById(int id);
+    void updateDownloadTimesById(long id);
 
     /**
      * 更新文件标签
@@ -187,4 +235,15 @@ public interface FileDAO {
      */
     @Select("select * from file where visit_url=#{visitUrl}")
     File getFileByVisitUrl(String visitUrl);
+
+    /**
+     * 获取文件资源
+     *
+     * @return {@link List}
+     */
+    @Select("select f.id,f.user_id,u.username,u.avatar,f.name file_name,f.size,f.create_time,c.name category_name,f"
+            + ".description,f" + ".tag,f.check_times,f.download_times,f.visit_url,f.is_uploadable,f.is_deletable,f" +
+            ".is_updatable,f" + "" + ".is_downloadable,f.is_visible from file f join user u on u.id=f.user_id join "
+            + "category c on c.id=f" + "" + ".category_id")
+    List<FileRecord> getAll();
 }

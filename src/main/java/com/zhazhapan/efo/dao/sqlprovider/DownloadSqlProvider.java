@@ -21,7 +21,8 @@ public class DownloadSqlProvider {
      */
     public String getDownloadBy(@Param("userId") int userId, @Param("fileId") int fileId) {
         String sql = new SQL() {{
-            SELECT("d.id,d.user_id,d.file_id,u.username,u.email,f.name file_name,c.name category_name,f.visit_url,d.create_time");
+            SELECT("d.id,d.user_id,d.file_id,u.username,u.email,f.name file_name,c.name category_name,f.visit_url,d" +
+                    ".create_time");
             FROM("download d");
             JOIN("user u on d.user_id=u.id");
             JOIN("file f on d.file_id=f.id");
@@ -34,6 +35,7 @@ public class DownloadSqlProvider {
             }
             ORDER_BY("d." + EfoApplication.settings.getStringUseEval(ConfigConsts.DOWNLOAD_ORDER_BY_OF_SETTINGS));
         }}.toString();
-        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts.DOWNLOAD_PAGE_SIZE_OF_SETTINGS);
+        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts
+                .DOWNLOAD_PAGE_SIZE_OF_SETTINGS);
     }
 }

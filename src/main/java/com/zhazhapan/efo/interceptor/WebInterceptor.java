@@ -27,7 +27,8 @@ public class WebInterceptor implements HandlerInterceptor {
     UserServiceImpl userService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
+            Exception {
         String url = request.getServletPath();
         boolean shouldIntercept = url.startsWith(DefaultValues.INDEX_PAGE);
         InterceptorLevel level = InterceptorLevel.USER;

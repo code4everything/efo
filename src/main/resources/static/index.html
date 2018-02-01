@@ -23,7 +23,7 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link" data-toggle="pill" href="#resource-tab">资源列表</a>
+                <a class="nav-link active" data-toggle="pill" href="#resource-tab">资源列表</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="pill" href="#uploaded-tab">我的上传</a>
@@ -32,7 +32,7 @@
                 <a class="nav-link" data-toggle="pill" href="#downloaded-tab">我的下载</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  active" data-toggle="pill" href="#bio-tab">我的资料</a>
+                <a class="nav-link" data-toggle="pill" href="#bio-tab">我的资料</a>
             </li>
         </ul>
     </div>
@@ -46,13 +46,26 @@
     <div class="row justify-content-center">
         <div class="col-sm-12 col-10 tab-content">
             <!--资源列表-->
-            <div class="tab-pane" id="resource-tab">
+            <div class="tab-pane active" id="resource-tab">
+                <div class="row content-box rounded">
+                    <div class="col-sm-2 col-5">
+                        <br/>
+                        <select class="form-control" id="category" title="分类">
+                            <option value="uncategorized">未分类</option>
+                        </select>
+                        <br/>
+                    </div>
+                </div>
+                <br/>
+                <!--v-for="resource in resources"-->
+                <div id="resources-content">
 
+                </div>
             </div>
             <div class="tab-pane" id="uploaded-tab">我的上传</div>
             <div class="tab-pane" id="downloaded-tab">我的下载</div>
             <!--我的资料-->
-            <div class="tab-pane active text-left" id="bio-tab">
+            <div class="tab-pane text-left" id="bio-tab">
                 <!--权限和登陆信息-->
                 <div class="row content-box rounded">
                     <div class="col-sm-1 col-1 col-md-1"></div>

@@ -9,6 +9,16 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class ConfigConsts {
 
     /**
+     * 匿名用户下载权限
+     */
+    public static final String ANONYMOUS_DOWNLOADABLE_OF_SETTING = "global.anonymousUser.downloadable";
+
+    /**
+     * 匿名用户访问权限
+     */
+    public static final String ANONYMOUS_VISIBLE_OF_SETTING = "global.anonymousUser.visible";
+
+    /**
      * 文件后缀匹配
      */
     public static final String FILE_SUFFIX_MATCH_OF_SETTING = "file.suffixMatch.pattern";
@@ -54,6 +64,11 @@ public class ConfigConsts {
     public static final String FILE_DEFAULT_AUTH_OF_SETTING = "file.defaultAuth";
 
     /**
+     * 默认权限
+     */
+    public static final String AUTH_DEFAULT_OF_SETTING = "auth.default";
+
+    /**
      * 用户默认权限
      */
     public static final String USER_DEFAULT_AUTH_OF_SETTING = "user.defaultAuth";
@@ -61,7 +76,8 @@ public class ConfigConsts {
     /**
      * 默认权限路径
      */
-    public static final String[] AUTH_OF_SETTINGS = {"isDownloadable", "isUploadable", "isDeletable", "isUpdatable", "isVisible"};
+    public static final String[] AUTH_OF_SETTINGS = {"isDownloadable", "isUploadable", "isDeletable", "isUpdatable",
+            "isVisible"};
 
     /**
      * 密码最短长度的路径
@@ -151,7 +167,8 @@ public class ConfigConsts {
     /**
      * 默认上传路径，如果配置文件中的上传路径无法创建，将使用默认的上传路径
      */
-    public static final String DEFAULT_UPLOAD_PATH = ValueConsts.USER_HOME + ValueConsts.SEPARATOR + "Desktop" + ValueConsts.SEPARATOR + "upload";
+    public static final String DEFAULT_UPLOAD_PATH = ValueConsts.USER_HOME + ValueConsts.SEPARATOR + "Desktop" +
+            ValueConsts.SEPARATOR + "upload";
 
     private ConfigConsts() {}
 }

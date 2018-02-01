@@ -85,17 +85,21 @@ $(document).ready(function () {
                 $(body).css("background-size", "cover");
             }
         }
-        for (var m = 0; m < globalConfig.css.length; m++) {
-            var node = globalConfig.css[m];
-            var element = node.selector;
-            var item = node.style;
-            for (var j = 0; j < element.length; j++) {
-                for (var k = 0; k < item.length; k++) {
-                    $(element[j]).css(item[k].key, item[k].value);
-                }
-            }
-        }
+        setCSS();
     });
     // 加载页脚
     $("#footer").html(footer);
 });
+
+function setCSS() {
+    for (var m = 0; m < globalConfig.css.length; m++) {
+        var node = globalConfig.css[m];
+        var element = node.selector;
+        var item = node.style;
+        for (var j = 0; j < element.length; j++) {
+            for (var k = 0; k < item.length; k++) {
+                $(element[j]).css(item[k].key, item[k].value);
+            }
+        }
+    }
+}

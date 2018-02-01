@@ -15,9 +15,10 @@ public class AuthSqlProvider {
         return CommonSqlProvider.updateAuthById("auth");
     }
 
-    public String getAuthBy(@Param("id") int id, @Param("userId") int userId, @Param("fileId") int fileId) {
+    public String getAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId) {
         String sql = new SQL() {{
-            SELECT("a.id,a.user_id,a.file_id,u.username,f.name file_name,f.local_url,a.is_downloadable,a.is_uploadable,a.is_deletable,a.is_updatable,a.is_visible,a.create_time");
+            SELECT("a.id,a.user_id,a.file_id,u.username,f.name file_name,f.local_url,a.is_downloadable,a" + "" + "" +
+                    ".is_uploadable,a.is_deletable,a.is_updatable,a.is_visible,a.create_time");
             FROM("auth a");
             JOIN("user u on u.id=a.user_id");
             JOIN("file f on f.id=a.file_id");
@@ -32,6 +33,7 @@ public class AuthSqlProvider {
             }
             ORDER_BY("a." + EfoApplication.settings.getStringUseEval(ConfigConsts.AUTH_ORDER_BY_OF_SETTINGS));
         }}.toString();
-        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts.AUTH_PAGE_SIZE_OF_SETTINGS);
+        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts
+                .AUTH_PAGE_SIZE_OF_SETTINGS);
     }
 }

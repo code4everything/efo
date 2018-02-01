@@ -29,6 +29,7 @@ public class UserSqlProvider {
             }
             ORDER_BY(EfoApplication.settings.getStringUseEval(ConfigConsts.USER_ORDER_BY_OF_SETTINGS));
         }}.toString();
-        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts.USER_PAGE_SIZE_OF_SETTINGS);
+        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts
+                .USER_PAGE_SIZE_OF_SETTINGS);
     }
 }

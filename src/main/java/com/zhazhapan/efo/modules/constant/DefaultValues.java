@@ -16,7 +16,8 @@ public class DefaultValues {
     /**
      * 默认存储路径
      */
-    public static final String STORAGE_PATH = ValueConsts.USER_HOME + ValueConsts.SEPARATOR + "Desktop" + ValueConsts.SEPARATOR;
+    public static final String STORAGE_PATH = ValueConsts.USER_HOME + ValueConsts.SEPARATOR + "Desktop" + ValueConsts
+            .SEPARATOR;
 
     /**
      * 首页映射路径

@@ -51,7 +51,8 @@ public class CommonController {
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/code/verify", method = RequestMethod.GET)
     public String verifyCode(String code) {
-        if (Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues.CODE_STRING)))) {
+        if (Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues
+                .CODE_STRING)))) {
             jsonObject.put("status", "success");
         } else {
             jsonObject.put("status", "error");
