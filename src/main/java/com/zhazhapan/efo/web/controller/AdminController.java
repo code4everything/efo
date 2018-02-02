@@ -1,7 +1,7 @@
 package com.zhazhapan.efo.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zhazhapan.efo.service.impl.AdminServiceImpl;
+import com.zhazhapan.efo.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class AdminController {
 
     @Autowired
-    AdminServiceImpl adminService;
+    IAdminService adminService;
 
     @Autowired
     HttpServletRequest request;

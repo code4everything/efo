@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.efo.annotation.AuthInterceptor;
 import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.enums.InterceptorLevel;
-import com.zhazhapan.efo.service.impl.CategoryServiceImpl;
+import com.zhazhapan.efo.service.ICategoryService;
 import com.zhazhapan.efo.util.ControllerUtils;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.Formatter;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoryController {
 
     @Autowired
-    CategoryServiceImpl categoryService;
+    ICategoryService categoryService;
 
     @Autowired
     JSONObject jsonObject;

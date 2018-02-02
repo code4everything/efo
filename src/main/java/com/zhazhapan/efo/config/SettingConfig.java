@@ -58,6 +58,12 @@ public class SettingConfig {
         return path;
     }
 
+    public static String getAvatarStoragePath() {
+        String path = getStoragePath(ConfigConsts.UPLOAD_PATH_OF_SETTING) + ValueConsts.SEPARATOR + "avatar";
+        FileExecutor.createFolder(path);
+        return path;
+    }
+
     public static String getStoragePath(String path) {
         path += ValueConsts.DOT_SIGN;
         if (currentOS == OsName.WINDOWS) {

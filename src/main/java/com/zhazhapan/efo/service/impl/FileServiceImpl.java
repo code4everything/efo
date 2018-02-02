@@ -49,6 +49,16 @@ public class FileServiceImpl implements IFileService {
     DownloadServiceImpl downloadService;
 
     @Override
+    public List<FileRecord> getUserDownloaded(int userId) {
+        return fileDAO.getUserDownloaded(userId);
+    }
+
+    @Override
+    public List<FileRecord> getUserUploaded(int userId) {
+        return fileDAO.getUserUploaded(userId);
+    }
+
+    @Override
     public boolean removeById(long id) {
         authService.removeByFileId(id);
         return fileDAO.removeById(id);
@@ -93,11 +103,6 @@ public class FileServiceImpl implements IFileService {
     @Override
     public String getLocalUrlByVisitUrl(String visitUrl) {
         return fileDAO.getLocalUrlByVisitUrl(Checker.checkNull(visitUrl));
-    }
-
-    @Override
-    public void download() {
-
     }
 
     @Override

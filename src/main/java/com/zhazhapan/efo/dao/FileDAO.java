@@ -241,9 +241,26 @@ public interface FileDAO {
      *
      * @return {@link List}
      */
-    @Select("select f.id,f.user_id,u.username,u.avatar,f.name file_name,f.size,f.create_time,c.name category_name,f"
-            + ".description,f" + ".tag,f.check_times,f.download_times,f.visit_url,f.is_uploadable,f.is_deletable,f" +
-            ".is_updatable,f" + "" + ".is_downloadable,f.is_visible from file f join user u on u.id=f.user_id join "
-            + "category c on c.id=f" + "" + ".category_id")
+    @SelectProvider(type = FileSqlProvider.class, method = "getAll")
     List<FileRecord> getAll();
+
+    /**
+     * 获取用户的上传资源
+     *
+     * @param userId 用户编号
+     *
+     * @return {@link List}
+     */
+    @SelectProvider(type = FileSqlProvider.class, method = "getUserUploaded")
+    List<FileRecord> getUserUploaded(int userId);
+
+    /**
+     * 获取用户的下载资源
+     *
+     * @param userId 用户编号
+     *
+     * @return {@link List}
+     */
+    @SelectProvider(type = FileSqlProvider.class, method = "getUserDownloaded")
+    List<FileRecord> getUserDownloaded(int userId);
 }

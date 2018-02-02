@@ -9,7 +9,7 @@ $("#file-input").fileinput({
             description: $("#description").val()
         };
     },
-    maxFilePreviewSize: 10240
+    maxFilePreviewSize: 10485760
 }).on('fileuploaded', function (event, data, previewId, index) {
     var json = data.response;
     if (json.status === "success") {

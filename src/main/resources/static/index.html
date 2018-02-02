@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <link rel="shortcut icon" href="/assets/img/efo-favicon.png"/>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/fileinput.min.css">
+    <link rel="stylesheet" href="/assets/css/glyphicons.css">
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/js/jquery-3.3.1.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/layer.js"></script>
-    <script src="/assets/js/utils.js"></script>
     <script src="/assets/js/vue.js"></script>
+    <script src="/assets/js/piexif.min.js"></script>
+    <script src="/assets/js/sortable.min.js"></script>
+    <script src="/assets/js/purify.min.js"></script>
+    <script src="/assets/js/fileinput.min.js"></script>
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/utils.js"></script>
     <link rel="stylesheet" href="/assets/css/style.css"/>
     <title>首页</title>
 </head>
@@ -33,6 +40,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="pill" href="#bio-tab">我的资料</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="upload.html" target="_blank">文件上传</a>
             </li>
         </ul>
     </div>
@@ -57,13 +67,15 @@
                     </div>
                 </div>
                 <br/>
-                <!--v-for="resource in resources"-->
-                <div id="resources-content">
-
-                </div>
+                <div id="resources-content"></div>
             </div>
-            <div class="tab-pane" id="uploaded-tab">我的上传</div>
-            <div class="tab-pane" id="downloaded-tab">我的下载</div>
+            <!--我的上传-->
+            <div class="tab-pane" id="uploaded-tab">
+                <div id="uploaded-content"></div>
+            </div>
+            <div class="tab-pane" id="downloaded-tab">
+                <div id="downloaded-content"></div>
+            </div>
             <!--我的资料-->
             <div class="tab-pane text-left" id="bio-tab">
                 <!--权限和登陆信息-->
@@ -104,7 +116,8 @@
                         <br/>
                         <div class="row">
                             <div class="col-sm-3 col-5 text-right">
-                                <img src="/assets/img/default-user.jpg" id="avatar" class="rounded-circle avatar"/>
+                                <img onclick="showAvatarModal();" src="/assets/img/default-user.jpg" id="avatar"
+                                     class="rounded-circle avatar"/>
                             </div>
                             <div class="col-sm-6 col-7 text-left padding-top-3">
                                 <h3>{{username}}</h3>
@@ -197,10 +210,10 @@
                         <br/>
                     </div>
                 </div>
+                <div class="row"><br/></div>
             </div>
         </div>
     </div>
-    <br/>
     <div class="row text-center" id="footer"></div>
 </div>
 <script src="/assets/js/particles.js"></script>

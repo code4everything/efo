@@ -15,6 +15,24 @@ import java.util.List;
 public interface IFileService {
 
     /**
+     * 获取用户的下载资源
+     *
+     * @param userId 用户编号
+     *
+     * @return {@link List}
+     */
+    List<FileRecord> getUserDownloaded(int userId);
+
+    /**
+     * 获取用户的上传资源
+     *
+     * @param userId 用户编号
+     *
+     * @return {@link List}
+     */
+    List<FileRecord> getUserUploaded(int userId);
+
+    /**
      * 通过编号删除
      *
      * @param id 编号
@@ -59,11 +77,6 @@ public interface IFileService {
      * @return {@link String}
      */
     String getLocalUrlByVisitUrl(String visitUrl);
-
-    /**
-     * 下载文件
-     */
-    void download();
 
     /**
      * 获取所有文件

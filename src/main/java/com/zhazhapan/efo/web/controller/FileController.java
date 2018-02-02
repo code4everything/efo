@@ -6,13 +6,10 @@ import com.zhazhapan.efo.annotation.AuthInterceptor;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
-import com.zhazhapan.efo.service.impl.FileServiceImpl;
+import com.zhazhapan.efo.service.IFileService;
 import com.zhazhapan.efo.util.ControllerUtils;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.FileExecutor;
 import com.zhazhapan.util.Formatter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,8 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.OutputStream;
 
 /**
  * @author pantao
@@ -33,16 +28,28 @@ import java.io.OutputStream;
 @RequestMapping("/file")
 public class FileController {
 
-    private static Logger logger = LoggerFactory.getLogger(FileController.class);
-
     @Autowired
-    FileServiceImpl fileService;
+    IFileService fileService;
 
     @Autowired
     HttpServletRequest request;
 
     @Autowired
     JSONObject jsonObject;
+
+    @AuthInterceptor(InterceptorLevel.USER)
+    @RequestMapping(value = "/user/downloaded", method = RequestMethod.GET)
+    public String getUserDownloaded() {
+        User user = (User) request.getSession().getAttribute("user");
+        return Formatter.listToJson(fileService.getUserDownloaded(user.getId()));
+    }
+
+    @AuthInterceptor(InterceptorLevel.USER)
+    @RequestMapping(value = "/user/uploaded", method = RequestMethod.GET)
+    public String getUserUploaded() {
+        User user = (User) request.getSession().getAttribute("user");
+        return Formatter.listToJson(fileService.getUserUploaded(user.getId()));
+    }
 
     @AuthInterceptor
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -74,14 +81,6 @@ public class FileController {
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/**", method = RequestMethod.GET)
     public void getResource(HttpServletResponse response) {
-        File file = new File(fileService.getResource(request.getServletPath(), request));
-        try {
-            OutputStream os = response.getOutputStream();
-            os.write(FileExecutor.readFileToByteArray(file));
-            os.flush();
-        } catch (Exception e) {
-            response.setStatus(404);
-            logger.error(e.getMessage());
-        }
+        ControllerUtils.loadResource(response, fileService.getResource(request.getServletPath(), request));
     }
 }

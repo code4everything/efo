@@ -23,7 +23,7 @@ public interface DownloadDAO {
      * @param fileId 文件编号
      */
     @Insert("insert into download(user_id,file_id) values(#{userId},#{fileId})")
-    void insertDownload(int userId, long fileId);
+    void insertDownload(@Param("userId") int userId, @Param("fileId") long fileId);
 
     /**
      * 查询下载记录

@@ -9,7 +9,7 @@ import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
-import com.zhazhapan.efo.service.impl.UserServiceImpl;
+import com.zhazhapan.efo.service.IUserService;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.encryption.JavaEncrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import java.security.NoSuchAlgorithmException;
 public class UserController {
 
     @Autowired
-    UserServiceImpl userService;
+    IUserService userService;
 
     @Autowired
     HttpServletRequest request;
