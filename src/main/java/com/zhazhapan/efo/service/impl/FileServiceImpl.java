@@ -2,7 +2,6 @@ package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.EfoApplication;
 import com.zhazhapan.efo.config.SettingConfig;
-import com.zhazhapan.efo.dao.CategoryDAO;
 import com.zhazhapan.efo.dao.FileDAO;
 import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.entity.File;
@@ -10,6 +9,9 @@ import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.model.AuthRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
+import com.zhazhapan.efo.service.IAuthService;
+import com.zhazhapan.efo.service.ICategoryService;
+import com.zhazhapan.efo.service.IDownloadService;
 import com.zhazhapan.efo.service.IFileService;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.*;
@@ -17,6 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,32 +39,90 @@ import java.util.regex.Pattern;
 @Service
 public class FileServiceImpl implements IFileService {
 
-    private static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+
+    private final FileDAO fileDAO;
+
+    private final ICategoryService categoryService;
+
+    private final IAuthService authService;
+
+    private final IDownloadService downloadService;
 
     @Autowired
-    FileDAO fileDAO;
-
-    @Autowired
-    CategoryDAO categoryDAO;
-
-    @Autowired
-    AuthServiceImpl authService;
-
-    @Autowired
-    DownloadServiceImpl downloadService;
-
-    @Override
-    public List<FileRecord> getUserDownloaded(int userId) {
-        return fileDAO.getUserDownloaded(userId);
+    public FileServiceImpl(FileDAO fileDAO, ICategoryService categoryService, IAuthService authService,
+                           IDownloadService downloadService) {
+        this.fileDAO = fileDAO;
+        this.categoryService = categoryService;
+        this.authService = authService;
+        this.downloadService = downloadService;
     }
 
     @Override
-    public List<FileRecord> getUserUploaded(int userId) {
-        return fileDAO.getUserUploaded(userId);
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
+            Exception.class)
+    public boolean updateFileInfo(long id, User user, String name, String category, String tag, String description) {
+        File file = fileDAO.getById(id);
+        if (Checker.isNotNull(file) && file.getIsUpdatable() == 1) {
+            AuthRecord authRecord = authService.getByFileIdAndUserId(id, user.getId());
+            String suffix = FileExecutor.getFileSuffix(name);
+            boolean canUpdate = (Checker.isNull(authRecord) ? user.getIsUpdatable() == 1 : authRecord.getIsUpdatable
+                    () == 1) && Checker.isNotEmpty(name) && Pattern.compile(EfoApplication.settings.getStringUseEval
+                    (ConfigConsts.FILE_SUFFIX_MATCH_OF_SETTING)).matcher(suffix).matches();
+            if (canUpdate) {
+                String localUrl = file.getLocalUrl();
+                java.io.File newFile = new java.io.File(localUrl);
+                String visitUrl = file.getVisitUrl();
+                String newLocalUrl = localUrl.substring(0, localUrl.lastIndexOf(ValueConsts.SEPARATOR) + 1) + name;
+                String newVisitUrl = visitUrl.substring(0, visitUrl.lastIndexOf("/") + 1) + name;
+                file.setName(name);
+                file.setSuffix(suffix);
+                file.setLocalUrl(newLocalUrl);
+                file.setVisitUrl(newVisitUrl);
+                file.setCategoryId(categoryService.getIdByName(category));
+                file.setTag(tag);
+                file.setDescription(description);
+                boolean isValid = (localUrl.endsWith("/" + name) || (!Checker.isExists(newLocalUrl) &&
+                        !localUrlExists(newLocalUrl) && !visitUrlExists(newVisitUrl)));
+                if (isValid && fileDAO.updateFileInfo(file)) {
+                    return newFile.renameTo(new java.io.File(newLocalUrl));
+                }
+            }
+        }
+        return false;
     }
 
     @Override
+    public boolean removeFile(User user, long fileId) {
+        File file = fileDAO.getById(fileId);
+        boolean isDeleted = false;
+        if (Checker.isNotNull(file) && file.getIsDeletable() == 1) {
+            AuthRecord authRecord = authService.getByFileIdAndUserId(fileId, user.getId());
+            String localUrl = fileDAO.getLocalUrlById(fileId);
+            isDeleted = (Checker.isNull(authRecord) ? user.getIsDeletable() == 1 : authRecord.getIsDeletable() == 1)
+                    && removeById(fileId);
+            if (isDeleted) {
+                FileExecutor.deleteFile(localUrl);
+            }
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public List<FileRecord> getUserDownloaded(int userId, int offset) {
+        return fileDAO.getUserDownloaded(userId, offset);
+    }
+
+    @Override
+    public List<FileRecord> getUserUploaded(int userId, int offset) {
+        return fileDAO.getUserUploaded(userId, offset);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
+            Exception.class)
     public boolean removeById(long id) {
+        downloadService.removeByFileId(id);
         authService.removeByFileId(id);
         return fileDAO.removeById(id);
     }
@@ -85,12 +148,12 @@ public class FileServiceImpl implements IFileService {
         File file = fileDAO.getFileByVisitUrl(visitUrl);
         AuthRecord authRecord = null;
         if (Checker.isNotNull(file)) {
-            authRecord = authService.getByFileId(file.getId());
+            authRecord = authService.getByFileIdAndUserId(file.getId(), Checker.isNull(user) ? 0 : user.getId());
         }
-        boolean canDownload = downloadable || (((Checker.isNotNull(user) && user.getIsDownloadable() == 1) ||
-                (Checker.isNotNull(authRecord) && authRecord.getIsDownloadable() == 1)) && Checker.isNotNull(file) &&
-                file.getIsDownloadable() == 1);
-        if (canDownload && Checker.isNotNull(file)) {
+        boolean canDownload = Checker.isNotNull(file) && file.getIsDownloadable() == 1 && (downloadable || (Checker
+                .isNull(authRecord) ? (Checker.isNotNull(user) && user.getIsDownloadable() == 1) : authRecord
+                .getIsDownloadable() == 1));
+        if (canDownload) {
             fileDAO.updateDownloadTimesById(file.getId());
             if (Checker.isNotNull(user)) {
                 downloadService.insertDownload(user.getId(), file.getId());
@@ -106,17 +169,19 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<FileRecord> getAll() {
-        return fileDAO.getAll();
+    public List<FileRecord> getAll(int offset) {
+        return fileDAO.getAll(offset);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
+            Exception.class)
     public boolean upload(int categoryId, String tag, String description, MultipartFile multipartFile, User user) {
         if (user.getIsUploadable() == 1) {
             String name = multipartFile.getOriginalFilename();
             String suffix = FileExecutor.getFileSuffix(name);
             String localUrl = SettingConfig.getUploadStoragePath() + ValueConsts.SEPARATOR + name;
-            Category category = categoryDAO.getCategoryById(categoryId);
+            Category category = categoryService.getById(categoryId);
             long maxSize = Formatter.sizeToLong(EfoApplication.settings.getStringUseEval(ConfigConsts
                     .FILE_MAX_SIZE_OF_SETTING));
             long size = multipartFile.getSize();

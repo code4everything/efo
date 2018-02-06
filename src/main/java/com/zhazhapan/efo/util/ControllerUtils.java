@@ -1,12 +1,12 @@
 package com.zhazhapan.efo.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.FileExecutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -15,7 +15,7 @@ import java.io.OutputStream;
  */
 public class ControllerUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(ControllerUtils.class);
+    private ControllerUtils() {}
 
     /**
      * 获取一个简单的响应状态
@@ -40,16 +40,15 @@ public class ControllerUtils {
      * @param response 返回的Response
      * @param path 资源路径
      */
-    public static void loadResource(HttpServletResponse response, String path) {
-        File file = new File(path);
-        try {
+    public static void loadResource(HttpServletResponse response, String path) throws IOException {
+        if (Checker.isNotEmpty(path)) {
+            File file = new File(path);
             OutputStream os = response.getOutputStream();
             os.write(FileExecutor.readFileToByteArray(file));
             os.flush();
             os.close();
-        } catch (Exception e) {
-            response.setStatus(404);
-            logger.error(e.getMessage());
+        } else {
+            response.sendRedirect("/404.html");
         }
     }
 }

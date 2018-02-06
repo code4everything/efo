@@ -12,11 +12,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class DownloadServiceImpl implements IDownloadService {
 
+    private final DownloadDAO downloadDAO;
+
     @Autowired
-    DownloadDAO downloadDAO;
+    public DownloadServiceImpl(DownloadDAO downloadDAO) {this.downloadDAO = downloadDAO;}
 
     @Override
     public void insertDownload(int userId, long fileId) {
         downloadDAO.insertDownload(userId, fileId);
+    }
+
+    @Override
+    public void removeByFileId(long fileId) {
+        downloadDAO.removeByFileId(fileId);
     }
 }

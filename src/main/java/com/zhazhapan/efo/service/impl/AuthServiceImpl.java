@@ -19,12 +19,14 @@ import java.util.List;
 @Service
 public class AuthServiceImpl implements IAuthService {
 
+    private final AuthDAO authDAO;
+
     @Autowired
-    AuthDAO authDAO;
+    public AuthServiceImpl(AuthDAO authDAO) {this.authDAO = authDAO;}
 
     @Override
-    public AuthRecord getByFileId(long fileId) {
-        List<AuthRecord> authRecords = authDAO.getAuthBy(0, 0, fileId, 0);
+    public AuthRecord getByFileIdAndUserId(long fileId, int userId) {
+        List<AuthRecord> authRecords = authDAO.getAuthBy(0, userId, fileId, 0);
         if (Checker.isNotEmpty(authRecords)) {
             return authRecords.get(0);
         }

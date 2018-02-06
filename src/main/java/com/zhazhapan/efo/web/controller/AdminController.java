@@ -16,12 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    IAdminService adminService;
+    private final IAdminService adminService;
+
+    private final HttpServletRequest request;
+
+    private final JSONObject jsonObject;
 
     @Autowired
-    HttpServletRequest request;
-
-    @Autowired
-    JSONObject jsonObject;
+    public AdminController(IAdminService adminService, HttpServletRequest request, JSONObject jsonObject) {
+        this.adminService = adminService;
+        this.request = request;
+        this.jsonObject = jsonObject;
+    }
 }

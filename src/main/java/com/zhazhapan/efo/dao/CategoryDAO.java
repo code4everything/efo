@@ -14,6 +14,14 @@ import java.util.List;
 public interface CategoryDAO {
 
     /**
+     * 通过分类名获取ID
+     *
+     * @return {@link Integer}
+     */
+    @Select("select id from category where name=#{name}")
+    int getIdByName(String name);
+
+    /**
      * 添加一个分类
      *
      * @param name 分类名

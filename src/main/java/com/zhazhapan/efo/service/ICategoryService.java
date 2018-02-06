@@ -53,4 +53,11 @@ public interface ICategoryService {
      * @return {@link List}
      */
     List<Category> getAll();
+
+    /**
+     * 通过分类名获取ID
+     *
+     * @return {@link Integer}
+     */
+    int getIdByName(String name);
 }

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author pantao
@@ -28,18 +29,22 @@ public class CommonController {
 
     private static Logger logger = LoggerFactory.getLogger(ConfigController.class);
 
-    @Autowired
-    ICommonService commonService;
+    private final ICommonService commonService;
+
+    private final HttpServletRequest request;
+
+    private final JSONObject jsonObject;
 
     @Autowired
-    HttpServletRequest request;
-
-    @Autowired
-    private JSONObject jsonObject;
+    public CommonController(ICommonService commonService, HttpServletRequest request, JSONObject jsonObject) {
+        this.commonService = commonService;
+        this.request = request;
+        this.jsonObject = jsonObject;
+    }
 
     @AuthInterceptor
     @RequestMapping(value = "/avatar/{name}", method = RequestMethod.GET)
-    public void getAvatar(HttpServletResponse response, @PathVariable("name") String name) {
+    public void getAvatar(HttpServletResponse response, @PathVariable("name") String name) throws IOException {
         ControllerUtils.loadResource(response, SettingConfig.getAvatarStoragePath() + ValueConsts.SEPARATOR + name);
     }
 

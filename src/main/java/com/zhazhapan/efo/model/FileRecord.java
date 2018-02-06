@@ -46,6 +46,33 @@ public class FileRecord {
 
     private Timestamp createTime;
 
+    private Timestamp downloadTime;
+
+    public FileRecord(long id, int userId, String username, String avatar, String fileName, long size, Timestamp
+            createTime, String categoryName, String description, String tag, int checkTimes, int downloadTimes,
+                      String visitUrl, int isUploadable, int isDeletable, int isUpdatable, int isDownloadable, int
+                              isVisible, Timestamp downloadTime) {
+        this.id = id;
+        this.userId = userId;
+        this.username = username;
+        this.avatar = avatar;
+        this.fileName = fileName;
+        this.size = size;
+        this.createTime = createTime;
+        this.categoryName = categoryName;
+        this.description = description;
+        this.tag = tag;
+        this.checkTimes = checkTimes;
+        this.downloadTimes = downloadTimes;
+        this.visitUrl = visitUrl;
+        this.isUploadable = isUploadable;
+        this.isDeletable = isDeletable;
+        this.isUpdatable = isUpdatable;
+        this.isDownloadable = isDownloadable;
+        this.isVisible = isVisible;
+        this.downloadTime = downloadTime;
+    }
+
     public FileRecord(long id, int userId, String username, String avatar, String fileName, long size, Timestamp
             createTime, String categoryName, String description, String tag, int checkTimes, int downloadTimes,
                       String visitUrl, int isUploadable, int isDeletable, int isUpdatable, int isDownloadable, int
@@ -73,6 +100,14 @@ public class FileRecord {
     @Override
     public String toString() {
         return BeanUtils.toPrettyJson(this);
+    }
+
+    public Timestamp getDownloadTime() {
+        return downloadTime;
+    }
+
+    public void setDownloadTime(Timestamp downloadTime) {
+        this.downloadTime = downloadTime;
     }
 
     public long getId() {

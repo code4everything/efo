@@ -7,11 +7,26 @@ var app = new Vue({
         passwordVerify: "",
         passwordConfirm: "",
         emailErrorTip: "",
-        emailVerifyStatus: ""
+        emailVerifyStatus: "",
+        pagingMode: "more"
     }
 });
 
+Vue.component('paging-more', {
+    template: '<button class="btn btn-link btn-block btn-lg" onclick="offset += 1;getPage();"><b>获取更多</b></button><br/><br/>'
+});
+
 var userInfo = {};
+
+function getPage() {
+    if (currentTab === "#downloaded-content") {
+        getUserDownloaded();
+    } else if (currentTab === "#uploaded-content") {
+        getUserUploaded();
+    } else {
+        getResource();
+    }
+}
 
 /**
  * 保存用户信息
@@ -153,16 +168,21 @@ $(document).ready(function () {
     $(".nav-link").click(function () {
         var href = $(event.srcElement).attr("href");
         if (href.startsWith("resource", 1)) {
+            offset = 0;
             getResource();
         } else if (href.startsWith("uploaded", 1)) {
+            offset = 0;
             getUserUploaded();
         } else if (href.startsWith("downloaded", 1)) {
+            offset = 0;
             getUserDownloaded();
         } else if (href.startsWith("bio", 1)) {
             getUserInfo();
         }
     });
 });
+
+var offset = 0;
 
 function checkEmailChange(email) {
     var isChange = email !== userInfo.email;
@@ -189,47 +209,159 @@ $.get("/config/user", function (data) {
     userConfig = JSON.parse(data);
 });
 
+var currentTab = "#resources-content";
+
 function getUserDownloaded() {
+    currentTab = "#downloaded-content";
     layer.load(1);
-    $.get("/file/user/downloaded", function (data) {
+    $.get("/file/user/downloaded", {offset: offset}, function (data) {
         layer.closeAll();
-        setResources(JSON.parse(data), "#downloaded-content");
+        setResources(JSON.parse(data), currentTab);
     });
 }
 
 function getUserUploaded() {
+    currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/file/user/uploaded", function (data) {
+    $.get("/file/user/uploaded", {offset: offset}, function (data) {
         layer.closeAll();
-        setResources(JSON.parse(data), "#uploaded-content");
+        setResources(JSON.parse(data), currentTab);
     });
 }
 
 function getResource() {
+    currentTab = "#resources-content";
     layer.load(1);
-    $.get("/file/all", function (data) {
+    $.get("/file/all", {offset: offset}, function (data) {
         layer.closeAll();
-        setResources(JSON.parse(data), "#resources-content");
+        setResources(JSON.parse(data), currentTab);
     });
 }
 
 function setResources(resources, tabId) {
     var contentHtml = "";
-    $.each(resources, function (i, resource) {
-        /** @namespace resource.fileName */
-        /** @namespace resource.createTime */
-        /** @namespace resource.categoryName */
-        /** @namespace resource.checkTimes */
-        /** @namespace resource.downloadTimes */
-        /** @namespace resource.visitUrl */
-        contentHtml += "<div class='row content-box rounded'><div class='col-12 col-sm-12'><br/><div class='row'>" +
-            "<div class='col-sm-1 col-0'><img src='" + (resource.avatar ? resource.avatar : "/assets/img/default-user.jpg") + "' class='rounded avatar'/>" +
-            "</div><div class='col-sm-11 col-12'><h4><a data-toggle='tooltip' href='" + resource.visitUrl + "' target='_blank' title='" + resource.description + "'>" + resource.fileName + "</a>" +
-            "</h4><p>上传者：<b>" + resource.username + "</b>&emsp;上传时间：<b>" + new Date(resource.createTime).format("yyyy-MM-dd hh:mm:ss") + "</b>&emsp;文件大小：<b>" + formatSize(resource.size) + "</b>&emsp;分类：<b>" + resource.categoryName + "</b>" +
-            "&emsp;标签：<b>" + resource.tag + "</b>&emsp;查看次数：<b>" + resource.checkTimes + "</b>&emsp;下载次数：<b>" + resource.downloadTimes + "</b>" +
-            "</p></div></div><br/></div></div><br/>";
-    });
-    $(tabId).html(contentHtml);
-    $('[data-toggle="tooltip"]').tooltip();
-    setCSS();
+    if (resources.length < 1) {
+        offset -= 1;
+        alerts("没有更多了");
+    } else {
+        $.each(resources, function (i, resource) {
+            /** @namespace resource.fileName */
+            /** @namespace resource.createTime */
+            /** @namespace resource.categoryName */
+            /** @namespace resource.checkTimes */
+            /** @namespace resource.downloadTimes */
+            /** @namespace resource.visitUrl */
+            /** @namespace resource.downloadTime */
+            /**
+             * 暂时不考虑查看次数
+             * @code &emsp;查看次数：<b>" + resource.checkTimes + "</b>
+             */
+            var isDownloaded = "#downloaded-content" === tabId;
+            var date = isDownloaded ? resource.downloadTime : resource.createTime;
+            contentHtml += "<div class='row content-box rounded' data-id='" + resource.id + "'><div class='col-12 col-sm-12'><br/><div class='row'>" +
+                "<div class='col-sm-1 col-0'><img src='" + (resource.avatar ? resource.avatar : "/assets/img/default-user.jpg") + "' class='rounded avatar'/>" +
+                "</div><div class='col-sm-11 col-12'><h4><a data-toggle='tooltip' class='visit-url' href='" + resource.visitUrl + "' target='_blank' data-description='" + resource.description + "' title='" + resource.description + "'>" + resource.fileName + "</a>" +
+                ("#uploaded-content" === tabId ? "&emsp;<a href='javascript:;' class='font-1' onclick='editFile();'>编辑</a>&emsp;<a href='javascript:;' class='font-1' onclick='removeFile();'>删除</a>" : "") +
+                "</h4><p>上传者：<b>" + resource.username + "</b>&emsp;" + (isDownloaded ? "下载" : "上传") + "时间：<b>" + new Date(date).format("yyyy-MM-dd hh:mm:ss") + "</b>&emsp;文件大小：<b>" + formatSize(resource.size) + "</b>&emsp;分类：<b class='file-category'>" + resource.categoryName + "</b>" +
+                "&emsp;标签：<b class='file-tag'>" + resource.tag + "</b>&emsp;下载次数：<b>" + resource.downloadTimes + "</b>" +
+                "</p></div></div><br/></div></div><br/>";
+        });
+        /** @namespace globalConfig.paging */
+        if (offset > 0 && globalConfig.paging.mode === "more") {
+            $(tabId).append(contentHtml);
+        } else {
+            $(tabId).html(contentHtml);
+        }
+        $('[data-toggle="tooltip"]').tooltip();
+        setCSS();
+    }
 }
+
+var srcContentBox;
+
+function editFile() {
+    var contentBox = $(event.srcElement).parents(".content-box");
+    srcContentBox = contentBox;
+    $("#edit-file-id").val($(contentBox).attr("data-id"));
+    $("#edit-file-name").val($(contentBox).find("a.visit-url").text());
+    $("#edit-file-category").val($(contentBox).find("b.file-category").text());
+    $("#edit-file-tag").val($(contentBox).find("b.file-tag").text());
+    $("#edit-file-description").val($(contentBox).find("a.visit-url").attr("data-description"));
+    $("#edit-file-modal").modal("show");
+}
+
+function saveFileInfo() {
+    var name = $("#edit-file-name").val();
+    var category = $("#edit-file-category").val();
+    var tag = $("#edit-file-tag").val();
+    var description = $("#edit-file-description").val();
+    if (isEmpty(name)) {
+        alerts("文件名不能为空");
+    } else {
+        layer.load(1);
+        $.ajax({
+            url: "/file/" + $("#edit-file-id").val() + "/update",
+            type: "PUT",
+            data: {
+                name: name,
+                category: category,
+                tag: tag,
+                description: description
+            },
+            success: function (data) {
+                layer.closeAll();
+                var json = JSON.parse(data);
+                if (json.status === "success") {
+                    $(srcContentBox).find("a.visit-url").text(name);
+                    $(srcContentBox).find("b.file-category").text(category);
+                    $(srcContentBox).find("b.file-tag").text(tag);
+                    $(srcContentBox).find("a.visit-url").attr("data-description", description);
+                    var href = $(srcContentBox).find("a.visit-url").attr("href");
+                    $(srcContentBox).find("a.visit-url").attr("href", href.substr(0, href.lastIndexOf("/") + 1) + name);
+                    $("#edit-file-modal").modal("hide");
+                    alerts("保存成功");
+                } else {
+                    alerts(json.message);
+                }
+            }
+        })
+        ;
+    }
+}
+
+function removeFile() {
+    var contentBox = $(event.srcElement).parents(".content-box");
+    layer.confirm('是否确定删除文件【' + $(contentBox).find("a.visit-url").text() + '】', {
+        btn: ['确定', '删除'],
+        skin: 'layui-layer-molv'
+    }, function () {
+        var id = $(contentBox).attr("data-id");
+        layer.load(1);
+        $.ajax({
+            url: "/file/" + id + "/delete", type: "DELETE", success: function (data) {
+                layer.closeAll();
+                var json = JSON.parse(data);
+                if (json.status === "success") {
+                    $(contentBox).remove();
+                    layer.msg("删除成功");
+                } else {
+                    alerts(json.message);
+                }
+            }, error: function () {
+                layer.closeAll();
+                alerts("服务器异常，请联系管理员");
+            }
+        });
+    });
+}
+
+$.get("/category/all", function (data) {
+    var json = JSON.parse(data);
+    var option = "";
+    $.each(json, function (i, category) {
+        option += "<option value='" + category.name + "'>" + category.name + "</option>";
+    });
+    if (!isEmpty(option)) {
+        $("#edit-file-category").html(option);
+    }
+});

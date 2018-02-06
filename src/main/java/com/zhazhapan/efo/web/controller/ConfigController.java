@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/config")
 public class ConfigController {
 
+    private final IConfigService configService;
+
     @Autowired
-    IConfigService configService;
+    public ConfigController(IConfigService configService) {this.configService = configService;}
 
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/global", method = RequestMethod.GET)

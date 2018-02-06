@@ -9,6 +9,8 @@ import com.zhazhapan.modules.constant.ValueConsts;
  */
 public class CommonUtils {
 
+    private CommonUtils() {}
+
     /**
      * 将相对路径转换成绝对路径
      *

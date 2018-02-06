@@ -16,8 +16,10 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements ICategoryService {
 
+    private final CategoryDAO categoryDAO;
+
     @Autowired
-    CategoryDAO categoryDAO;
+    public CategoryServiceImpl(CategoryDAO categoryDAO) {this.categoryDAO = categoryDAO;}
 
     @Override
     public boolean insert(String name) {
@@ -42,5 +44,10 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public List<Category> getAll() {
         return categoryDAO.getAllCategory();
+    }
+
+    @Override
+    public int getIdByName(String name) {
+        return categoryDAO.getIdByName(name);
     }
 }

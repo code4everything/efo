@@ -13,10 +13,11 @@ public interface IAuthService {
      * 获取一个权限
      *
      * @param fileId 文件编号
+     * @param userId 用户编号
      *
      * @return {@link AuthRecord}
      */
-    AuthRecord getByFileId(long fileId);
+    AuthRecord getByFileIdAndUserId(long fileId, int userId);
 
     /**
      * 添加一个默认权限

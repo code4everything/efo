@@ -18,6 +18,13 @@
             "visible": true,
             "downloadable": false
         },
+        "paging": {
+            "mode": "more",
+            "support": [
+                "more",
+                "page"
+            ]
+        },
         "css": [
             {
                 "selector": [
@@ -50,19 +57,7 @@
             "imageList": [
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_1.jpg",
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_2.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_3.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_4.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_5.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_6.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_7.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_8.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_9.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_10.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_11.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_12.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_13.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_14.jpg",
-                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_15.jpg"
+                "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_3.jpg"
             ],
             "listGenerator": {
                 "enable": true,

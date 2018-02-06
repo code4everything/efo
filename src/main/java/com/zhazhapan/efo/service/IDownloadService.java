@@ -13,4 +13,11 @@ public interface IDownloadService {
      * @param fileId 文件编号
      */
     void insertDownload(int userId, long fileId);
+
+    /**
+     * 通过文件编号删除下载记录
+     *
+     * @param fileId 文件编号
+     */
+    void removeByFileId(long fileId);
 }

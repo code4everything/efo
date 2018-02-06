@@ -16,6 +16,26 @@ import java.util.List;
 public interface FileDAO {
 
     /**
+     * 通过编号获取文件
+     *
+     * @param id 编号
+     *
+     * @return {@link File}
+     */
+    @Select("select * from file where id=#{id}")
+    File getById(long id);
+
+    /**
+     * 通过ID获取本地路径
+     *
+     * @param fileId 文件编号
+     *
+     * @return {@link String}
+     */
+    @Select("select local_url from file where id=#{id}")
+    String getLocalUrlById(long fileId);
+
+    /**
      * 通过编号删除文件
      *
      * @param id 编号
@@ -133,6 +153,18 @@ public interface FileDAO {
     void deleteFileByCategoryId(int categoryId);
 
     /**
+     * 更新文件基本信息
+     *
+     * @param file 文件
+     *
+     * @return 是否更新成功
+     */
+    @Update("update file set name=#{name},suffix=#{suffix},local_url=#{localUrl},visit_url=#{visitUrl}," +
+            "description=#{description},tag=#{tag},category_id=#{categoryId},last_modify_time=current_timestamp " +
+            "where" + " id=#{id}")
+    boolean updateFileInfo(File file);
+
+    /**
      * 更新文件权限
      *
      * @param id 编号
@@ -239,28 +271,32 @@ public interface FileDAO {
     /**
      * 获取文件资源
      *
+     * @param offset 偏移
+     *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getAll")
-    List<FileRecord> getAll();
+    List<FileRecord> getAll(@Param("offset") int offset);
 
     /**
      * 获取用户的上传资源
      *
      * @param userId 用户编号
+     * @param offset 偏移
      *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getUserUploaded")
-    List<FileRecord> getUserUploaded(int userId);
+    List<FileRecord> getUserUploaded(@Param("userId") int userId, @Param("offset") int offset);
 
     /**
      * 获取用户的下载资源
      *
      * @param userId 用户编号
+     * @param offset 偏移
      *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getUserDownloaded")
-    List<FileRecord> getUserDownloaded(int userId);
+    List<FileRecord> getUserDownloaded(@Param("userId") int userId, @Param("offset") int offset);
 }

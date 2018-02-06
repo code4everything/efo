@@ -26,8 +26,10 @@ import static com.zhazhapan.efo.EfoApplication.tokens;
 @Service
 public class UserServiceImpl implements IUserService {
 
+    private final UserDAO userDAO;
+
     @Autowired
-    UserDAO userDAO;
+    public UserServiceImpl(UserDAO userDAO) {this.userDAO = userDAO;}
 
     @Override
     public User login(String loginName, String password, String token, HttpServletResponse response) {

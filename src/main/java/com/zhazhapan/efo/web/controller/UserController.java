@@ -29,14 +29,18 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    IUserService userService;
+    private final IUserService userService;
+
+    private final HttpServletRequest request;
+
+    private final JSONObject jsonObject;
 
     @Autowired
-    HttpServletRequest request;
-
-    @Autowired
-    private JSONObject jsonObject;
+    public UserController(IUserService userService, HttpServletRequest request, JSONObject jsonObject) {
+        this.userService = userService;
+        this.request = request;
+        this.jsonObject = jsonObject;
+    }
 
     @AuthInterceptor
     @RequestMapping(value = "/basic/update", method = RequestMethod.PUT)

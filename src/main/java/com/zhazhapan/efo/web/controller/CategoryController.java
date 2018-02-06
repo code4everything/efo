@@ -1,6 +1,5 @@
 package com.zhazhapan.efo.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.efo.annotation.AuthInterceptor;
 import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.enums.InterceptorLevel;
@@ -22,11 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/category")
 public class CategoryController {
 
-    @Autowired
-    ICategoryService categoryService;
+    private final ICategoryService categoryService;
 
     @Autowired
-    JSONObject jsonObject;
+    public CategoryController(ICategoryService categoryService) {this.categoryService = categoryService;}
 
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/add", method = RequestMethod.POST)

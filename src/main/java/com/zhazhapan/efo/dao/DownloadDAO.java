@@ -2,6 +2,7 @@ package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.dao.sqlprovider.DownloadSqlProvider;
 import com.zhazhapan.efo.model.DownloadRecord;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -37,4 +38,7 @@ public interface DownloadDAO {
     @SelectProvider(type = DownloadSqlProvider.class, method = "getDownloadBy")
     List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") int fileId, @Param("offset") int
             offset);
+
+    @Delete("delete from download where file_id=#{fileId}")
+    boolean removeByFileId(long fileId);
 }

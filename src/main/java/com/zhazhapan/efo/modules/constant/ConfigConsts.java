@@ -9,6 +9,16 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class ConfigConsts {
 
     /**
+     * 文件默认排序方式
+     */
+    public static final String FILE_ORDER_BY_OF_SETTING = "file.orderBy";
+
+    /**
+     * 文件分页大小
+     */
+    public static final String FILE_PAGE_SIZE_OF_SETTING = "file.pageSize";
+
+    /**
      * 匿名用户下载权限
      */
     public static final String ANONYMOUS_DOWNLOADABLE_OF_SETTING = "global.anonymousUser.downloadable";
