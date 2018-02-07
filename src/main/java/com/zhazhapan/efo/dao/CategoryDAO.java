@@ -16,6 +16,8 @@ public interface CategoryDAO {
     /**
      * 通过分类名获取ID
      *
+     * @param name 分类名
+     *
      * @return {@link Integer}
      */
     @Select("select id from category where name=#{name}")

@@ -269,34 +269,42 @@ public interface FileDAO {
     File getFileByVisitUrl(String visitUrl);
 
     /**
-     * 获取文件资源
+     * 获取所有文件
      *
      * @param offset 偏移
+     * @param categoryId 分类编号
+     * @param orderBy 排序方式
+     * @param search 搜索
      *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getAll")
-    List<FileRecord> getAll(@Param("offset") int offset);
+    List<FileRecord> getAll(@Param("offset") int offset, @Param("categoryId") int categoryId, @Param("orderBy")
+            String orderBy, @Param("search") String search);
 
     /**
      * 获取用户的上传资源
      *
      * @param userId 用户编号
      * @param offset 偏移
+     * @param search 搜索
      *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getUserUploaded")
-    List<FileRecord> getUserUploaded(@Param("userId") int userId, @Param("offset") int offset);
+    List<FileRecord> getUserUploaded(@Param("userId") int userId, @Param("offset") int offset, @Param("search")
+            String search);
 
     /**
      * 获取用户的下载资源
      *
      * @param userId 用户编号
      * @param offset 偏移
+     * @param search 搜索
      *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getUserDownloaded")
-    List<FileRecord> getUserDownloaded(@Param("userId") int userId, @Param("offset") int offset);
+    List<FileRecord> getUserDownloaded(@Param("userId") int userId, @Param("offset") int offset, @Param("search")
+            String search);
 }

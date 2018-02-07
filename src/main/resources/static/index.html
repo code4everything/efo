@@ -48,7 +48,7 @@
     </div>
     <div class="form-inline w-50">
         <input class="form-control border-dark bg-dark text-white form-control-sm w-100" type="search"
-               placeholder="搜索"/>
+               placeholder="搜索" id="search"/>
     </div>
 </nav>
 <br/><br/><br/>
@@ -58,26 +58,44 @@
             <!--资源列表-->
             <div class="tab-pane active" id="resource-tab">
                 <div class="row content-box rounded">
-                    <div class="col-sm-2 col-5">
+                    <div class="col-sm-2 col-4">
                         <br/>
-                        <select class="form-control" id="category" title="分类">
-                            <option value="uncategorized">未分类</option>
+                        <select class="form-control content-filter" id="category" title="查找指定分类文件"
+                                data-toggle="tooltip">
+                            <option value="0">全部</option>
+                        </select>
+                        <br/>
+                    </div>
+                    <div class="col-sm-2 col-4">
+                        <br/>
+                        <select class="form-control content-filter" id="order-by" title="排序方法" data-toggle="tooltip">
+                            <option value="id">时间</option>
+                            <option value="download_times">热度</option>
+                            <option value="size">大小</option>
+                        </select>
+                        <br/>
+                    </div>
+                    <div class="col-sm-2 col-4">
+                        <br/>
+                        <select class="form-control content-filter" id="order-way" title="排序方式" data-toggle="tooltip">
+                            <option value="desc">降序</option>
+                            <option value="asc">升序</option>
                         </select>
                         <br/>
                     </div>
                 </div>
                 <br/>
                 <div id="resources-content"></div>
-                <paging-more v-if="pagingMode==='more'"></paging-more>
+                <paging-more></paging-more>
             </div>
             <!--我的上传-->
             <div class="tab-pane" id="uploaded-tab">
                 <div id="uploaded-content"></div>
-                <paging-more v-if="pagingMode==='more'"></paging-more>
+                <paging-more></paging-more>
             </div>
             <div class="tab-pane" id="downloaded-tab">
                 <div id="downloaded-content"></div>
-                <paging-more v-if="pagingMode==='more'"></paging-more>
+                <paging-more></paging-more>
             </div>
             <!--我的资料-->
             <div class="tab-pane text-left" id="bio-tab">

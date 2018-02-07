@@ -41,16 +41,16 @@ public class FileController {
 
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/user/downloaded", method = RequestMethod.GET)
-    public String getUserDownloaded(int offset) {
+    public String getUserDownloaded(int offset, String search) {
         User user = (User) request.getSession().getAttribute("user");
-        return Formatter.listToJson(fileService.getUserDownloaded(user.getId(), offset));
+        return Formatter.listToJson(fileService.getUserDownloaded(user.getId(), offset, search));
     }
 
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/user/uploaded", method = RequestMethod.GET)
-    public String getUserUploaded(int offset) {
+    public String getUserUploaded(int offset, String search) {
         User user = (User) request.getSession().getAttribute("user");
-        return Formatter.listToJson(fileService.getUserUploaded(user.getId(), offset));
+        return Formatter.listToJson(fileService.getUserUploaded(user.getId(), offset, search));
     }
 
     @AuthInterceptor
@@ -63,12 +63,12 @@ public class FileController {
 
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public String getAll(int offset) {
+    public String getAll(int offset, int categoryId, String orderBy, String search) {
         User user = (User) request.getSession().getAttribute("user");
         boolean canGet = EfoApplication.settings.getBooleanUseEval(ConfigConsts.ANONYMOUS_VISIBLE_OF_SETTING) ||
                 (Checker.isNotNull(user) && user.getIsVisible() == 1);
         if (canGet) {
-            return Formatter.listToJson(fileService.getAll(offset));
+            return Formatter.listToJson(fileService.getAll(offset, categoryId, orderBy, search));
         } else {
             jsonObject.put("error", "权限被限制，无法获取资源，请联系管理员");
             return jsonObject.toString();

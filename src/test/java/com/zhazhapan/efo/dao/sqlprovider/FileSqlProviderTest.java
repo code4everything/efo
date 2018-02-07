@@ -26,16 +26,16 @@ public class FileSqlProviderTest {
     @Test
     public void getAll() {
         EfoApplicationTest.setSettings();
-        System.out.println(fileSqlProvider.getAll(0));
+        System.out.println(fileSqlProvider.getAll(0, 0, "", ""));
     }
 
     @Test
     public void getUserUploaded() {
-        System.out.println(fileSqlProvider.getUserUploaded(0));
+        System.out.println(fileSqlProvider.getUserUploaded(0, ""));
     }
 
     @Test
     public void getUserDownloaded() {
-        System.out.println(fileSqlProvider.getUserDownloaded(0));
+        System.out.println(fileSqlProvider.getUserDownloaded(0, ""));
     }
 }

@@ -57,6 +57,8 @@ public interface ICategoryService {
     /**
      * 通过分类名获取ID
      *
+     * @param name 分类名
+     *
      * @return {@link Integer}
      */
     int getIdByName(String name);

@@ -7,10 +7,11 @@ var app = new Vue({
         passwordVerify: "",
         passwordConfirm: "",
         emailErrorTip: "",
-        emailVerifyStatus: "",
-        pagingMode: "more"
+        emailVerifyStatus: ""
     }
 });
+
+var search = "";
 
 Vue.component('paging-more', {
     template: '<button class="btn btn-link btn-block btn-lg" onclick="offset += 1;getPage();"><b>获取更多</b></button><br/><br/>'
@@ -24,7 +25,7 @@ function getPage() {
     } else if (currentTab === "#uploaded-content") {
         getUserUploaded();
     } else {
-        getResource();
+        getResource(getOrderBy());
     }
 }
 
@@ -125,7 +126,7 @@ function showAvatarModal() {
         uploadAsync: true,
         maxFileCount: 1,
         maxFilePreviewSize: 10485760
-    }).on('fileuploaded', function (event, data, previewId, index) {
+    }).on('fileuploaded', function (event, data) {
         var json = data.response;
         if (JSON.stringify(json).indexOf("success") > 0) {
             $("#avatar").attr("src", json.success);
@@ -135,7 +136,23 @@ function showAvatarModal() {
     });
 }
 
+function getOrderBy() {
+    return $("#order-by").val() + " " + $("#order-way").val();
+}
+
 $(document).ready(function () {
+    $("#search").keyup(function () {
+        /** @namespace window.event.keyCode */
+        if (window.event.keyCode === 13) {
+            search = $('#search').val();
+            offset = 0;
+            getPage();
+        }
+    });
+    $(".content-filter").change(function () {
+        offset = 0;
+        getResource(getOrderBy());
+    });
     $(".email-verify-code").keyup(function () {
         var code = event.srcElement.value;
         if (code.length === 6) {
@@ -169,7 +186,7 @@ $(document).ready(function () {
         var href = $(event.srcElement).attr("href");
         if (href.startsWith("resource", 1)) {
             offset = 0;
-            getResource();
+            getResource("");
         } else if (href.startsWith("uploaded", 1)) {
             offset = 0;
             getUserUploaded();
@@ -214,7 +231,7 @@ var currentTab = "#resources-content";
 function getUserDownloaded() {
     currentTab = "#downloaded-content";
     layer.load(1);
-    $.get("/file/user/downloaded", {offset: offset}, function (data) {
+    $.get("/file/user/downloaded", {offset: offset, search: search}, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
     });
@@ -223,16 +240,21 @@ function getUserDownloaded() {
 function getUserUploaded() {
     currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/file/user/uploaded", {offset: offset}, function (data) {
+    $.get("/file/user/uploaded", {offset: offset, search: search}, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
     });
 }
 
-function getResource() {
+function getResource(orderBy) {
     currentTab = "#resources-content";
     layer.load(1);
-    $.get("/file/all", {offset: offset}, function (data) {
+    $.get("/file/all", {
+        offset: offset,
+        categoryId: $("#category").val(),
+        orderBy: orderBy,
+        search: search
+    }, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
     });
@@ -240,6 +262,7 @@ function getResource() {
 
 function setResources(resources, tabId) {
     var contentHtml = "";
+    search = "";
     if (resources.length < 1) {
         offset -= 1;
         alerts("没有更多了");
@@ -363,5 +386,12 @@ $.get("/category/all", function (data) {
     });
     if (!isEmpty(option)) {
         $("#edit-file-category").html(option);
+    }
+    option = "";
+    $.each(json, function (i, category) {
+        option += "<option value='" + category.id + "'>" + category.name + "</option>";
+    });
+    if (!isEmpty(option)) {
+        $("#category").append(option);
     }
 });

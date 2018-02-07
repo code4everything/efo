@@ -39,6 +39,13 @@ public interface DownloadDAO {
     List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") int fileId, @Param("offset") int
             offset);
 
+    /**
+     * 删除文件
+     *
+     * @param fileId 文件编号
+     *
+     * @return 是否删除成功
+     */
     @Delete("delete from download where file_id=#{fileId}")
     boolean removeByFileId(long fileId);
 }

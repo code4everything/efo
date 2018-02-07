@@ -109,13 +109,13 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<FileRecord> getUserDownloaded(int userId, int offset) {
-        return fileDAO.getUserDownloaded(userId, offset);
+    public List<FileRecord> getUserDownloaded(int userId, int offset, String search) {
+        return fileDAO.getUserDownloaded(userId, offset, search);
     }
 
     @Override
-    public List<FileRecord> getUserUploaded(int userId, int offset) {
-        return fileDAO.getUserUploaded(userId, offset);
+    public List<FileRecord> getUserUploaded(int userId, int offset, String search) {
+        return fileDAO.getUserUploaded(userId, offset, search);
     }
 
     @Override
@@ -169,8 +169,8 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<FileRecord> getAll(int offset) {
-        return fileDAO.getAll(offset);
+    public List<FileRecord> getAll(int offset, int categoryId, String orderBy, String search) {
+        return fileDAO.getAll(offset, categoryId, orderBy, search);
     }
 
     @Override

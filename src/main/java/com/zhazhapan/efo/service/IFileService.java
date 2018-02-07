@@ -43,20 +43,22 @@ public interface IFileService {
      *
      * @param userId 用户编号
      * @param offset 偏移
+     * @param search 搜索
      *
      * @return {@link List}
      */
-    List<FileRecord> getUserDownloaded(int userId, int offset);
+    List<FileRecord> getUserDownloaded(int userId, int offset, String search);
 
     /**
      * 获取用户的上传资源
      *
      * @param userId 用户编号
      * @param offset 偏移
+     * @param search 搜索
      *
      * @return {@link List}
      */
-    List<FileRecord> getUserUploaded(int userId, int offset);
+    List<FileRecord> getUserUploaded(int userId, int offset, String search);
 
     /**
      * 通过编号删除，不验证权限
@@ -108,10 +110,13 @@ public interface IFileService {
      * 获取所有文件
      *
      * @param offset 偏移
+     * @param categoryId 分类编号
+     * @param orderBy 排序方式
+     * @param search 搜索
      *
      * @return {@link List}
      */
-    List<FileRecord> getAll(int offset);
+    List<FileRecord> getAll(int offset, int categoryId, String orderBy, String search);
 
     /**
      * 上传文件
