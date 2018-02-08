@@ -23,13 +23,15 @@ import java.io.IOException;
 @Service
 public class CommonServiceImpl implements ICommonService {
 
+    private static final String EMAIL_TITLE = "请查收您的验证码";
     private static Logger logger = LoggerFactory.getLogger(CommonServiceImpl.class);
 
     @Override
     public int sendVerifyCode(String email) {
-        int code = RandomUtils.getRandomInteger(100000, 999999);
+        int code = RandomUtils.getRandomInteger(ValueConsts.VERIFY_CODE_FLOOR, ValueConsts.VERIFY_CODE_CEIL);
+        String content = "<p>您的验证码：" + code + "</p><br/><br/><p>如非本人操作，请忽略本条消息。</p>";
         try {
-            MailSender.sendMail(email, "请查收您的验证码", "<p>您的验证码：" + code + "</p><br/><br/><p>如非本人操作，请忽略本条消息。</p>");
+            MailSender.sendMail(email, EMAIL_TITLE, content);
             return code;
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -40,8 +42,8 @@ public class CommonServiceImpl implements ICommonService {
     @Override
     public String uploadAvatar(MultipartFile multipartFile) {
         if (!multipartFile.isEmpty()) {
-            String name = RandomUtils.getRandomStringOnlyLowerCase(16) + ValueConsts.DOT_SIGN + FileExecutor
-                    .getFileSuffix(multipartFile.getOriginalFilename());
+            String name = RandomUtils.getRandomStringOnlyLowerCase(ValueConsts.SIXTEEN_INT) + ValueConsts.DOT_SIGN +
+                    FileExecutor.getFileSuffix(multipartFile.getOriginalFilename());
             if (Checker.isImage(name) && multipartFile.getSize() < ValueConsts.MB * DefaultValues.TWO_INT) {
                 String path = SettingConfig.getAvatarStoragePath() + ValueConsts.SEPARATOR + name;
                 try {

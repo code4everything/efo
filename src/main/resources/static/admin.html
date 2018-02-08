@@ -6,51 +6,55 @@
     <link rel="shortcut icon" href="/assets/img/efo-favicon.png"/>
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/css/nav.css"/>
-    <link rel="stylesheet" href="/assets/fonts/iconfont.css">
+    <link rel="stylesheet" href="/assets/css/glyphicons.css">
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/js/jquery-3.3.1.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/nav.js"></script>
     <script src="/assets/js/layer.js"></script>
     <script src="/assets/js/vue.js"></script>
-    <script src="/assets/js/nav.js"></script>
     <script src="/assets/js/utils.js"></script>
     <link rel="stylesheet" href="/assets/css/style.css"/>
     <title>管理</title>
 </head>
 <body id="particles-js">
-<div class="nav float-left float-sm-left">
-    <div class="nav-top">
+<div class="jq-nav float-left float-sm-left" style="height: 100%;min-height: 100vh;">
+    <div class="jq-nav-top">
         <div id="mini" style="border-bottom:1px solid rgba(255,255,255,0.1)"><img src="/assets/img/mini.png"></div>
     </div>
     <ul>
-        <li class="nav-item">
-            <a href="#upload-manager"><span class="glyphicon glyphicon-cloud-upload">上传管理</span></a>
+        <li class="jq-nav-item">
+            <a href="#upload-manager"><span class="glyphicon glyphicon-cloud-upload">&nbsp;<b>上传管理</b></span></a>
         </li>
-        <li class="nav-item">
-            <a href="#download-manager"><span class="glyphicon glyphicon-cloud-download">下载管理</span></a>
+        <li class="jq-nav-item">
+            <a href="#download-manager"><span class="glyphicon glyphicon-cloud-download">&nbsp;<b>下载管理</b></span></a>
         </li>
-        <li class="nav-item">
-            <a href="#auth-manager"><span>权限管理</span></a>
+        <li class="jq-nav-item">
+            <a href="#file-manager"><span class="glyphicon glyphicon-file">&nbsp;<b>文件管理</b></span></a>
         </li>
-        <li class="nav-item">
-            <a href="#category-manager"><span>分类管理</span></a>
+        <li class="jq-nav-item">
+            <a href="#auth-manager"><span class="glyphicon glyphicon-lock">&nbsp;<b>权限管理</b></span></a>
         </li>
-        <li class="nav-item">
-            <a href="#user-manager"><span>用户管理</span></a>
+        <li class="jq-nav-item">
+            <a href="#category-manager"><span class="glyphicon glyphicon-filter">&nbsp;<b>分类管理</b></span></a>
         </li>
-        <li class="nav-item">
-            <a href="#admin-manager"><span>管理员管理</span></a>
+        <li class="jq-nav-item">
+            <a href="#user-manager"><span class="glyphicon glyphicon-user">&nbsp;<b>用户管理</b></span></a>
         </li>
-        <li class="nav-item">
-            <a href="#system-setting"><span class="glyphicon glyphicon-cog">系统设置</span></a>
+        <li class="jq-nav-item">
+            <a href="#admin-manager"><span class="glyphicon glyphicon-globe">&nbsp;<b>管理员管理</b></span></a>
+        </li>
+        <li class="jq-nav-item">
+            <a href="#system-setting"><span class="glyphicon glyphicon-cog">&nbsp;<b>系统设置</b></span></a>
         </li>
     </ul>
 </div>
 <br/>
-<div class="row" id="upload-manager">上传管理</div>
-<div class="row" id="download-manager">下载管理</div>
-<div class="row" id="auth-manager">权限管理</div>
-<div class="row" id="category-manager">
+<div class="row jq-tab" id="upload-manager">上传管理</div>
+<div class="row jq-tab hide" id="download-manager">下载管理</div>
+<div class="row jq-tab hide" id="file-manager">文件管理</div>
+<div class="row jq-tab hide" id="auth-manager">权限管理</div>
+<div class="row jq-tab hide" id="category-manager">
     <div class="col-sm-3 col-12 offset-sm-1 content-box rounded">
         <br/>
         <h4 class="text-center">添加新分类</h4>
@@ -75,9 +79,9 @@
         <br/>
     </div>
 </div>
-<div class="row" id="user-manager">用户管理</div>
-<div class="row" id="admin-manager">管理员管理</div>
-<div class="row" id="system-setting">系统设置</div>
+<div class="row jq-tab hide" id="user-manager">用户管理</div>
+<div class="row jq-tab hide" id="admin-manager">管理员管理</div>
+<div class="row jq-tab hide" id="system-setting">系统设置</div>
 <div class="row text-center" id="footer"></div>
 <script src="/assets/js/particles.js"></script>
 <script src="/assets/js/default.js"></script>

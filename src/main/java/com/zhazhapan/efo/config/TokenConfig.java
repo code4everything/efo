@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.efo.EfoApplication;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.FileExecutor;
 import com.zhazhapan.util.Formatter;
@@ -30,7 +31,7 @@ public class TokenConfig {
     }
 
     public static String generateToken(int userId) {
-        String token = RandomUtils.getRandomStringOnlyLetter(32);
+        String token = RandomUtils.getRandomStringOnlyLetter(ValueConsts.THIRTY_TWO_INT);
         EfoApplication.tokens.put(token, userId);
         saveToken();
         return token;
@@ -46,13 +47,14 @@ public class TokenConfig {
     }
 
     public static Hashtable<String, Integer> loadToken() {
-        Hashtable<String, Integer> tokens = new Hashtable<>(16);
+        Hashtable<String, Integer> tokens = new Hashtable<>(ValueConsts.SIXTEEN_INT);
         try {
             String token = FileExecutor.readFile(SettingConfig.getStoragePath(ConfigConsts.TOKEN_OF_SETTINGS));
             JSONArray array = JSON.parseArray(token);
             array.forEach(object -> {
                 JSONObject jsonObject = (JSONObject) object;
-                tokens.put(jsonObject.getString("key"), jsonObject.getInteger("value"));
+                tokens.put(jsonObject.getString(ValueConsts.KEY_STRING), jsonObject.getInteger(ValueConsts
+                        .VALUE_STRING));
             });
         } catch (Exception e) {
             logger.error("load token error: " + e.getMessage());

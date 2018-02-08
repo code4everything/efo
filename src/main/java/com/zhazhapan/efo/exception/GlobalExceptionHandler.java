@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.exception;
 
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -22,7 +23,7 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
                                          Exception ex) {
         ModelAndView mv = new ModelAndView();
         FastJsonJsonView view = new FastJsonJsonView();
-        Map<String, Object> attributes = new HashMap<>(2);
+        Map<String, Object> attributes = new HashMap<>(ValueConsts.TWO_INT);
         attributes.put("code", "502");
         attributes.put("message", ex.getMessage());
         String queryString = request.getQueryString();

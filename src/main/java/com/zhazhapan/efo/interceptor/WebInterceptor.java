@@ -6,6 +6,7 @@ import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.impl.UserServiceImpl;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,14 +56,15 @@ public class WebInterceptor implements HandlerInterceptor {
             }
         }
         if (shouldIntercept && level != InterceptorLevel.NONE) {
-            User user = (User) request.getSession().getAttribute("user");
+            User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
             if (Checker.isNull(user)) {
                 //读取token，自动登录
-                Cookie cookie = HttpUtils.getCookie("token", request.getCookies());
+                Cookie cookie = HttpUtils.getCookie(ValueConsts.TOKEN_STRING, request.getCookies());
                 if (Checker.isNotNull(cookie)) {
-                    user = userService.login("", "", cookie.getValue(), response);
+                    user = userService.login(ValueConsts.EMPTY_STRING, ValueConsts.EMPTY_STRING, cookie.getValue(),
+                            response);
                     if (Checker.isNotNull(user)) {
-                        request.getSession().setAttribute("user", user);
+                        request.getSession().setAttribute(ValueConsts.USER_STRING, user);
                     }
                 }
             }

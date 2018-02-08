@@ -8,6 +8,7 @@ import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IFileService;
 import com.zhazhapan.efo.util.ControllerUtils;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.Formatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,29 +43,29 @@ public class FileController {
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/user/downloaded", method = RequestMethod.GET)
     public String getUserDownloaded(int offset, String search) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         return Formatter.listToJson(fileService.getUserDownloaded(user.getId(), offset, search));
     }
 
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/user/uploaded", method = RequestMethod.GET)
     public String getUserUploaded(int offset, String search) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         return Formatter.listToJson(fileService.getUserUploaded(user.getId(), offset, search));
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public String upload(int categoryId, String tag, String description, @RequestParam("file") MultipartFile
             multipartFile) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         return ControllerUtils.getResponse(fileService.upload(categoryId, tag, description, multipartFile, user));
     }
 
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getAll(int offset, int categoryId, String orderBy, String search) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         boolean canGet = EfoApplication.settings.getBooleanUseEval(ConfigConsts.ANONYMOUS_VISIBLE_OF_SETTING) ||
                 (Checker.isNotNull(user) && user.getIsVisible() == 1);
         if (canGet) {
@@ -76,9 +77,9 @@ public class FileController {
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public String removeFile(@PathVariable("id") long id) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         jsonObject.put("status", "error");
         if (Checker.isNull(user)) {
             jsonObject.put("message", "请先登录");
@@ -93,10 +94,10 @@ public class FileController {
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String updateFileInfo(@PathVariable("id") long id, String name, String category, String tag, String
             description) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         jsonObject.put("status", "error");
         if (fileService.updateFileInfo(id, user, name, category, tag, description)) {
             jsonObject.put("status", "success");

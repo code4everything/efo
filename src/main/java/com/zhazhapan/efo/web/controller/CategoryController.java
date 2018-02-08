@@ -5,6 +5,7 @@ import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.service.ICategoryService;
 import com.zhazhapan.efo.util.ControllerUtils;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.Formatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,16 @@ public class CategoryController {
     public CategoryController(ICategoryService categoryService) {this.categoryService = categoryService;}
 
     @AuthInterceptor(InterceptorLevel.ADMIN)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(String name) {
+    @RequestMapping(value = "/{name}", method = RequestMethod.POST)
+    public String add(@PathVariable("name") String name) {
         return ControllerUtils.getResponse(categoryService.insert(name));
     }
 
     @AuthInterceptor(InterceptorLevel.ADMIN)
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public String update(int id, String name) {
-        return ControllerUtils.getResponse(Checker.isNotEmpty(name) && categoryService.update(id, name));
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public String update(@PathVariable("id") int id, String name) {
+        boolean isSuccess = Checker.isNotEmpty(name) && categoryService.update(id, name);
+        return ControllerUtils.getResponse(isSuccess);
     }
 
     @AuthInterceptor(InterceptorLevel.ADMIN)
@@ -49,7 +51,7 @@ public class CategoryController {
     public String getById(@PathVariable("id") int id) {
         Category category = categoryService.getById(id);
         if (Checker.isNull(category)) {
-            return ControllerUtils.getResponse(false);
+            return ControllerUtils.getResponse(ValueConsts.FALSE);
         } else {
             return category.toString();
         }

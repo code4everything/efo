@@ -9,6 +9,21 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class DefaultValues {
 
     /**
+     * 404页面路径
+     */
+    public static final String NOT_FOUND_PAGE = "/404.html";
+
+    /**
+     * Controller包路径
+     */
+    public static final String CONTROLLER_PACKAGE = "com.zhazhapan.efo.web.controller";
+
+    /**
+     * 配置文件路径
+     */
+    public static final String SETTING_PATH = "/settings.json";
+
+    /**
      * 冒号
      */
     public static final String COLON = ":";

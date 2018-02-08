@@ -1,5 +1,5 @@
 $("#file-input").fileinput({
-    uploadUrl: "/file/upload",
+    uploadUrl: "/file",
     uploadAsync: true,
     maxFileCount: 100,
     uploadExtraData: function () {

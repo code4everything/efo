@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
  */
 public class BeanUtils {
 
+    private static final String ERROR_JSON = "{\"error\":\"internal error, please try again later\"}";
+    
     private static Logger logger = LoggerFactory.getLogger(BeanUtils.class);
 
     private BeanUtils() {}
@@ -27,7 +29,7 @@ public class BeanUtils {
         try {
             result = com.zhazhapan.util.BeanUtils.toPrettyJson(object, FieldModifier.PRIVATE);
         } catch (IllegalAccessException e) {
-            result = Formatter.formatJson("{\"error\":\"internal error, please try again later\"}");
+            result = Formatter.formatJson(ERROR_JSON);
             logger.error(e.getMessage());
         }
         return result;

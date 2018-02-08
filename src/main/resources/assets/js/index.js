@@ -39,7 +39,7 @@ function saveInfo() {
         if (!userConfig.emailVerify || code.length === 6 || email === userInfo.email) {
             layer.load(1);
             $.ajax({
-                url: '/user/basic/update',
+                url: '/user/info',
                 type: 'PUT',
                 dataType: "",
                 data: {
@@ -73,7 +73,7 @@ function updatePassword() {
     if (oldPassword && checkPassword(newPassword, confirmNewPassword)) {
         layer.load(1);
         $.ajax({
-            url: "/user/password/update",
+            url: "/user/password",
             type: "PUT",
             data: {oldPassword: oldPassword, newPassword: newPassword},
             success: function (data) {
@@ -122,7 +122,7 @@ function showAvatarModal() {
         content: "<input id='file-input' class='form-control file' multiple data-max-file-count='100' data-preview-file-type='img' name='file' type='file'/>"
     });
     $("#file-input").fileinput({
-        uploadUrl: "/common/avatar/upload",
+        uploadUrl: "/common/avatar",
         uploadAsync: true,
         maxFileCount: 1,
         maxFilePreviewSize: 10485760
@@ -156,9 +156,11 @@ $(document).ready(function () {
     $(".email-verify-code").keyup(function () {
         var code = event.srcElement.value;
         if (code.length === 6) {
-            $.get("/common/code/verify", {code: code}, function (data) {
-                var json = JSON.parse(data);
-                app.emailVerifyStatus = json.status === "success" ? "" : "验证码错误";
+            $.ajax({
+                url: "/common/" + code + "/verification", type: "PUT", success: function (data) {
+                    var json = JSON.parse(data);
+                    app.emailVerifyStatus = json.status === "success" ? "" : "验证码错误";
+                }
             });
         } else {
             app.emailVerifyStatus = "";
@@ -323,7 +325,7 @@ function saveFileInfo() {
     } else {
         layer.load(1);
         $.ajax({
-            url: "/file/" + $("#edit-file-id").val() + "/update",
+            url: "/file/" + $("#edit-file-id").val(),
             type: "PUT",
             data: {
                 name: name,
@@ -361,7 +363,7 @@ function removeFile() {
         var id = $(contentBox).attr("data-id");
         layer.load(1);
         $.ajax({
-            url: "/file/" + id + "/delete", type: "DELETE", success: function (data) {
+            url: "/file/" + id, type: "DELETE", success: function (data) {
                 layer.closeAll();
                 var json = JSON.parse(data);
                 if (json.status === "success") {

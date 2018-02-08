@@ -10,6 +10,7 @@ import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.IUserService;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.encryption.JavaEncrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,9 @@ public class UserController {
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "/basic/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/info", method = RequestMethod.PUT)
     public String updateBasicInfo(String avatar, String realName, String email, String code) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         jsonObject.put("message", "保存成功");
         boolean emilVerify = EfoApplication.settings.getBooleanUseEval(ConfigConsts.EMAIL_VERIFY_OF_SETTINGS);
         if (Checker.isNotEmpty(email) && !email.equals(user.getEmail())) {
@@ -71,9 +72,9 @@ public class UserController {
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "/password/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/password", method = RequestMethod.PUT)
     public String updatePassword(String oldPassword, String newPassword) {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         jsonObject.put("status", "error");
         try {
             if (user.getPassword().equals(JavaEncrypt.sha256(oldPassword))) {
@@ -95,10 +96,10 @@ public class UserController {
     @AuthInterceptor
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public String getInfo() {
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         JSONObject object = JSON.parseObject(user.toString());
-        object.remove("id");
-        object.remove("password");
+        object.remove(ValueConsts.ID_STRING);
+        object.remove(ValueConsts.PASSWORD_STRING);
         return object.toString();
     }
 
@@ -106,11 +107,11 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.PUT)
     public String login(String username, String password, boolean auto, String token) {
         //使用密码登录
-        User user = userService.login(username, password, null, null);
+        User user = userService.login(username, password, ValueConsts.NULL_STRING, ValueConsts.NULL_RESPONSE);
         if (Checker.isNull(user)) {
             jsonObject.put("status", "failed");
         } else {
-            request.getSession().setAttribute("user", user);
+            request.getSession().setAttribute(ValueConsts.USER_STRING, user);
             jsonObject.put("status", "success");
             if (auto) {
                 jsonObject.put("token", TokenConfig.generateToken(token, user.getId()));

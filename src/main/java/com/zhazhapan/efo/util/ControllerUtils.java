@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.FileExecutor;
 
@@ -48,7 +49,7 @@ public class ControllerUtils {
             os.flush();
             os.close();
         } else {
-            response.sendRedirect("/404.html");
+            response.sendRedirect(DefaultValues.NOT_FOUND_PAGE);
         }
     }
 }

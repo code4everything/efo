@@ -45,11 +45,12 @@ public class CommonController {
     @AuthInterceptor
     @RequestMapping(value = "/avatar/{name}", method = RequestMethod.GET)
     public void getAvatar(HttpServletResponse response, @PathVariable("name") String name) throws IOException {
-        ControllerUtils.loadResource(response, SettingConfig.getAvatarStoragePath() + ValueConsts.SEPARATOR + name);
+        String path = SettingConfig.getAvatarStoragePath() + ValueConsts.SEPARATOR + name;
+        ControllerUtils.loadResource(response, path);
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "/avatar/upload")
+    @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public String avatarUpload(@RequestParam("file") MultipartFile multipartFile) {
         String name = commonService.uploadAvatar(multipartFile);
         if (Checker.isNullOrEmpty(name)) {
@@ -61,8 +62,8 @@ public class CommonController {
     }
 
     @AuthInterceptor(InterceptorLevel.NONE)
-    @RequestMapping(value = "/code/send", method = RequestMethod.GET)
-    public String sendVerifyCode(String email) {
+    @RequestMapping(value = "/{email}/code", method = RequestMethod.POST)
+    public String sendVerifyCode(@PathVariable("email") String email) {
         int code = commonService.sendVerifyCode(email);
         if (code > 0) {
             request.getSession().setAttribute(DefaultValues.CODE_STRING, code);
@@ -75,8 +76,8 @@ public class CommonController {
     }
 
     @AuthInterceptor(InterceptorLevel.NONE)
-    @RequestMapping(value = "/code/verify", method = RequestMethod.GET)
-    public String verifyCode(String code) {
+    @RequestMapping(value = "/{code}/verification", method = RequestMethod.PUT)
+    public String verifyCode(@PathVariable("code") String code) {
         if (Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues
                 .CODE_STRING)))) {
             jsonObject.put("status", "success");

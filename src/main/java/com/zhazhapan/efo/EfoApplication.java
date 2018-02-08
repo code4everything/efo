@@ -3,6 +3,7 @@ package com.zhazhapan.efo;
 import com.zhazhapan.config.JsonParser;
 import com.zhazhapan.efo.config.TokenConfig;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
+import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.util.MailSender;
 import com.zhazhapan.util.ReflectUtils;
 import org.mybatis.spring.annotation.MapperScan;
@@ -31,9 +32,9 @@ public class EfoApplication {
     public static Hashtable<String, Integer> tokens;
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        settings.setJsonPath(EfoApplication.class.getResource("/settings.json"));
+        settings.setJsonPath(EfoApplication.class.getResource(DefaultValues.SETTING_PATH));
         MailSender.config(settings.getObjectUseEval(ConfigConsts.EMAIL_CONFIG_OF_SETTINGS));
-        controllers = ReflectUtils.getClasses("com.zhazhapan.efo.web.controller");
+        controllers = ReflectUtils.getClasses(DefaultValues.CONTROLLER_PACKAGE);
         tokens = TokenConfig.loadToken();
         SpringApplication.run(EfoApplication.class, args);
     }

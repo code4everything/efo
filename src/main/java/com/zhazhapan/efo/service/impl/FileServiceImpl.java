@@ -41,6 +41,18 @@ public class FileServiceImpl implements IFileService {
 
     private final static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
+    private static final String YEAR = "{year}";
+
+    private static final String MONTH = "{month}";
+
+    private static final String DAY = "{day}";
+
+    private static final String AUTHOR = "{author}";
+
+    private static final String FILE_NAME = "{fileName}";
+
+    private static final String CATEGORY_NAME = "{categoryName}";
+
     private final FileDAO fileDAO;
 
     private final ICategoryService categoryService;
@@ -74,7 +86,7 @@ public class FileServiceImpl implements IFileService {
                 java.io.File newFile = new java.io.File(localUrl);
                 String visitUrl = file.getVisitUrl();
                 String newLocalUrl = localUrl.substring(0, localUrl.lastIndexOf(ValueConsts.SEPARATOR) + 1) + name;
-                String newVisitUrl = visitUrl.substring(0, visitUrl.lastIndexOf("/") + 1) + name;
+                String newVisitUrl = visitUrl.substring(0, visitUrl.lastIndexOf(ValueConsts.SPLASH_STRING) + 1) + name;
                 file.setName(name);
                 file.setSuffix(suffix);
                 file.setLocalUrl(newLocalUrl);
@@ -144,7 +156,7 @@ public class FileServiceImpl implements IFileService {
         logger.info("visit url: " + visitUrl);
         boolean downloadable = EfoApplication.settings.getBooleanUseEval(ConfigConsts
                 .ANONYMOUS_DOWNLOADABLE_OF_SETTING);
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         File file = fileDAO.getFileByVisitUrl(visitUrl);
         AuthRecord authRecord = null;
         if (Checker.isNotNull(file)) {
@@ -196,10 +208,10 @@ public class FileServiceImpl implements IFileService {
             if (canUpload) {
                 Date date = new Date();
                 String visitUrl = EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING)
-                        .replace("{year}", Utils.getYear(date)).replace("{month}", Utils.getMonth(date)).replace
-                                ("{day}", Utils.getDay(date)).replace("{author}", user.getUsername()).replace
-                                ("{fileName}", name).replace("{categoryName}", Checker.checkNull(Checker.isNull
-                                (category) ? "uncategorized" : category.getName()));
+                        .replace(YEAR, Utils.getYear(date)).replace(MONTH, Utils.getMonth(date)).replace(DAY, Utils
+                                .getDay(date)).replace(AUTHOR, user.getUsername()).replace(FILE_NAME, name).replace
+                                (CATEGORY_NAME, Checker.checkNull(Checker.isNull(category) ? "uncategorized" :
+                                        category.getName()));
                 visitUrl = "/file" + (visitUrl.startsWith("/") ? "" : "/") + visitUrl;
                 if (fileExists) {
                     removeByLocalUrl(localUrl);

@@ -24,7 +24,7 @@ function checkPassword(password, passwordConfirm) {
 function sendVerifyCode(email, eventSrc) {
     if (isEmail(email)) {
         layer.load(1);
-        $.get("/common/code/send", {email: email}, function (data) {
+        $.post("/common/" + email + "/code", function (data) {
             layer.closeAll();
             var json = JSON.parse(data);
             if (json.status === "success") {

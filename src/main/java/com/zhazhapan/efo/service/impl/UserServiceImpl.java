@@ -7,6 +7,7 @@ import com.zhazhapan.efo.dao.UserDAO;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IUserService;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class UserServiceImpl implements IUserService {
             if (Checker.isNotEmpty(token) && EfoApplication.tokens.containsKey(token)) {
                 user = userDAO.getUserById(EfoApplication.tokens.get(token));
                 if (Checker.isNotNull(response)) {
-                    Cookie cookie = new Cookie("token", TokenConfig.generateToken(token, user.getId()));
+                    Cookie cookie = new Cookie(ValueConsts.TOKEN_STRING, TokenConfig.generateToken(token, user.getId
+                            ()));
                     cookie.setMaxAge(30 * 24 * 60 * 60);
                     response.addCookie(cookie);
                 }
@@ -62,7 +64,7 @@ public class UserServiceImpl implements IUserService {
             boolean isValid = Checker.isEmail(email) && checkPassword(password) && Pattern.compile(settings
                     .getStringUseEval(ConfigConsts.USERNAME_PATTERN_OF_SETTINGS)).matcher(username).matches();
             if (isValid) {
-                User user = new User(username, "", email, password);
+                User user = new User(username, ValueConsts.EMPTY_STRING, email, password);
                 int[] auth = SettingConfig.getAuth(ConfigConsts.USER_DEFAULT_AUTH_OF_SETTING);
                 user.setAuth(auth[0], auth[1], auth[2], auth[3], auth[4]);
                 return userDAO.insertUser(user);

@@ -189,9 +189,11 @@ $(document).ready(
         $(".email-verify-code").keyup(function () {
             var code = event.srcElement.value;
             if (code.length === 6) {
-                $.get("/common/code/verify", {code: code}, function (data) {
-                    var json = JSON.parse(data);
-                    signinItem.emailVerifyStatus = json.status === "success" ? "" : "验证码错误";
+                $.ajax({
+                    url: "/common/" + code + "/verification", type: "PUT", success: function (data) {
+                        var json = JSON.parse(data);
+                        signinItem.emailVerifyStatus = json.status === "success" ? "" : "验证码错误";
+                    }
                 });
             } else {
                 signinItem.emailVerifyStatus = "";
