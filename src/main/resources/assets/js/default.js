@@ -11,7 +11,7 @@ function responseTip(data) {
     layer.closeAll();
     var json = JSON.parse(data);
     if (json.status === "success") {
-        alerts("保存成功");
+        layer.msg("保存成功");
     } else {
         alerts("保存失败，请稍后重新尝试");
     }

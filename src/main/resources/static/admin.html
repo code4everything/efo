@@ -50,39 +50,57 @@
     </ul>
 </div>
 <br/>
-<div class="row jq-tab" id="upload-manager">上传管理</div>
-<div class="row jq-tab hide" id="download-manager">下载管理</div>
-<div class="row jq-tab hide" id="file-manager">文件管理</div>
-<div class="row jq-tab hide" id="auth-manager">权限管理</div>
-<div class="row jq-tab hide" id="category-manager">
-    <div class="col-sm-3 col-12 offset-sm-1 content-box rounded">
-        <br/>
-        <h4 class="text-center">添加新分类</h4>
-        <input type="hidden" value="0" id="category-id"/>
-        <input class="form-control" id="category-name" title="分类名称" placeholder="新分类名称" type="text"/>
-        <br/>
-        <button class="btn btn-primary btn-block" onclick="saveCategory();">保存</button>
-        <Br/>
+<div id="container">
+    <div class="row jq-tab" id="upload-manager">上传管理</div>
+    <div class="row jq-tab hide" id="download-manager">下载管理</div>
+    <div class="row jq-tab hide" id="file-manager">文件管理</div>
+    <div class="row jq-tab hide" id="auth-manager">权限管理</div>
+    <div class="row jq-tab hide" id="category-manager">
+        <div class="col-sm-3 col-12 offset-sm-1 padding-0">
+            <div class="content-box rounded" style="padding: 0 1rem;">
+                <br/>
+                <h4 class="text-center" id="category-title">添加新分类</h4><br/>
+                <input type="hidden" value="0" id="category-key"/>
+                <input type="hidden" value="0" id="category-id"/>
+                <input class="form-control" id="category-name" title="分类名称" placeholder="新分类名称" type="text"/>
+                <br/>
+                <button class="btn btn-primary btn-block" onclick="saveCategory();">保存</button>
+                <br/>
+            </div>
+            <br/>
+        </div>
+        <div class="col-sm-6 offset-sm-1 col-12 content-box rounded">
+            <br/>
+            <table class="table table-bordered table-hover table-responsive table-condensed">
+                <thead>
+                <tr>
+                    <th style="width: 15%;">编号</th>
+                    <th style="width: 27%;">名称</th>
+                    <th style="width: 40%;">创建时间</th>
+                    <th class="text-center" style="width: 30%;">动作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(category,key) in categories">
+                    <td class="hide">{{key}}</td>
+                    <td class="category-id">{{category.id}}</td>
+                    <td class="category-name">{{category.name}}</td>
+                    <td>{{new Date(category.createTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
+                    <td class="text-center">
+                        <a onclick="editCategory();" href="javascript:">编辑</a>
+                        &emsp;<a onclick="deleteCategory();" href="javascript:">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br/>
+        </div>
     </div>
-    <div class="col-sm-6 offset-sm-1 col-12 content-box rounded">
-        <br/>
-        <table class="table table-bordered table-hover table-responsive table-condensed">
-            <thead>
-            <tr>
-                <th>编号</th>
-                <th>名称</th>
-                <th class="text-center">动作</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <br/>
-    </div>
+    <div class="row jq-tab hide" id="user-manager">用户管理</div>
+    <div class="row jq-tab hide" id="admin-manager">管理员管理</div>
+    <div class="row jq-tab hide" id="system-setting">系统设置</div>
+    <div class="row text-center" id="footer"></div>
 </div>
-<div class="row jq-tab hide" id="user-manager">用户管理</div>
-<div class="row jq-tab hide" id="admin-manager">管理员管理</div>
-<div class="row jq-tab hide" id="system-setting">系统设置</div>
-<div class="row text-center" id="footer"></div>
 <script src="/assets/js/particles.js"></script>
 <script src="/assets/js/default.js"></script>
 <script src="/assets/js/admin.js"></script>
