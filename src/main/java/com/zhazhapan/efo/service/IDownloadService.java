@@ -1,5 +1,9 @@
 package com.zhazhapan.efo.service;
 
+import com.zhazhapan.efo.model.DownloadRecord;
+
+import java.util.List;
+
 /**
  * @author pantao
  * @date 2018/2/1
@@ -20,4 +24,16 @@ public interface IDownloadService {
      * @param fileId 文件编号
      */
     void removeByFileId(long fileId);
+
+    /**
+     * 获取所有下载记录
+     *
+     * @param user 用户名或邮箱
+     * @param category 分类名称
+     * @param file 文件名
+     * @param offset 偏移
+     *
+     * @return {@link DownloadRecord}
+     */
+    List<DownloadRecord> getAll(String user, String file, String category, int offset);
 }

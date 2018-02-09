@@ -29,15 +29,17 @@ public interface DownloadDAO {
     /**
      * 查询下载记录
      *
-     * @param userId 用户编号，不用用户编号作为条件时设置值小于等于0即可
-     * @param fileId 文件编号，不用文件编号作为条件时设置值小于等于0即可
+     * @param userId 用户编号，不使用用户编号作为条件时设置值小于等于0即可
+     * @param fileId 文件编号，不使用文件编号作为条件时设置值小于等于0即可
+     * @param categoryId 分类编号，不用分类编号作为条件时设置值小于等于0即可
+     * @param fileName 文件名，不使用文件名作为条件时设置值为空即可
      * @param offset 偏移
      *
      * @return 下载记录
      */
     @SelectProvider(type = DownloadSqlProvider.class, method = "getDownloadBy")
-    List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") int fileId, @Param("offset") int
-            offset);
+    List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName")
+            String fileName, @Param("categoryId") int categoryId, @Param("offset") int offset);
 
     /**
      * 删除文件

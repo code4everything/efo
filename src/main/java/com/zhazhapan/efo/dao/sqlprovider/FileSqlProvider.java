@@ -21,7 +21,7 @@ public class FileSqlProvider {
 
     private String getSqlEnds(int offset, String orderBy, String search) {
         int size = EfoApplication.settings.getIntegerUseEval(ConfigConsts.FILE_PAGE_SIZE_OF_SETTING);
-        return getSearch(search) + " order by " + (Checker.isNullOrEmpty(orderBy) ? EfoApplication.settings
+        return getSearch(search) + " order by " + (Checker.isEmpty(orderBy) ? EfoApplication.settings
                 .getStringUseEval(ConfigConsts.FILE_ORDER_BY_OF_SETTING) : orderBy) + " " + "limit " + offset * size
                 + "," + size;
     }

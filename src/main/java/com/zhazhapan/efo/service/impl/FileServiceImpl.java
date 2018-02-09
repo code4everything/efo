@@ -2,6 +2,7 @@ package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.EfoApplication;
 import com.zhazhapan.efo.config.SettingConfig;
+import com.zhazhapan.efo.dao.DownloadDAO;
 import com.zhazhapan.efo.dao.FileDAO;
 import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.entity.File;
@@ -11,7 +12,6 @@ import com.zhazhapan.efo.model.FileRecord;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IAuthService;
 import com.zhazhapan.efo.service.ICategoryService;
-import com.zhazhapan.efo.service.IDownloadService;
 import com.zhazhapan.efo.service.IFileService;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.*;
@@ -59,15 +59,15 @@ public class FileServiceImpl implements IFileService {
 
     private final IAuthService authService;
 
-    private final IDownloadService downloadService;
+    private final DownloadDAO downloadDAO;
 
     @Autowired
-    public FileServiceImpl(FileDAO fileDAO, ICategoryService categoryService, IAuthService authService,
-                           IDownloadService downloadService) {
+    public FileServiceImpl(FileDAO fileDAO, ICategoryService categoryService, IAuthService authService, DownloadDAO
+            downloadDAO) {
         this.fileDAO = fileDAO;
         this.categoryService = categoryService;
         this.authService = authService;
-        this.downloadService = downloadService;
+        this.downloadDAO = downloadDAO;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class FileServiceImpl implements IFileService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
             Exception.class)
     public boolean removeById(long id) {
-        downloadService.removeByFileId(id);
+        downloadDAO.removeByFileId(id);
         authService.removeByFileId(id);
         return fileDAO.removeById(id);
     }
@@ -168,7 +168,7 @@ public class FileServiceImpl implements IFileService {
         if (canDownload) {
             fileDAO.updateDownloadTimesById(file.getId());
             if (Checker.isNotNull(user)) {
-                downloadService.insertDownload(user.getId(), file.getId());
+                downloadDAO.insertDownload(user.getId(), file.getId());
             }
             return file.getLocalUrl();
         }
@@ -256,5 +256,14 @@ public class FileServiceImpl implements IFileService {
     @Override
     public boolean visitUrlExists(String visitUrl) {
         return fileDAO.checkVisitUrl(visitUrl) > 0;
+    }
+
+    @Override
+    public long getFileId(String localUrl) {
+        try {
+            return fileDAO.getIdByLocalUrl(localUrl);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

@@ -114,4 +114,13 @@ public interface IUserService {
      * @return 是否更新成功
      */
     boolean updateBasicInfoById(int id, String avatar, String realName, String email);
+
+    /**
+     * 用过用户名获取用户Id
+     *
+     * @param usernameOrEmail 用户名或邮箱
+     *
+     * @return 用户编号
+     */
+    int getUserId(String usernameOrEmail);
 }

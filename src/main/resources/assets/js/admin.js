@@ -1,13 +1,16 @@
-var app = new Vue({el: "#container", data: {categories: []}});
+var app = new Vue({el: "#container", data: {categories: [], downloaded: []}});
+
+var offset = 0;
 
 function getTabInfo(tabId) {
+    offset = 0;
     if (tabId.indexOf("#") === 0) {
         tabId = tabId.substr(1);
     }
     if (tabId === "upload-manager") {
 
     } else if (tabId === "download-manager") {
-
+        getDownloaded("", "", "");
     } else if (tabId === "file-manager") {
 
     } else if (tabId === "auth-manager") {
@@ -24,6 +27,29 @@ function getTabInfo(tabId) {
     } else {
         alerts("没有找到可执行的方法");
     }
+}
+
+$(document).ready(function () {
+    $(".downloaded-filter").keyup(function () {
+        /** @namespace window.event.keyCode */
+        if (window.event.keyCode === 13) {
+            offset = 0;
+            getDownloaded($("#downloaded-by-user").val(), $("#downloaded-by-file").val(), $("#downloaded-by-category").val());
+        }
+    });
+});
+
+function getDownloaded(user, file, category) {
+    $.get("/downloaded/all", {user: user, file: file, category: category, offset: offset}, function (data) {
+        var json = JSON.parse(data);
+        if (json.length < 1) {
+            alerts("糟糕，没有数据了");
+        } else if (offset < 1) {
+            app.downloaded = json;
+        } else {
+            app.downloaded = app.downloaded.concat(json);
+        }
+    });
 }
 
 function getCategory() {
@@ -44,6 +70,8 @@ function deleteCategory() {
             } else {
                 alerts("删除失败，请稍后重新尝试");
             }
+        }, error: function () {
+            alerts("删除失败，该分类已被多个文件引用，无法删除（可尝试修改文件分类或删除文件）。");
         }
     });
 }

@@ -48,6 +48,10 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public int getIdByName(String name) {
-        return categoryDAO.getIdByName(name);
+        try {
+            return categoryDAO.getIdByName(name);
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
     }
 }

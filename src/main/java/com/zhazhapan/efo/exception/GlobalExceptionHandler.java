@@ -27,7 +27,7 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
         attributes.put("code", "502");
         attributes.put("message", ex.getMessage());
         String queryString = request.getQueryString();
-        attributes.put("url", request.getRequestURI() + (Checker.isNullOrEmpty(queryString) ? "" : "?" + queryString));
+        attributes.put("url", request.getRequestURI() + (Checker.isEmpty(queryString) ? "" : "?" + queryString));
         view.setAttributesMap(attributes);
         mv.setView(view);
         mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);

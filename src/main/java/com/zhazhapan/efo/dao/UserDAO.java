@@ -15,6 +15,16 @@ import java.util.List;
 public interface UserDAO {
 
     /**
+     * 用过用户名获取用户Id
+     *
+     * @param usernameOrEmail 用户名或邮箱
+     *
+     * @return 用户编号
+     */
+    @Select("select id from user where username=#{usernameOrEmail} or email=#{usernameOrEmail}")
+    int getUserId(String usernameOrEmail);
+
+    /**
      * 通过ID更新用户基本信息
      *
      * @param id 编号

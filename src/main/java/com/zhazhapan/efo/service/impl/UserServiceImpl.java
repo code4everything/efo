@@ -97,6 +97,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public int getUserId(String usernameOrEmail) {
+        try {
+            return userDAO.getUserId(Checker.checkNull(usernameOrEmail));
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
+    }
+
+    @Override
     public boolean usernameExists(String username) {
         return Checker.isNotEmpty(username) && userDAO.checkUsername(username) > 0;
     }

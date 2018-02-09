@@ -267,7 +267,7 @@ function setResources(resources, tabId) {
     search = "";
     if (resources.length < 1) {
         offset -= 1;
-        alerts("没有更多了");
+        alerts("糟糕，没有数据了");
     } else {
         $.each(resources, function (i, resource) {
             /** @namespace resource.fileName */

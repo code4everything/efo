@@ -58,7 +58,6 @@ $(document).ready(function () {
         }
         /** @namespace globalConfig.background.useImage */
         if (globalConfig.background.useImage) {
-            var idx = 0;
             /** @namespace globalConfig.background.listGenerator */
             if (globalConfig.background.listGenerator.enable) {
                 var start = globalConfig.background.listGenerator.start;
@@ -71,25 +70,33 @@ $(document).ready(function () {
                 }
                 globalConfig.background.imageList = list;
             }
-            if (globalConfig.background.random) {
-                idx = Math.floor(Math.random() * globalConfig.background.imageList.length);
-            } else {
-                /** @namespace globalConfig.background.imageIndex */
-                idx = globalConfig.background.imageIndex;
-            }
-            /** @namespace globalConfig.background.imageList */
-            var url = globalConfig.background.imageList[idx];
-            if (typeof url !== "undefined") {
-                var body = $("body");
-                $(body).css("background", "url('" + url + "') no-repeat center center fixed");
-                $(body).css("background-size", "cover");
-            }
+            changeBackgroundImage();
         }
         setCSS();
     });
     // 加载页脚
     $("#footer").html(footer);
+    $("body").append("<button onclick='changeBackgroundImage();' class='rounded-circle btn btn-light' " +
+        "style='position: fixed;width: 3rem;height: 3rem;bottom: 1rem;right: 1rem;'>" +
+        "<span class='glyphicon glyphicon-retweet'></span></button>");
 });
+
+function changeBackgroundImage() {
+    var idx = 0;
+    if (globalConfig.background.random) {
+        idx = Math.floor(Math.random() * globalConfig.background.imageList.length);
+    } else {
+        /** @namespace globalConfig.background.imageIndex */
+        idx = globalConfig.background.imageIndex;
+    }
+    /** @namespace globalConfig.background.imageList */
+    var url = globalConfig.background.imageList[idx];
+    if (typeof url !== "undefined") {
+        var body = $("body");
+        $(body).css("background", "url('" + url + "') no-repeat center center fixed");
+        $(body).css("background-size", "cover");
+    }
+}
 
 function setCSS() {
     for (var m = 0; m < globalConfig.css.length; m++) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cn">
+<html lang="cn" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="/assets/css/style.css"/>
     <title>管理</title>
 </head>
-<body id="particles-js">
-<div class="jq-nav float-left float-sm-left" style="height: 100%;min-height: 100vh;">
+<body id="particles-js" style="overflow-x: hidden;">
+<div class="jq-nav float-left float-sm-left" style="height: 100%;min-height: 100vh;position: fixed;">
     <div class="jq-nav-top">
         <div id="mini" style="border-bottom:1px solid rgba(255,255,255,0.1)"><img src="/assets/img/mini.png"></div>
     </div>
@@ -27,7 +27,7 @@
             <a href="#upload-manager"><span class="glyphicon glyphicon-cloud-upload">&nbsp;<b>上传管理</b></span></a>
         </li>
         <li class="jq-nav-item">
-            <a href="#download-manager"><span class="glyphicon glyphicon-cloud-download">&nbsp;<b>下载管理</b></span></a>
+            <a href="#download-manager"><span class="glyphicon glyphicon-cloud-download">&nbsp;<b>下载记录</b></span></a>
         </li>
         <li class="jq-nav-item">
             <a href="#file-manager"><span class="glyphicon glyphicon-file">&nbsp;<b>文件管理</b></span></a>
@@ -52,9 +52,65 @@
 <br/>
 <div id="container">
     <div class="row jq-tab" id="upload-manager">上传管理</div>
-    <div class="row jq-tab hide" id="download-manager">下载管理</div>
+    <!--下载记录-->
+    <div class="row jq-tab hide" id="download-manager">
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="row">
+                <div class="col-sm-2 col-4">
+                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control downloaded-filter"
+                           placeholder="指定分类" id="downloaded-by-category"/>
+                </div>
+                <div class="col-sm-3 col-4">
+                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control downloaded-filter"
+                           placeholder="指定用户" id="downloaded-by-user"/>
+                </div>
+                <div class="col-sm-4 col-4">
+                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control downloaded-filter"
+                           placeholder="指定文件" id="downloaded-by-file"/>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="col-12 col-sm-10 offset-sm-1"><br/></div>
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <table class="table table-bordered table-hover table-responsive table-condensed">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <!--<th>用户编号</th>-->
+                    <!--<th>文件编号</th>-->
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>文件名</th>
+                    <th>分类</th>
+                    <th>链接</th>
+                    <th>下载时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(download,key) in downloaded">
+                    <td>{{key+1}}</td>
+                    <!--<td>{{download.userId}}</td>-->
+                    <!--<td>{{download.fileId}}</td>-->
+                    <td>{{download.username}}</td>
+                    <td>{{download.email}}</td>
+                    <td>{{download.fileName}}</td>
+                    <td>{{download.categoryName}}</td>
+                    <td><a v-bind:href="download.visitUrl" target="_blank">访问</a></td>
+                    <td>{{new Date(download.createTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getDownloaded();"><b>获取更多</b></button>
+        <br/>
+    </div>
     <div class="row jq-tab hide" id="file-manager">文件管理</div>
     <div class="row jq-tab hide" id="auth-manager">权限管理</div>
+    <!--分类管理-->
     <div class="row jq-tab hide" id="category-manager">
         <div class="col-sm-3 col-12 offset-sm-1 padding-0">
             <div class="content-box rounded" style="padding: 0 1rem;">
@@ -74,10 +130,10 @@
             <table class="table table-bordered table-hover table-responsive table-condensed">
                 <thead>
                 <tr>
-                    <th style="width: 15%;">编号</th>
-                    <th style="width: 27%;">名称</th>
-                    <th style="width: 40%;">创建时间</th>
-                    <th class="text-center" style="width: 30%;">动作</th>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>创建时间</th>
+                    <th class="text-center">动作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -101,6 +157,7 @@
     <div class="row jq-tab hide" id="system-setting">系统设置</div>
     <div class="row text-center" id="footer"></div>
 </div>
+<br/>
 <script src="/assets/js/particles.js"></script>
 <script src="/assets/js/default.js"></script>
 <script src="/assets/js/admin.js"></script>

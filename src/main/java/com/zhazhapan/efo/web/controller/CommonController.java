@@ -53,7 +53,7 @@ public class CommonController {
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public String avatarUpload(@RequestParam("file") MultipartFile multipartFile) {
         String name = commonService.uploadAvatar(multipartFile);
-        if (Checker.isNullOrEmpty(name)) {
+        if (Checker.isEmpty(name)) {
             jsonObject.put("error", "文件格式不合法");
         } else {
             jsonObject.put("success", "/common/avatar/" + name);

@@ -148,4 +148,13 @@ public interface IFileService {
      * @return {@link Boolean}
      */
     boolean visitUrlExists(String visitUrl);
+
+    /**
+     * 通过本地路径获取文件编号
+     *
+     * @param localUrl 本地路径
+     *
+     * @return 文件编号
+     */
+    long getFileId(String localUrl);
 }

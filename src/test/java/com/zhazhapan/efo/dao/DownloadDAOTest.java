@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.EfoApplicationTest;
+import com.zhazhapan.modules.constant.ValueConsts;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,6 @@ public class DownloadDAOTest {
 
     @Test
     public void testGetDownloadBy() {
-        System.out.println(downloadDAO.getDownloadBy(1, 1, 0));
+        System.out.println(downloadDAO.getDownloadBy(1, 1, "", ValueConsts.ZERO_INT, 0));
     }
 }

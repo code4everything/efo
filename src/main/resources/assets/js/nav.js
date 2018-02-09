@@ -32,5 +32,14 @@ $(function () {
             $('.jq-nav-item').children('ul').removeAttr('style');
             $(nav).addClass('jq-nav-mini');
         }
+        calculateContentWidth();
     });
 });
+
+calculateContentWidth();
+
+function calculateContentWidth() {
+    setTimeout(function () {
+        $("#container").css("margin-left", $(".jq-nav").width() + "px");
+    }, 200);
+}
