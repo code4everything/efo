@@ -15,7 +15,7 @@
     <script src="/assets/js/vue.js"></script>
     <script src="/assets/js/utils.js"></script>
     <link rel="stylesheet" href="/assets/css/style.css"/>
-    <title>管理</title>
+    <title>管理员</title>
 </head>
 <body id="particles-js" style="overflow-x: hidden;">
 <div class="jq-nav float-left float-sm-left" style="height: 100%;min-height: 100vh;position: fixed;">
@@ -24,7 +24,7 @@
     </div>
     <ul>
         <li class="jq-nav-item">
-            <a href="#upload-manager"><span class="glyphicon glyphicon-cloud-upload">&nbsp;<b>上传管理</b></span></a>
+            <a href="#upload-manager"><span class="glyphicon glyphicon-cloud-upload">&nbsp;<b>上传记录</b></span></a>
         </li>
         <li class="jq-nav-item">
             <a href="#download-manager"><span class="glyphicon glyphicon-cloud-download">&nbsp;<b>下载记录</b></span></a>
@@ -51,22 +51,70 @@
 </div>
 <br/>
 <div id="container">
-    <div class="row jq-tab" id="upload-manager">上传管理</div>
+    <!--上传记录-->
+    <div class="row jq-tab" id="upload-manager">
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="row">
+                <div class="col-sm-2 col-4">
+                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control file-filter"
+                           placeholder="指定分类" id="uploaded-by-category"/>
+                </div>
+                <div class="col-sm-3 col-4">
+                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control file-filter"
+                           placeholder="指定用户" id="uploaded-by-user"/>
+                </div>
+                <div class="col-sm-4 col-4">
+                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control file-filter"
+                           placeholder="指定文件" id="uploaded-by-file"/>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="col-12 col-sm-10 offset-sm-1"><br/></div>
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <table class="table table-bordered table-hover table-responsive table-condensed">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>文件路径</th>
+                    <th>分类名</th>
+                    <th>链接</th>
+                    <th>上传时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(upload,key) in uploaded">
+                    <td>{{key+1}}</td>
+                    <td>{{upload.username}}</td>
+                    <td>{{upload.email}}</td>
+                    <td>{{upload.localUrl}}</td>
+                    <td>{{upload.categoryName}}</td>
+                    <td>{{upload.visitUrl}}</td>
+                    <td>{{upload.createTime}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <!--下载记录-->
     <div class="row jq-tab hide" id="download-manager">
         <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
             <br/>
             <div class="row">
                 <div class="col-sm-2 col-4">
-                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control downloaded-filter"
+                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control file-filter"
                            placeholder="指定分类" id="downloaded-by-category"/>
                 </div>
                 <div class="col-sm-3 col-4">
-                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control downloaded-filter"
+                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control file-filter"
                            placeholder="指定用户" id="downloaded-by-user"/>
                 </div>
                 <div class="col-sm-4 col-4">
-                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control downloaded-filter"
+                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control file-filter"
                            placeholder="指定文件" id="downloaded-by-file"/>
                 </div>
             </div>

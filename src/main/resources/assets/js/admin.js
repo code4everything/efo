@@ -1,16 +1,44 @@
-var app = new Vue({el: "#container", data: {categories: [], downloaded: []}});
+var app = new Vue({el: "#container", data: {categories: [], downloaded: [], uploaded: []}});
+
+Vue.component('file-filter-item', {
+    template: '<div class="col-12 col-sm-10 offset-sm-1 content-box rounded">' +
+    '            <br/>' +
+    '            <div class="row">' +
+    '                <div class="col-sm-2 col-4">' +
+    '                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control file-filter"' +
+    '                           placeholder="分类名称" id="downloaded-by-category"/>' +
+    '                </div>' +
+    '                <div class="col-sm-3 col-4">' +
+    '                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control file-filter"' +
+    '                           placeholder="用户名或邮箱" id="downloaded-by-user"/>' +
+    '                </div>' +
+    '                <div class="col-sm-4 col-4">' +
+    '                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control file-filter"' +
+    '                           placeholder="文件名" id="downloaded-by-file"/>' +
+    '                </div>' +
+    '            </div>' +
+    '            <br/>' +
+    '        </div>'
+});
 
 var offset = 0;
 
+var enableSearch = false;
+
 function getTabInfo(tabId) {
     offset = 0;
+    enableSearch = false;
+    changeTabInfo(tabId);
+}
+
+function changeTabInfo(tabId) {
     if (tabId.indexOf("#") === 0) {
         tabId = tabId.substr(1);
     }
     if (tabId === "upload-manager") {
-
+        getUploaded();
     } else if (tabId === "download-manager") {
-        getDownloaded("", "", "");
+        getDownloaded();
     } else if (tabId === "file-manager") {
 
     } else if (tabId === "auth-manager") {
@@ -30,17 +58,51 @@ function getTabInfo(tabId) {
 }
 
 $(document).ready(function () {
-    $(".downloaded-filter").keyup(function () {
+    $(".file-filter").keyup(function () {
         /** @namespace window.event.keyCode */
         if (window.event.keyCode === 13) {
             offset = 0;
-            getDownloaded($("#downloaded-by-user").val(), $("#downloaded-by-file").val(), $("#downloaded-by-category").val());
+            enableSearch = true;
+            changeTabInfo(window.location.href);
         }
     });
 });
 
-function getDownloaded(user, file, category) {
+function getUploaded() {
+    var user = "";
+    var file = "";
+    var category = "";
+    if (enableSearch) {
+        user = $("#uploaded-by-user").val();
+        file = $("#uploaded-by-file").val();
+        category = $("#uploaded-by-category").val();
+    }
+    layer.load(1);
+    $.get("/uploaded/all", {user: user, file: file, category: category, offset: offset}, function (data) {
+        layer.closeAll();
+        var json = JSON.parse(data);
+        if (json.length < 1) {
+            alerts("糟糕，没有数据了");
+        } else if (offset < 1) {
+            app.uploaded = json;
+        } else {
+            app.uploaded = app.uploaded.concat(json);
+        }
+    });
+}
+
+function getDownloaded() {
+    var user = "";
+    var file = "";
+    var category = "";
+    if (enableSearch) {
+        user = $("#downloaded-by-user").val();
+        file = $("#downloaded-by-file").val();
+        category = $("#downloaded-by-category").val();
+    }
+    layer.load(1);
     $.get("/downloaded/all", {user: user, file: file, category: category, offset: offset}, function (data) {
+        layer.closeAll();
         var json = JSON.parse(data);
         if (json.length < 1) {
             alerts("糟糕，没有数据了");
