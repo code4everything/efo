@@ -55,6 +55,9 @@ function changeTabInfo(tabId) {
     } else {
         alerts("没有找到可执行的方法");
     }
+    setTimeout(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    }, 1000);
 }
 
 $(document).ready(function () {
@@ -63,9 +66,10 @@ $(document).ready(function () {
         if (window.event.keyCode === 13) {
             offset = 0;
             enableSearch = true;
-            changeTabInfo(window.location.href);
+            changeTabInfo(window.location.hash);
         }
     });
+    $("a[href='" + location.hash + "']").click();
 });
 
 function getUploaded() {
@@ -181,3 +185,4 @@ function setCategoryToDefault() {
     $("#category-name").val("");
     $("#category-title").text("添加新分类");
 }
+

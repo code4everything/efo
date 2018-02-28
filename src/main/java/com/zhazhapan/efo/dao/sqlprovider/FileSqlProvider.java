@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author pantao
- * @date 2018/1/19
+ * @since 2018/1/19
  */
 @Component
 public class FileSqlProvider {

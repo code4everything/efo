@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * @author pantao
- * @date 2018/1/25
+ * @since 2018/1/25
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.METHOD})

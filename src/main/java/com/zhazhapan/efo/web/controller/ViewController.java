@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author pantao
- * @date 2018/1/25
+ * @since 2018/1/25
  */
 @Controller
 public class ViewController {

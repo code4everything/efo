@@ -4,7 +4,7 @@ import com.zhazhapan.modules.constant.ValueConsts;
 
 /**
  * @author pantao
- * @date 2018/1/12
+ * @since 2018/1/12
  */
 public class ConfigConsts {
 

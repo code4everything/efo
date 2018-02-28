@@ -1,6 +1,6 @@
 package com.zhazhapan.efo.dao;
 
-import com.zhazhapan.efo.dao.sqlprovider.DownloadSqlProvider;
+import com.zhazhapan.efo.dao.sqlprovider.DownloadedSqlProvider;
 import com.zhazhapan.efo.model.DownloadRecord;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -12,10 +12,10 @@ import java.util.List;
 
 /**
  * @author pantao
- * @date 2018/1/18
+ * @since 2018/1/18
  */
 @Repository
-public interface DownloadDAO {
+public interface DownloadedDAO {
 
     /**
      * 新增一条下载记录
@@ -37,9 +37,9 @@ public interface DownloadDAO {
      *
      * @return 下载记录
      */
-    @SelectProvider(type = DownloadSqlProvider.class, method = "getDownloadBy")
-    List<DownloadRecord> getDownloadBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName")
-            String fileName, @Param("categoryId") int categoryId, @Param("offset") int offset);
+    @SelectProvider(type = DownloadedSqlProvider.class, method = "getDownloadBy")
+    List<DownloadRecord> getDownloadedBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param
+            ("fileName") String fileName, @Param("categoryId") int categoryId, @Param("offset") int offset);
 
     /**
      * 删除文件

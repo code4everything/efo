@@ -6,9 +6,9 @@ import java.util.List;
 
 /**
  * @author pantao
- * @date 2018/2/1
+ * @since 2018/2/1
  */
-public interface IDownloadService {
+public interface IDownloadedService {
 
     /**
      * 添加下载记录

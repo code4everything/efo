@@ -2,7 +2,7 @@ package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.EfoApplication;
 import com.zhazhapan.efo.config.SettingConfig;
-import com.zhazhapan.efo.dao.DownloadDAO;
+import com.zhazhapan.efo.dao.DownloadedDAO;
 import com.zhazhapan.efo.dao.FileDAO;
 import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.entity.File;
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author pantao
- * @date 2018/1/29
+ * @since 2018/1/29
  */
 @Service
 public class FileServiceImpl implements IFileService {
@@ -59,10 +59,10 @@ public class FileServiceImpl implements IFileService {
 
     private final IAuthService authService;
 
-    private final DownloadDAO downloadDAO;
+    private final DownloadedDAO downloadDAO;
 
     @Autowired
-    public FileServiceImpl(FileDAO fileDAO, ICategoryService categoryService, IAuthService authService, DownloadDAO
+    public FileServiceImpl(FileDAO fileDAO, ICategoryService categoryService, IAuthService authService, DownloadedDAO
             downloadDAO) {
         this.fileDAO = fileDAO;
         this.categoryService = categoryService;
@@ -94,8 +94,8 @@ public class FileServiceImpl implements IFileService {
                 file.setCategoryId(categoryService.getIdByName(category));
                 file.setTag(tag);
                 file.setDescription(description);
-                boolean isValid = (localUrl.endsWith("/" + name) || (!Checker.isExists(newLocalUrl) &&
-                        !localUrlExists(newLocalUrl) && !visitUrlExists(newVisitUrl)));
+                boolean isValid = (localUrl.endsWith(ValueConsts.SEPARATOR + name) || (!Checker.isExists(newLocalUrl)
+                        && !localUrlExists(newLocalUrl) && !visitUrlExists(newVisitUrl)));
                 if (isValid && fileDAO.updateFileInfo(file)) {
                     return newFile.renameTo(new java.io.File(newLocalUrl));
                 }

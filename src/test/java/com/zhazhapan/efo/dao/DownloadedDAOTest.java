@@ -10,21 +10,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author pantao
- * @date 2018/1/19
+ * @since 2018/1/19
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DownloadDAOTest {
+public class DownloadedDAOTest {
 
     static {
         EfoApplicationTest.setSettings();
     }
 
     @Autowired
-    DownloadDAO downloadDAO;
+    DownloadedDAO downloadDAO;
 
     @Test
     public void testGetDownloadBy() {
-        System.out.println(downloadDAO.getDownloadBy(1, 1, "", ValueConsts.ZERO_INT, 0));
+        System.out.println(downloadDAO.getDownloadedBy(1, 1, "", ValueConsts.ZERO_INT, 0));
     }
 }

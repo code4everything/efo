@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author pantao
- * @date 2018/1/22
+ * @since 2018/1/22
  */
 @RestController
 @RequestMapping("/config")

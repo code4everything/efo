@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @author pantao
- * @date 2018/1/22
+ * @since 2018/1/22
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {

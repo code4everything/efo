@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author pantao
- * @date 2018/1/23
+ * @since 2018/1/23
  */
 public interface ICommonService {
 

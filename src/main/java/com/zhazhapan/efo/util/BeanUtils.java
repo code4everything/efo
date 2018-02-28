@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author pantao
- * @date 2018/1/18
+ * @since 2018/1/18
  */
 public class BeanUtils {
 

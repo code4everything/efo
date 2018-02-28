@@ -16,7 +16,7 @@ import static com.zhazhapan.efo.EfoApplication.settings;
 
 /**
  * @author pantao
- * @date 2018/1/26
+ * @since 2018/1/26
  */
 public class SettingConfig {
 

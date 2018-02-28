@@ -2,7 +2,7 @@ package com.zhazhapan.efo.web.controller;
 
 import com.zhazhapan.efo.annotation.AuthInterceptor;
 import com.zhazhapan.efo.enums.InterceptorLevel;
-import com.zhazhapan.efo.service.IDownloadService;
+import com.zhazhapan.efo.service.IDownloadedService;
 import com.zhazhapan.util.Formatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author pantao
- * @date 2018/2/9
+ * @since 2018/2/9
  */
 @RestController
 @RequestMapping(value = "/downloaded")
-public class DownloadController {
+public class DownloadedController {
 
-    private final IDownloadService downloadService;
+    private final IDownloadedService downloadService;
 
     @Autowired
-    public DownloadController(IDownloadService downloadService) {
+    public DownloadedController(IDownloadedService downloadService) {
         this.downloadService = downloadService;
     }
 

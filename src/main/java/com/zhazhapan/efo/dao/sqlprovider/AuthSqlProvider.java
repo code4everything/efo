@@ -7,7 +7,7 @@ import org.apache.ibatis.jdbc.SQL;
 
 /**
  * @author pantao
- * @date 2018/1/19
+ * @since 2018/1/19
  */
 public class AuthSqlProvider {
 

@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 /**
  * @author pantao
- * @date 2018/1/18
+ * @since 2018/1/18
  */
 public class Auth {
 

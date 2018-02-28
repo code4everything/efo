@@ -1,20 +1,16 @@
 package com.zhazhapan.efo.model;
 
-import com.zhazhapan.efo.util.BeanUtils;
-
 import java.sql.Timestamp;
 
 /**
  * @author pantao
- * @since 2018/1/19
+ * @since 2018/2/28
  */
-public class DownloadRecord {
+public class UploadedRecord {
 
     private long id;
 
     private int userId;
-
-    private long fileId;
 
     private String username;
 
@@ -24,26 +20,23 @@ public class DownloadRecord {
 
     private String categoryName;
 
+    private String localUrl;
+
     private String visitUrl;
 
     private Timestamp createTime;
 
-    public DownloadRecord(long id, int userId, long fileId, String username, String email, String fileName, String
-            categoryName, String visitUrl, Timestamp createTime) {
+    public UploadedRecord(long id, int userId, String username, String email, String fileName, String categoryName,
+                          String localUrl, String visitUrl, Timestamp createTime) {
         this.id = id;
         this.userId = userId;
-        this.fileId = fileId;
         this.username = username;
         this.email = email;
         this.fileName = fileName;
         this.categoryName = categoryName;
+        this.localUrl = localUrl;
         this.visitUrl = visitUrl;
         this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return BeanUtils.toPrettyJson(this);
     }
 
     public long getId() {
@@ -60,14 +53,6 @@ public class DownloadRecord {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public long getFileId() {
-        return fileId;
-    }
-
-    public void setFileId(long fileId) {
-        this.fileId = fileId;
     }
 
     public String getUsername() {
@@ -100,6 +85,14 @@ public class DownloadRecord {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getLocalUrl() {
+        return localUrl;
+    }
+
+    public void setLocalUrl(String localUrl) {
+        this.localUrl = localUrl;
     }
 
     public String getVisitUrl() {

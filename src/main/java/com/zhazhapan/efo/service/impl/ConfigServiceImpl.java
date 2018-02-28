@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author pantao
- * @date 2018/1/22
+ * @since 2018/1/22
  */
 @Service
 public class ConfigServiceImpl implements IConfigService {

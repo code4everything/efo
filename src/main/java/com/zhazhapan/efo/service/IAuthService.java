@@ -5,7 +5,7 @@ import com.zhazhapan.efo.model.AuthRecord;
 
 /**
  * @author pantao
- * @date 2018/2/1
+ * @since 2018/2/1
  */
 public interface IAuthService {
 

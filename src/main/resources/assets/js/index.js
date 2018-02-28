@@ -183,23 +183,32 @@ $(document).ready(function () {
     $(".sendVerifyCode").click(function () {
         sendVerifyCode($("#email").val(), event.srcElement);
     });
-    getResource();
+
+    $("a.nav-link[href='" + location.hash + "-tab']").click();
+    getTabContent(location.hash);
     $(".nav-link").click(function () {
-        var href = $(event.srcElement).attr("href");
-        if (href.startsWith("resource", 1)) {
-            offset = 0;
-            getResource("");
-        } else if (href.startsWith("uploaded", 1)) {
-            offset = 0;
-            getUserUploaded();
-        } else if (href.startsWith("downloaded", 1)) {
-            offset = 0;
-            getUserDownloaded();
-        } else if (href.startsWith("bio", 1)) {
-            getUserInfo();
-        }
+        getTabContent($(event.srcElement).attr("href"));
     });
 });
+
+function getTabContent(href) {
+    if (href.startsWith("uploaded", 1)) {
+        offset = 0;
+        window.location.hash = "uploaded";
+        getUserUploaded();
+    } else if (href.startsWith("downloaded", 1)) {
+        offset = 0;
+        window.location.hash = "downloaded";
+        getUserDownloaded();
+    } else if (href.startsWith("bio", 1)) {
+        window.location.hash = "bio";
+        getUserInfo();
+    } else {
+        offset = 0;
+        window.location.hash = "resource";
+        getResource("");
+    }
+}
 
 var offset = 0;
 

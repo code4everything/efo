@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author pantao
- * @date 2018/1/25
+ * @since 2018/1/25
  */
 public class WebInterceptor implements HandlerInterceptor {
 

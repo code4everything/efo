@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * @author pantao
- * @date 2018/1/22
+ * @since 2018/1/22
  */
 @RestController
 @RequestMapping("/user")

@@ -8,7 +8,7 @@ import java.sql.Timestamp;
  * 用户表
  *
  * @author pantao
- * @date 2018/1/11
+ * @since 2018/1/11
  */
 public class User {
 

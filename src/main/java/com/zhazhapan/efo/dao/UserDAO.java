@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author pantao
- * @date 2018/1/12
+ * @since 2018/1/12
  */
 @Repository
 public interface UserDAO {

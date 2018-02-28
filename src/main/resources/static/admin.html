@@ -91,10 +91,11 @@
                     <td>{{key+1}}</td>
                     <td>{{upload.username}}</td>
                     <td>{{upload.email}}</td>
-                    <td>{{upload.localUrl}}</td>
+                    <td><a href="javascript:" onclick="alerts($(event.srcElement).attr('title'))"
+                           v-bind:title="upload.localUrl" data-toggle="tooltip">查看</a></td>
                     <td>{{upload.categoryName}}</td>
-                    <td>{{upload.visitUrl}}</td>
-                    <td>{{upload.createTime}}</td>
+                    <td><a v-bind:href="upload.visitUrl" target="_blank">访问</a></td>
+                    <td>{{new Date(upload.createTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
                 </tr>
                 </tbody>
             </table>

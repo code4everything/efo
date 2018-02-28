@@ -44,7 +44,7 @@
             }
         ],
         "background": {
-            "useImage": true,
+            "useImage": false,
             "imageIndex": 0,
             "random": true,
             "imageList": [
