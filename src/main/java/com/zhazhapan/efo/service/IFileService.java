@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.service;
 
 import com.zhazhapan.efo.entity.User;
+import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -157,4 +158,16 @@ public interface IFileService {
      * @return 文件编号
      */
     long getFileId(String localUrl);
+
+    /**
+     * 获取所有文件基本信息
+     *
+     * @param user 用户名或邮箱
+     * @param category 分类名称
+     * @param file 文件名
+     * @param offset 偏移
+     *
+     * @return {@link List}
+     */
+    List<FileBasicRecord> getBasicAll(String user, String file, String category, int offset);
 }

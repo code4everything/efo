@@ -8,11 +8,13 @@ import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.entity.File;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.model.AuthRecord;
+import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IAuthService;
 import com.zhazhapan.efo.service.ICategoryService;
 import com.zhazhapan.efo.service.IFileService;
+import com.zhazhapan.efo.util.ServiceUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.*;
 import org.slf4j.Logger;
@@ -265,5 +267,11 @@ public class FileServiceImpl implements IFileService {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    @Override
+    public List<FileBasicRecord> getBasicAll(String user, String file, String category, int offset) {
+        return (List<FileBasicRecord>) ServiceUtils.invokeFileFilter(fileDAO, "getBasicBy", user, file, category,
+                offset);
     }
 }

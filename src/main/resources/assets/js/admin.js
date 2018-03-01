@@ -1,20 +1,20 @@
-var app = new Vue({el: "#container", data: {categories: [], downloaded: [], uploaded: []}});
+var app = new Vue({el: "#container", data: {categories: [], downloaded: [], uploaded: [], files: []}});
 
 Vue.component('file-filter-item', {
     template: '<div class="col-12 col-sm-10 offset-sm-1 content-box rounded">' +
     '            <br/>' +
     '            <div class="row">' +
     '                <div class="col-sm-2 col-4">' +
-    '                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control file-filter"' +
-    '                           placeholder="分类名称" id="downloaded-by-category"/>' +
+    '                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control file-filter category-filter"' +
+    '                           placeholder="分类名称" onkeyup="fileFilter();"/>' +
     '                </div>' +
     '                <div class="col-sm-3 col-4">' +
-    '                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control file-filter"' +
-    '                           placeholder="用户名或邮箱" id="downloaded-by-user"/>' +
+    '                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control file-filter user-filter"' +
+    '                           placeholder="用户名或邮箱" onkeyup="fileFilter();"/>' +
     '                </div>' +
     '                <div class="col-sm-4 col-4">' +
-    '                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control file-filter"' +
-    '                           placeholder="文件名" id="downloaded-by-file"/>' +
+    '                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control file-filter file-name-filter"' +
+    '                           placeholder="文件名" onkeyup="fileFilter();"/>' +
     '                </div>' +
     '            </div>' +
     '            <br/>' +
@@ -40,7 +40,7 @@ function changeTabInfo(tabId) {
     } else if (tabId === "download-manager") {
         getDownloaded();
     } else if (tabId === "file-manager") {
-
+        getFile();
     } else if (tabId === "auth-manager") {
 
     } else if (tabId === "category-manager") {
@@ -60,29 +60,45 @@ function changeTabInfo(tabId) {
     }, 1000);
 }
 
-$(document).ready(function () {
-    $(".file-filter").keyup(function () {
-        /** @namespace window.event.keyCode */
-        if (window.event.keyCode === 13) {
-            offset = 0;
-            enableSearch = true;
-            changeTabInfo(window.location.hash);
+var fileFilterDivParent;
+
+function getFile() {
+    layer.load(1);
+    $.get("/file/basic/all", getFileFilterParameters(), function (data) {
+        layer.closeAll();
+        var json = JSON.parse(data);
+        if (json.length < 1) {
+            alerts("糟糕，没有数据了");
+        } else if (offset < 1) {
+            app.files = json;
+        } else {
+            app.files = app.files.concat(json);
         }
     });
-    $("a[href='" + location.hash + "']").click();
-});
+}
+
+function getFileFilterParameters() {
+    return {
+        user: enableSearch ? $(fileFilterDivParent).find(".user-filter").val() : "",
+        file: enableSearch ? $(fileFilterDivParent).find(".file-name-filter").val() : "",
+        category: enableSearch ? $(fileFilterDivParent).find(".category-filter").val() : "",
+        offset: offset
+    }
+}
+
+function fileFilter() {
+    /** @namespace window.event.keyCode */
+    if (window.event.keyCode === 13) {
+        offset = 0;
+        enableSearch = true;
+        fileFilterDivParent = $(event.srcElement).parent().parent();
+        changeTabInfo(window.location.hash);
+    }
+}
 
 function getUploaded() {
-    var user = "";
-    var file = "";
-    var category = "";
-    if (enableSearch) {
-        user = $("#uploaded-by-user").val();
-        file = $("#uploaded-by-file").val();
-        category = $("#uploaded-by-category").val();
-    }
     layer.load(1);
-    $.get("/uploaded/all", {user: user, file: file, category: category, offset: offset}, function (data) {
+    $.get("/uploaded/all", getFileFilterParameters(), function (data) {
         layer.closeAll();
         var json = JSON.parse(data);
         if (json.length < 1) {
@@ -96,16 +112,8 @@ function getUploaded() {
 }
 
 function getDownloaded() {
-    var user = "";
-    var file = "";
-    var category = "";
-    if (enableSearch) {
-        user = $("#downloaded-by-user").val();
-        file = $("#downloaded-by-file").val();
-        category = $("#downloaded-by-category").val();
-    }
     layer.load(1);
-    $.get("/downloaded/all", {user: user, file: file, category: category, offset: offset}, function (data) {
+    $.get("/downloaded/all", getFileFilterParameters(), function (data) {
         layer.closeAll();
         var json = JSON.parse(data);
         if (json.length < 1) {
@@ -179,6 +187,13 @@ function saveCategory() {
     setCategoryToDefault();
 }
 
+function toggleRowSelectedStatus(ele) {
+    if (event.srcElement.toString() === "[object HTMLTableCellElement]") {
+        var cb = $(ele).find("input[type='checkbox']")[0];
+        cb.checked = !cb.checked;
+    }
+}
+
 function setCategoryToDefault() {
     $("#category-id").val(0);
     $("#category-key").val(0);
@@ -186,3 +201,13 @@ function setCategoryToDefault() {
     $("#category-title").text("添加新分类");
 }
 
+$(document).ready(function () {
+    setTimeout(function () {
+        if (isEmpty(location.hash)) {
+            location.hash = "#upload-manager";
+            getTabInfo(location.hash);
+        } else {
+            $("a[href='" + location.hash + "']").click();
+        }
+    }, 1000);
+});

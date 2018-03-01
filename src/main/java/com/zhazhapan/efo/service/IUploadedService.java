@@ -1,6 +1,5 @@
 package com.zhazhapan.efo.service;
 
-import com.zhazhapan.efo.model.DownloadRecord;
 import com.zhazhapan.efo.model.UploadedRecord;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface IUploadedService {
      * @param file 文件名
      * @param offset 偏移
      *
-     * @return {@link DownloadRecord}
+     * @return {@link List}
      */
     List<UploadedRecord> getAll(String user, String file, String category, int offset);
 }

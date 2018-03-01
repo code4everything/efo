@@ -2,6 +2,7 @@ package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.dao.DownloadedDAO;
 import com.zhazhapan.efo.model.DownloadRecord;
+import com.zhazhapan.efo.model.UploadedRecord;
 import com.zhazhapan.efo.service.IDownloadedService;
 import com.zhazhapan.efo.util.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,7 @@ public class DownloadedServiceImpl implements IDownloadedService {
 
     @Override
     public List<DownloadRecord> getAll(String user, String file, String category, int offset) {
-        int userId = ServiceUtils.getUserId(user);
-        long fileId = ServiceUtils.getFileId(file);
-        int categoryId = ServiceUtils.getCategoryId(category);
-        return downloadDAO.getDownloadedBy(userId, fileId, file, categoryId, offset);
+        return (List<DownloadRecord>) ServiceUtils.invokeFileFilter(downloadDAO, "getDownloadedBy", user, file,
+                category, offset);
     }
 }

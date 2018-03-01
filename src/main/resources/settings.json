@@ -27,7 +27,7 @@
                 "style": [
                     {
                         "key": "background",
-                        "value": "rgba(255,255,255,0.7)"
+                        "value": "rgba(255,255,255,0.8)"
                     }
                 ]
             },
@@ -38,7 +38,7 @@
                 "style": [
                     {
                         "key": "opacity",
-                        "value": 0.7
+                        "value": 0.8
                     }
                 ]
             }

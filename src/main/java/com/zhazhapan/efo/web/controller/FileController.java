@@ -107,6 +107,12 @@ public class FileController {
         return jsonObject.toString();
     }
 
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/basic/all", method = RequestMethod.GET)
+    public String getBasicAll(String user, String file, String category, int offset) {
+        return Formatter.listToJson(fileService.getBasicAll(user, file, category, offset));
+    }
+
     /**
      * 资源下载
      *

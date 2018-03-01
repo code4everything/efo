@@ -2,6 +2,7 @@ package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.dao.UploadedDAO;
 import com.zhazhapan.efo.model.DownloadRecord;
+import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.UploadedRecord;
 import com.zhazhapan.efo.service.IUploadedService;
 import com.zhazhapan.efo.util.ServiceUtils;
@@ -24,9 +25,7 @@ public class UploadedServiceImpl implements IUploadedService {
 
     @Override
     public List<UploadedRecord> getAll(String user, String file, String category, int offset) {
-        int userId = ServiceUtils.getUserId(user);
-        long fileId = ServiceUtils.getFileId(file);
-        int categoryId = ServiceUtils.getCategoryId(category);
-        return uploadedDAO.getUploadedBy(userId, fileId, file, categoryId, offset);
+        return (List<UploadedRecord>) ServiceUtils.invokeFileFilter(uploadedDAO, "getUploadedBy", user, file,
+                category, offset);
     }
 }

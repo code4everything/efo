@@ -2,6 +2,7 @@ package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.dao.sqlprovider.FileSqlProvider;
 import com.zhazhapan.efo.entity.File;
+import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -307,4 +308,19 @@ public interface FileDAO {
     @SelectProvider(type = FileSqlProvider.class, method = "getUserDownloaded")
     List<FileRecord> getUserDownloaded(@Param("userId") int userId, @Param("offset") int offset, @Param("search")
             String search);
+
+    /**
+     * 查询文件基本信息
+     *
+     * @param userId 用户编号，不使用用户编号作为条件时设置值小于等于0即可
+     * @param fileId 文件编号，不使用文件编号作为条件时设置值小于等于0即可
+     * @param categoryId 分类编号，不用分类编号作为条件时设置值小于等于0即可
+     * @param fileName 文件名，不使用文件名作为条件时设置值为空即可
+     * @param offset 偏移
+     *
+     * @return 上传记录
+     */
+    @SelectProvider(type = FileSqlProvider.class, method = "getBasicBy")
+    List<FileBasicRecord> getBasicBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName")
+            String fileName, @Param("categoryId") int categoryId, @Param("offset") int offset);
 }

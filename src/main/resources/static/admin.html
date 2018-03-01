@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/css/nav.css"/>
     <link rel="stylesheet" href="/assets/css/glyphicons.css">
+    <link rel="stylesheet" href="/assets/css/pretty-checkbox.min.css"/>
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/js/jquery-3.3.1.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
@@ -53,24 +54,7 @@
 <div id="container">
     <!--上传记录-->
     <div class="row jq-tab" id="upload-manager">
-        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
-            <br/>
-            <div class="row">
-                <div class="col-sm-2 col-4">
-                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control file-filter"
-                           placeholder="指定分类" id="uploaded-by-category"/>
-                </div>
-                <div class="col-sm-3 col-4">
-                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control file-filter"
-                           placeholder="指定用户" id="uploaded-by-user"/>
-                </div>
-                <div class="col-sm-4 col-4">
-                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control file-filter"
-                           placeholder="指定文件" id="uploaded-by-file"/>
-                </div>
-            </div>
-            <br/>
-        </div>
+        <file-filter-item></file-filter-item>
         <div class="col-12 col-sm-10 offset-sm-1"><br/></div>
         <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
             <br/>
@@ -107,24 +91,7 @@
     </div>
     <!--下载记录-->
     <div class="row jq-tab hide" id="download-manager">
-        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
-            <br/>
-            <div class="row">
-                <div class="col-sm-2 col-4">
-                    <input type="text" title="指定分类" data-toggle="tooltip" class="form-control file-filter"
-                           placeholder="指定分类" id="downloaded-by-category"/>
-                </div>
-                <div class="col-sm-3 col-4">
-                    <input type="text" title="指定用户" data-toggle="tooltip" class="form-control file-filter"
-                           placeholder="指定用户" id="downloaded-by-user"/>
-                </div>
-                <div class="col-sm-4 col-4">
-                    <input type="text" title="指定文件" data-toggle="tooltip" class="form-control file-filter"
-                           placeholder="指定文件" id="downloaded-by-file"/>
-                </div>
-            </div>
-            <br/>
-        </div>
+        <file-filter-item></file-filter-item>
         <div class="col-12 col-sm-10 offset-sm-1"><br/></div>
         <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
             <br/>
@@ -163,7 +130,58 @@
     </div>
     <!--文件管理-->
     <div class="row jq-tab hide" id="file-manager">
-
+        <file-filter-item></file-filter-item>
+        <div class="col-12 col-sm-10 offset-sm-1"><br/></div>
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="text-right">
+                <button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+                <button class="btn btn-success"><i class="glyphicon glyphicon-cloud-upload"></i> 上传</button>
+                <button class="btn btn-warning"><i class="glyphicon glyphicon-wrench"></i> 修改</button>
+                <button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> 删除</button>
+            </div>
+            <br/>
+            <table class="table table-bordered table-hover table-responsive table-condensed">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>编号</th>
+                    <th>文件编号</th>
+                    <th>用户名</th>
+                    <th>本地路径</th>
+                    <th>分类</th>
+                    <th>链接</th>
+                    <th>下载次数</th>
+                    <th>上传时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(file,key) in files" onclick="toggleRowSelectedStatus(this);">
+                    <td>
+                        <div class="pretty p-default p-curve p-thick">
+                            <input type="checkbox" name="file" title=""/>
+                            <div class="state p-info-o">
+                                <label></label>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{key+1}}</td>
+                    <td>{{file.id}}</td>
+                    <td>{{file.username}}</td>
+                    <td><a href="javascript:" onclick="alerts($(event.srcElement).attr('data-title'));"
+                           v-bind:title="file.localUrl" data-toggle="tooltip"
+                           v-bind:data-title="file.localUrl">查看</a></td>
+                    <td>{{file.categoryName}}</td>
+                    <td><a v-bind:href="file.visitUrl" target="_blank">访问</a></td>
+                    <td>{{file.downloadTimes}}</td>
+                    <td>{{new Date(file.createTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getDownloaded();"><b>获取更多</b></button>
+        <br/>
     </div>
     <div class="row jq-tab hide" id="auth-manager">权限管理</div>
     <!--分类管理-->

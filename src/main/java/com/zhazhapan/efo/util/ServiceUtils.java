@@ -6,8 +6,13 @@ import com.zhazhapan.efo.service.IUserService;
 import com.zhazhapan.efo.service.impl.UserServiceImpl;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.ReflectUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 /**
  * @author pantao
@@ -21,6 +26,8 @@ public class ServiceUtils {
     private static IFileService fileService;
 
     private static ICategoryService categoryService;
+
+    private static Logger logger = Logger.getLogger(ServiceUtils.class);
 
     @Autowired
     public ServiceUtils(IUserService userService, IFileService fileService, ICategoryService categoryService) {
@@ -39,5 +46,16 @@ public class ServiceUtils {
 
     public static int getCategoryId(String categoryName) {
         return Checker.isEmpty(categoryName) ? ValueConsts.ZERO_INT : categoryService.getIdByName(categoryName);
+    }
+
+    public static Object invokeFileFilter(Object object, String methodName, String user, String file, String
+            category, int offset) {
+        try {
+            return ReflectUtils.invokeMethodUseBasicType(object, methodName, new Object[]{getUserId(user), getFileId
+                    (file), file, getCategoryId(category), offset});
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            logger.error(e.getMessage());
+            return null;
+        }
     }
 }
