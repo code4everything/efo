@@ -43,7 +43,6 @@ public class UploadedSqlProvider {
             ORDER_BY("f." + EfoApplication.settings.getStringUseEval(ConfigConsts.FILE_ORDER_BY_OF_SETTING));
         }}.toString();
         int size = EfoApplication.settings.getIntegerUseEval(ConfigConsts.FILE_PAGE_SIZE_OF_SETTING);
-        System.out.println(sql);
         return sql + " limit " + (offset * size) + "," + size;
     }
 }

@@ -91,8 +91,9 @@
                     <td>{{key+1}}</td>
                     <td>{{upload.username}}</td>
                     <td>{{upload.email}}</td>
-                    <td><a href="javascript:" onclick="alerts($(event.srcElement).attr('title'))"
-                           v-bind:title="upload.localUrl" data-toggle="tooltip">查看</a></td>
+                    <td><a href="javascript:" onclick="alerts($(event.srcElement).attr('data-title'));"
+                           v-bind:title="upload.localUrl" data-toggle="tooltip"
+                           v-bind:data-title="upload.localUrl">查看</a></td>
                     <td>{{upload.categoryName}}</td>
                     <td><a v-bind:href="upload.visitUrl" target="_blank">访问</a></td>
                     <td>{{new Date(upload.createTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
@@ -100,6 +101,9 @@
                 </tbody>
             </table>
         </div>
+        <br/>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getUploaded();"><b>获取更多</b></button>
+        <br/>
     </div>
     <!--下载记录-->
     <div class="row jq-tab hide" id="download-manager">
@@ -157,7 +161,10 @@
         <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getDownloaded();"><b>获取更多</b></button>
         <br/>
     </div>
-    <div class="row jq-tab hide" id="file-manager">文件管理</div>
+    <!--文件管理-->
+    <div class="row jq-tab hide" id="file-manager">
+
+    </div>
     <div class="row jq-tab hide" id="auth-manager">权限管理</div>
     <!--分类管理-->
     <div class="row jq-tab hide" id="category-manager">
