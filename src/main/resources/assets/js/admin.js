@@ -57,6 +57,7 @@ function changeTabInfo(tabId) {
     }
     setTimeout(function () {
         $('[data-toggle="tooltip"]').tooltip();
+        setCSS();
     }, 1000);
 }
 
@@ -185,6 +186,10 @@ function saveCategory() {
         }
     }
     setCategoryToDefault();
+}
+
+function shareFiles() {
+
 }
 
 function toggleRowSelectedStatus(ele) {

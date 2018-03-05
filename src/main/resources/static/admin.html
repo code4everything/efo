@@ -135,7 +135,9 @@
         <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
             <br/>
             <div class="text-right">
-                <button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> 添加</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i
+                        class="glyphicon glyphicon-share"></i> 共享
+                </button>
                 <button class="btn btn-success"><i class="glyphicon glyphicon-cloud-upload"></i> 上传</button>
                 <button class="btn btn-warning"><i class="glyphicon glyphicon-wrench"></i> 修改</button>
                 <button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> 删除</button>
@@ -232,6 +234,31 @@
     <div class="row text-center" id="footer"></div>
 </div>
 <br/>
+<div class="modal fade" id="fileAddedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="myModalLabel">共享服务器本地文件</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-7 col-7">
+
+                    </div>
+                    <div class="col-sm-5 col-5">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="return shareFiles();">共享文件</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/assets/js/particles.js"></script>
 <script src="/assets/js/default.js"></script>
 <script src="/assets/js/admin.js"></script>

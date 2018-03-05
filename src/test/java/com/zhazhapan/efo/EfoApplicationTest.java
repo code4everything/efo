@@ -14,7 +14,7 @@ public class EfoApplicationTest {
 
     public static void setSettings() {
         try {
-            EfoApplication.settings = new JsonParser(EfoApplicationTest.class.getResource("/settings.json"));
+            EfoApplication.settings = new JsonParser(EfoApplicationTest.class.getResource("/config.json"));
         } catch (IOException e) {
             e.printStackTrace();
         }

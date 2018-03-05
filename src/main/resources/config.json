@@ -20,38 +20,41 @@
         },
         "css": [
             {
+                "selector": ".random-image",
+                "style": [
+                    "background-color: #800080",
+                    "color: #FFF300"
+                ]
+            },
+            {
+                "selector": ".jq-nav-item a",
+                "style": "color: #FFF300"
+            },
+            {
+                "selector": ".jq-nav",
+                "style": "background-color: #800080"
+            },
+            {
                 "selector": [
                     ".content-box",
                     ".form-control"
                 ],
-                "style": [
-                    {
-                        "key": "background",
-                        "value": "rgba(255,255,255,0.8)"
-                    }
-                ]
+                "style": "background: rgba(255,255,255,0.8)"
             },
             {
-                "selector": [
-                    ".btn"
-                ],
-                "style": [
-                    {
-                        "key": "opacity",
-                        "value": 0.8
-                    }
-                ]
+                "selector": ".btn",
+                "style": "opacity: 0.8"
             }
         ],
         "background": {
-            "useImage": false,
+            "useImage": true,
             "imageIndex": 0,
-            "random": true,
             "imageList": [
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_1.jpg",
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_2.jpg",
                 "https://fakedog.xyz/homedb/srcm/upload/20180123/bg_3.jpg"
             ],
+            "random": true,
             "listGenerator": {
                 "enable": true,
                 "prefix": "https://fakedog.xyz/image/background/anime/bg_",

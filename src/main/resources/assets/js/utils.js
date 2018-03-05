@@ -1,3 +1,16 @@
+function trimWith(string, trimStr) {
+    return ltrim(rtrim(string, trimStr), trimStr);
+}
+
+function rtrim(string, trimStr) {
+    var idx = string.length - trimStr.length;
+    return string.lastIndexOf(trimStr) === idx ? rtrim(string.substr(0, idx), trimStr) : string;
+}
+
+function ltrim(string, trimStr) {
+    return string.indexOf(trimStr) === 0 ? ltrim(string.substr(trimStr.length), trimStr) : string;
+}
+
 function formatSize(bytes) {
     var s = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
     var e = Math.floor(Math.log(bytes) / Math.log(1024));

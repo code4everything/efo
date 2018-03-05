@@ -76,7 +76,7 @@ $(document).ready(function () {
     });
     // 加载页脚
     $("#footer").html(footer);
-    $("body").append("<button onclick='changeBackgroundImage();' class='rounded-circle btn btn-light' " +
+    $("body").append("<button onclick='changeBackgroundImage();' class='rounded-circle btn btn-light random-image' " +
         "style='position: fixed;width: 3rem;height: 3rem;bottom: 1rem;right: 1rem;'>" +
         "<span class='glyphicon glyphicon-retweet'></span></button>");
 });
@@ -103,11 +103,24 @@ function changeBackgroundImage() {
 function setCSS() {
     for (var m = 0; m < globalConfig.css.length; m++) {
         var node = globalConfig.css[m];
-        var element = node.selector;
-        var item = node.style;
+        var tempElement = node.selector;
+        var element = [];
+        if (tempElement instanceof Array) {
+            element = tempElement;
+        } else {
+            element = element.concat(tempElement);
+        }
+        var tempItem = node.style;
+        var item = [];
+        if (tempItem instanceof Array) {
+            item = tempItem;
+        } else {
+            item = item.concat(tempItem);
+        }
         for (var j = 0; j < element.length; j++) {
             for (var k = 0; k < item.length; k++) {
-                $(element[j]).css(item[k].key, item[k].value);
+                var css = item[k].split(":");
+                $(element[j]).css(css[0].trim(), rtrim(css[1].trim(), ";"));
             }
         }
     }

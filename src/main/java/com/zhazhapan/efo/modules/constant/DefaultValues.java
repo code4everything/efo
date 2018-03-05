@@ -21,7 +21,7 @@ public class DefaultValues {
     /**
      * 配置文件路径
      */
-    public static final String SETTING_PATH = "/settings.json";
+    public static final String SETTING_PATH = "/config.json";
 
     /**
      * 冒号
