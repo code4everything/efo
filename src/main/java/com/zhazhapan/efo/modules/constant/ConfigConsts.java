@@ -9,6 +9,21 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class ConfigConsts {
 
     /**
+     * 最大标签长度
+     */
+    public static final String TAG_SIZE_OF_SETTING = "file.tag.maxSize";
+
+    /**
+     * 每个标签最大长度
+     */
+    public static final String TAG_LENGTH_OF_SETTING = "file.tag.maxLength";
+
+    /**
+     * 文件标签
+     */
+    public static final String TAG_REQUIRE_OF_SETTING = "file.tag.require";
+
+    /**
      * 文件默认排序方式
      */
     public static final String FILE_ORDER_BY_OF_SETTING = "file.orderBy";

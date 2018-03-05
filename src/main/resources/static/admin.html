@@ -135,7 +135,7 @@
         <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
             <br/>
             <div class="text-right">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i
+                <button class="btn btn-primary" onclick="showFileShareModal();"><i
                         class="glyphicon glyphicon-share"></i> 共享
                 </button>
                 <button class="btn btn-success"><i class="glyphicon glyphicon-cloud-upload"></i> 上传</button>
@@ -234,6 +234,7 @@
     <div class="row text-center" id="footer"></div>
 </div>
 <br/>
+<!--模态框-->
 <div class="modal fade" id="fileAddedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -242,19 +243,26 @@
                 <h4 class="modal-title pull-left" id="myModalLabel">共享服务器本地文件</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 80%;">
                 <div class="row">
                     <div class="col-sm-7 col-7">
-
+                        <input type="text" class="form-control" placeholder="选择路径" id="select-url"/>
+                        <br/>
+                        <div id="server-file-list">
+                            <ul class="list-group" id="server-file-list-group"></ul>
+                        </div>
                     </div>
                     <div class="col-sm-5 col-5">
-
+                        <input type="text" class="form-control" placeholder="链接前缀" id="link-prefix">
+                        <div id="select-file-list"></div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="return shareFiles();">共享文件</button>
+                <button type="button" class="btn btn-primary" id="server-file-share-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;">共享文件
+                </button>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-var app = new Vue({el: "#container", data: {categories: [], downloaded: [], uploaded: [], files: []}});
+var app = new Vue({el: "#container", data: {categories: [], downloaded: [], uploaded: [], files: [], serverFiles: []}});
 
 Vue.component('file-filter-item', {
     template: '<div class="col-12 col-sm-10 offset-sm-1 content-box rounded">' +
@@ -151,6 +151,22 @@ function deleteCategory() {
     });
 }
 
+function showFileShareModal() {
+    layer.load(1);
+    $.get("/file/server", {path: $("#select-url").val()}, function (data) {
+        layer.closeAll();
+        app.serverFiles = JSON.parse(data);
+        var ele = $("#server-file-list-group");
+        $(ele).empty();
+        $.each(app.serverFiles, function (i, json) {
+            console.info(json);
+            var li = "<li class='list-group-item list-group-item-info' data-key='" + i + "'><a href='javascript:'>" + json.name + "</a></li>";
+            $(ele).append(li);
+        });
+        $("#fileAddedModal").modal("show");
+    })
+}
+
 function editCategory() {
     $("#category-title").text("编辑分类");
     var srcTr = $(event.srcElement).parents("tr");
@@ -215,4 +231,7 @@ $(document).ready(function () {
             $("a[href='" + location.hash + "']").click();
         }
     }, 1000);
+    $(".server-file-share-button").click(function () {
+
+    });
 });

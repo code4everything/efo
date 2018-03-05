@@ -200,6 +200,20 @@ public class FileServiceImpl implements IFileService {
                     .FILE_MAX_SIZE_OF_SETTING));
             long size = multipartFile.getSize();
             boolean fileExists = localUrlExists(localUrl);
+            //检测标签是否合法
+            if (EfoApplication.settings.getBooleanUseEval(ConfigConsts.TAG_REQUIRE_OF_SETTING)) {
+                String[] tags = Checker.checkNull(tag).split(ValueConsts.SPACE);
+                if (tags.length <= EfoApplication.settings.getIntegerUseEval(ConfigConsts.TAG_SIZE_OF_SETTING)) {
+                    int maxLength = EfoApplication.settings.getIntegerUseEval(ConfigConsts.TAG_LENGTH_OF_SETTING);
+                    for (String t : tags) {
+                        if (t.length() > maxLength) {
+                            return false;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+            }
             //是否可以上传
             boolean canUpload = !multipartFile.isEmpty() && size <= maxSize && Pattern.compile(EfoApplication
                     .settings.getStringUseEval(ConfigConsts.FILE_SUFFIX_MATCH_OF_SETTING)).matcher(suffix).matches()

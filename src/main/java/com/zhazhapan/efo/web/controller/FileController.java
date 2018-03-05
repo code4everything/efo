@@ -1,5 +1,6 @@
 package com.zhazhapan.efo.web.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.efo.EfoApplication;
 import com.zhazhapan.efo.annotation.AuthInterceptor;
@@ -7,9 +8,11 @@ import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IFileService;
+import com.zhazhapan.efo.util.BeanUtils;
 import com.zhazhapan.efo.util.ControllerUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.FileExecutor;
 import com.zhazhapan.util.Formatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -111,6 +115,19 @@ public class FileController {
     @RequestMapping(value = "/basic/all", method = RequestMethod.GET)
     public String getBasicAll(String user, String file, String category, int offset) {
         return Formatter.listToJson(fileService.getBasicAll(user, file, category, offset));
+    }
+
+    @AuthInterceptor
+    @RequestMapping(value = "server", method = RequestMethod.GET)
+    public String getServerFilesByPath(String path) {
+        File[] files = FileExecutor.listFile(Checker.isEmpty(path) ? (Checker.isWindows() ? "c:\\" : "/") : path);
+        JSONArray array = new JSONArray();
+        if (Checker.isNotNull(files)) {
+            for (File file : files) {
+                array.add(BeanUtils.beanToJson(file));
+            }
+        }
+        return array.toJSONString();
     }
 
     /**

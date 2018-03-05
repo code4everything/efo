@@ -1,9 +1,12 @@
 package com.zhazhapan.efo.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.util.Formatter;
 import com.zhazhapan.util.enums.FieldModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author pantao
@@ -12,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class BeanUtils {
 
     private static final String ERROR_JSON = "{\"error\":\"internal error, please try again later\"}";
-    
+
     private static Logger logger = LoggerFactory.getLogger(BeanUtils.class);
 
     private BeanUtils() {}
@@ -33,5 +36,21 @@ public class BeanUtils {
             logger.error(e.getMessage());
         }
         return result;
+    }
+
+    /**
+     * 将类属性装换成JSON（只能转换有get方法的）
+     *
+     * @param object 转换的对象
+     *
+     * @return {@link JSONObject}
+     */
+    public static JSONObject beanToJson(Object object) {
+        try {
+            return com.zhazhapan.util.BeanUtils.beanToJson(object);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            logger.error(e.getMessage());
+            return null;
+        }
     }
 }
