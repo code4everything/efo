@@ -118,9 +118,9 @@ public class FileController {
     }
 
     @AuthInterceptor
-    @RequestMapping(value = "server", method = RequestMethod.GET)
+    @RequestMapping(value = "/server", method = RequestMethod.GET)
     public String getServerFilesByPath(String path) {
-        File[] files = FileExecutor.listFile(Checker.isEmpty(path) ? (Checker.isWindows() ? "c:\\" : "/") : path);
+        File[] files = FileExecutor.listFile(Checker.isEmpty(path) ? (Checker.isWindows() ? "C:\\" : "/") : path);
         JSONArray array = new JSONArray();
         if (Checker.isNotNull(files)) {
             for (File file : files) {
@@ -128,6 +128,13 @@ public class FileController {
             }
         }
         return array.toJSONString();
+    }
+
+    @AuthInterceptor
+    @RequestMapping(value = "/server/share", method = RequestMethod.POST)
+    public String shareFile(String prefix, String files) {
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
+        return ControllerUtils.getResponse(fileService.shareFiles(Checker.checkNull(prefix), files, user.getId()));
     }
 
     /**

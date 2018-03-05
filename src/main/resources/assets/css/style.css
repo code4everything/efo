@@ -88,3 +88,7 @@ input[type=checkbox] {
 .font-1 {
     font-size: 1rem;
 }
+
+.width-60-vm {
+    width: 60vw;
+}

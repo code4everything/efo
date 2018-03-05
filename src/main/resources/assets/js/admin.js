@@ -1,4 +1,9 @@
-var app = new Vue({el: "#container", data: {categories: [], downloaded: [], uploaded: [], files: [], serverFiles: []}});
+var app = new Vue({
+    el: "#container",
+    data: {categories: [], downloaded: [], uploaded: [], files: [], serverFiles: [], selectedServerFiles: []}
+});
+
+var serverFileSearchHistory = [];
 
 Vue.component('file-filter-item', {
     template: '<div class="col-12 col-sm-10 offset-sm-1 content-box rounded">' +
@@ -152,19 +157,37 @@ function deleteCategory() {
 }
 
 function showFileShareModal() {
+    if (isEmpty($("#select-url").val())) {
+        getServerFileByPath(false);
+    }
+    var modal = $("#fileAddedModal");
+    var ele = $(modal).find(".modal-content");
+    if (!isMobile()) {
+        $(ele).addClass("width-60-vm");
+    } else {
+        $(ele).removeClass("width-60-vm");
+    }
+    $(modal).modal("show");
+}
+
+function getServerFileByPath(addTo) {
+    var path = $("#select-url").val();
+    serverFileSearchHistory = serverFileSearchHistory.concat(path);
     layer.load(1);
-    $.get("/file/server", {path: $("#select-url").val()}, function (data) {
+    $.get("/file/server", {path: path}, function (data) {
         layer.closeAll();
         app.serverFiles = JSON.parse(data);
         var ele = $("#server-file-list-group");
         $(ele).empty();
         $.each(app.serverFiles, function (i, json) {
-            console.info(json);
-            var li = "<li class='list-group-item list-group-item-info' data-key='" + i + "'><a href='javascript:'>" + json.name + "</a></li>";
+            var li = "<li class='list-group-item list-group-item-" + (json.isDirectory ? "primary" : "info") + "' data-key='" + i + "'><a href='javascript:' class='server-file' title='" + json.absolutePath + "' data-toggle='tooltip' onclick='selectServerFile();'>" + json.name + "</a></li>";
             $(ele).append(li);
+            if (addTo && json.isFile) {
+                addToSelectedServerFile(json);
+            }
         });
-        $("#fileAddedModal").modal("show");
-    })
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 }
 
 function editCategory() {
@@ -222,6 +245,31 @@ function setCategoryToDefault() {
     $("#category-title").text("添加新分类");
 }
 
+function addToSelectedServerFile(json) {
+    app.selectedServerFiles = app.selectedServerFiles.concat(json);
+    var li = "<li class='list-group-item list-group-item-success' data-key='" + (app.selectedServerFiles.length - 1) + "'><a href='javascript:' class='selected-server-file' title='" + json.absolutePath + "' data-toggle='tooltip' onclick='removeSelectedServerFile();'>" + json.name + "</a></li>";
+    $("#selected-file-list-group").append(li);
+    $('[data-toggle="tooltip"]').tooltip();
+}
+
+function selectServerFile() {
+    var json = app.serverFiles[$(event.srcElement).parent().attr("data-key")];
+    if (json.isDirectory) {
+        /** @namespace json.absolutePath */
+        $("#select-url").val(json.absolutePath);
+        getServerFileByPath(document.getElementById("share-all-file").checked);
+    } else {
+        addToSelectedServerFile(json);
+    }
+}
+
+function removeSelectedServerFile() {
+    var liEle = $(event.srcElement).parent();
+    var key = $(liEle).attr("data-key");
+    app.selectedServerFiles.splice(key, 1);
+    $(liEle).remove();
+}
+
 $(document).ready(function () {
     setTimeout(function () {
         if (isEmpty(location.hash)) {
@@ -231,7 +279,43 @@ $(document).ready(function () {
             $("a[href='" + location.hash + "']").click();
         }
     }, 1000);
-    $(".server-file-share-button").click(function () {
-
+    $("#server-file-share-button").click(function () {
+        if (app.selectedServerFiles.length > 0) {
+            layer.load(1);
+            var files = "";
+            app.selectedServerFiles.forEach(function (json) {
+                files += json.absolutePath + ",";
+            });
+            $.post("/file/server/share", {
+                prefix: $("#link-prefix").val(),
+                files: files.substr(0, files.length - 1)
+            }, function (data) {
+                layer.closeAll();
+                var json = JSON.parse(data);
+                if (json.status === "success") {
+                    getTabInfo(window.location.hash);
+                    $("#fileAddedModal").modal("hide");
+                    layer.msg("共享文件成功");
+                } else {
+                    alerts("共享失败（可能是本地路径或访问链接已经存在导致）");
+                }
+            });
+        } else {
+            alerts("还没有选择任何文件");
+        }
+    });
+    $("#select-url").keyup(function () {
+        if (window.event.keyCode === 13) {
+            getServerFileByPath(false);
+        }
+    });
+    $(".server-path-return").click(function () {
+        var len = serverFileSearchHistory.length;
+        if (len > 1) {
+            serverFileSearchHistory.splice(len - 1, 1);
+            $("#select-url").val(serverFileSearchHistory[len - 2]);
+            serverFileSearchHistory.splice(len - 2, 1);
+            getServerFileByPath(false);
+        }
     });
 });

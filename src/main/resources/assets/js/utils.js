@@ -1,3 +1,15 @@
+function isMobile() {
+    var userAgent = navigator.userAgent.toLowerCase();
+    var isPad = userAgent.indexOf("ipad") > -1;
+    var isIpone = userAgent.indexOf("iphone") > -1;
+    var isMidp = userAgent.indexOf("midp") > -1;
+    var isUc = userAgent.indexOf("rv:1.2.3.4") > -1 || userAgent.indexOf("ucweb") > -1;
+    var isAndroid = userAgent.indexOf("android") > -1;
+    var isCe = userAgent.indexOf("windows ce") > -1;
+    var isWm = userAgent.indexOf("windows mobile") > -1;
+    return isPad || isIpone || isMidp || isUc || isAndroid || isCe || isWm || userAgent.indexOf("mobile") > -1;
+}
+
 function trimWith(string, trimStr) {
     return ltrim(rtrim(string, trimStr), trimStr);
 }

@@ -133,6 +133,17 @@ public interface IFileService {
     boolean upload(int categoryId, String tag, String description, MultipartFile multipartFile, User user);
 
     /**
+     * 分享服务器本地文件
+     *
+     * @param prefix 链接前缀
+     * @param files 文件
+     * @param userId 用户编号
+     *
+     * @return 是否添加成功
+     */
+    boolean shareFiles(String prefix, String files, int userId);
+
+    /**
      * 本地路径是否存在
      *
      * @param localUrl 本地路径

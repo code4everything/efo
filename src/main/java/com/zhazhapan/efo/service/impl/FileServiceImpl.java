@@ -265,6 +265,30 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
+            Exception.class)
+    public boolean shareFiles(String prefix, String files, int userId) {
+        if (Checker.isNotEmpty(files)) {
+            String[] paths = files.split(ValueConsts.COMMA_SIGN);
+            for (String path : paths) {
+                java.io.File f = new java.io.File(path);
+                String name = f.getName();
+                String visitUrl = "/file" + (prefix.startsWith("/") ? "" : "/") + prefix + (prefix.endsWith("/") ? ""
+                        : "/") + name;
+                if (f.exists() && f.isFile() && !localUrlExists(path) && !visitUrlExists(visitUrl)) {
+                    String suffix = FileExecutor.getFileSuffix(name);
+                    File file = new File(name, suffix, path, visitUrl, ValueConsts.EMPTY_STRING, ValueConsts
+                            .EMPTY_STRING, userId, ValueConsts.ONE_INT);
+                    file.setAuth(ValueConsts.ONE_INT, ValueConsts.ZERO_INT, ValueConsts.ZERO_INT, ValueConsts
+                            .ZERO_INT, ValueConsts.ONE_INT);
+                    fileDAO.insertFile(file);
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public boolean localUrlExists(String localUrl) {
         return fileDAO.checkLocalUrl(localUrl) > 0;
     }
