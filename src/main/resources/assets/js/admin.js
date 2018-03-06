@@ -170,6 +170,42 @@ function showFileShareModal() {
     $(modal).modal("show");
 }
 
+var selectedRows;
+
+var rowIndex;
+
+function showFileModifyModal() {
+    rowIndex = 0;
+    selectedRows = getSelectedRows($("#file-manager-table").children("tbody"));
+    if (selectedRows.length < 1) {
+        alerts("请至少选择一行");
+    } else {
+        setModifyFile();
+        $("#fileModifiedModal").modal("show");
+    }
+}
+
+function checkRowIndex() {
+    if (rowIndex < 0) {
+        rowIndex = selectedRows.length - 1;
+    } else if (rowIndex >= selectedRows.length) {
+        rowIndex = 0;
+    }
+}
+
+function toggleCheckBoxStatus() {
+    setCheckboxesStatus($("#file-manager-table").children("tbody"), document.getElementById("file-toggle-box").checked);
+}
+
+function setModifyFile() {
+    checkRowIndex();
+    var file = app.files[$(selectedRows[rowIndex]).children(".file-index").attr("data-key")];
+    /** @namespace file.localUrl */
+    $("#old-file-local-url").val(file.localUrl);
+    $("#old-file-visit-url").val(file.visitUrl);
+    $("#file-id").val(file.id);
+}
+
 function getServerFileByPath(addTo) {
     var path = $("#select-url").val();
     serverFileSearchHistory = serverFileSearchHistory.concat(path);
@@ -317,5 +353,11 @@ $(document).ready(function () {
             serverFileSearchHistory.splice(len - 2, 1);
             getServerFileByPath(false);
         }
+    });
+    $(".to-upload-button").click(function () {
+        layer.prompt({title: '请输入文件前缀，支持规则', formType: 0}, function (prefix, index) {
+            layer.close(index);
+            window.open("upload?prefix=" + encodeURI(prefix));
+        });
     });
 });

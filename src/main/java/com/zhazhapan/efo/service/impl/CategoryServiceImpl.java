@@ -2,6 +2,7 @@ package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.dao.CategoryDAO;
 import com.zhazhapan.efo.entity.Category;
+import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.ICategoryService;
 import com.zhazhapan.util.Checker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,16 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public boolean remove(int id) {
-        return categoryDAO.removeCategoryById(id);
+        return !isUncategorized(id) && categoryDAO.removeCategoryById(id);
     }
 
     @Override
     public boolean update(int id, String name) {
-        return Checker.isNotEmpty(name) && categoryDAO.updateNameById(id, name);
+        return Checker.isNotEmpty(name) && !isUncategorized(id) && categoryDAO.updateNameById(id, name);
+    }
+
+    private boolean isUncategorized(int id) {
+        return DefaultValues.UNCATEGORIZED.equals(getById(id).getName());
     }
 
     @Override

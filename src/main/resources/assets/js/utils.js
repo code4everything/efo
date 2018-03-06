@@ -1,3 +1,21 @@
+function setCheckboxesStatus(tableBody, status) {
+    var cbx = $(tableBody).find("input[type='checkbox']");
+    for (var i = 0; i < cbx.length; i++) {
+        cbx[i].checked = status;
+    }
+}
+
+function getSelectedRows(tableBody) {
+    var cbx = $(tableBody).find("input[type='checkbox']");
+    var trs = [];
+    for (var i = 0; i < cbx.length; i++) {
+        if (cbx[i].checked) {
+            trs = trs.concat($(cbx[i]).parents("tr"));
+        }
+    }
+    return trs;
+}
+
 function isMobile() {
     var userAgent = navigator.userAgent.toLowerCase();
     var isPad = userAgent.indexOf("ipad") > -1;

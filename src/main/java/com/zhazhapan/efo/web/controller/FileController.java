@@ -60,10 +60,11 @@ public class FileController {
 
     @AuthInterceptor
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String upload(int categoryId, String tag, String description, @RequestParam("file") MultipartFile
-            multipartFile) {
+    public String upload(int categoryId, String tag, String description, String prefix, @RequestParam("file")
+            MultipartFile multipartFile) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
-        return ControllerUtils.getResponse(fileService.upload(categoryId, tag, description, multipartFile, user));
+        return ControllerUtils.getResponse(fileService.upload(categoryId, tag, description, prefix, multipartFile,
+                user));
     }
 
     @AuthInterceptor(InterceptorLevel.NONE)
@@ -134,7 +135,7 @@ public class FileController {
     @RequestMapping(value = "/server/share", method = RequestMethod.POST)
     public String shareFile(String prefix, String files) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
-        return ControllerUtils.getResponse(fileService.shareFiles(Checker.checkNull(prefix), files, user.getId()));
+        return ControllerUtils.getResponse(fileService.shareFiles(Checker.checkNull(prefix), files, user));
     }
 
     /**

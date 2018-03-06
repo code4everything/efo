@@ -293,8 +293,8 @@ function setResources(resources, tabId) {
             var isDownloaded = "#downloaded-content" === tabId;
             var date = isDownloaded ? resource.downloadTime : resource.createTime;
             contentHtml += "<div class='row content-box rounded' data-id='" + resource.id + "'><div class='col-12 col-sm-12'><br/><div class='row'>" +
-                "<div class='col-sm-1 col-0'><img src='" + (resource.avatar ? resource.avatar : "/assets/img/default-user.jpg") + "' class='rounded avatar'/>" +
-                "</div><div class='col-sm-11 col-12'><h4><a data-toggle='tooltip' class='visit-url' href='" + resource.visitUrl + "' target='_blank' data-description='" + resource.description + "' title='" + resource.description + "'>" + resource.fileName + "</a>" +
+                (isMobile() ? "" : "<div class='col-sm-1 col-0'><img src='" + (resource.avatar ? resource.avatar : "/assets/img/default-user.jpg") + "' class='rounded avatar'/></div>") +
+                "<div class='col-sm-11 col-12'><h4><a data-toggle='tooltip' class='visit-url' href='" + resource.visitUrl + "' target='_blank' data-description='" + resource.description + "' title='" + resource.description + "'>" + resource.fileName + "</a>" +
                 ("#uploaded-content" === tabId ? "&emsp;<a href='javascript:;' class='font-1' onclick='editFile();'>编辑</a>&emsp;<a href='javascript:;' class='font-1' onclick='removeFile();'>删除</a>" : "") +
                 "</h4><p>上传者：<b>" + resource.username + "</b>&emsp;" + (isDownloaded ? "下载" : "上传") + "时间：<b>" + new Date(date).format("yyyy-MM-dd hh:mm:ss") + "</b>&emsp;文件大小：<b>" + formatSize(resource.size) + "</b>&emsp;分类：<b class='file-category'>" + resource.categoryName + "</b>" +
                 "&emsp;标签：<b class='file-tag'>" + resource.tag + "</b>&emsp;下载次数：<b>" + resource.downloadTimes + "</b>" +

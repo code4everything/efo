@@ -18,6 +18,9 @@ $(function () {
         $(tab).removeClass("hide");
         try {
             getTabInfo(tab);
+            if (isMobile()) {
+                $("#mini").click();
+            }
         } catch (e) {
             console.info("function 'getTabInfo' not found");
         }

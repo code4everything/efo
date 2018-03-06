@@ -125,23 +125,25 @@ public interface IFileService {
      * @param categoryId 分类ID
      * @param tag 标签
      * @param description 描述
+     * @param prefix 自定义前缀
      * @param multipartFile 文件
      * @param user {@link User}
      *
      * @return 是否上传成功
      */
-    boolean upload(int categoryId, String tag, String description, MultipartFile multipartFile, User user);
+    boolean upload(int categoryId, String tag, String description, String prefix, MultipartFile multipartFile, User
+            user);
 
     /**
      * 分享服务器本地文件
      *
      * @param prefix 链接前缀
      * @param files 文件
-     * @param userId 用户编号
+     * @param user 用户对象
      *
      * @return 是否添加成功
      */
-    boolean shareFiles(String prefix, String files, int userId);
+    boolean shareFiles(String prefix, String files, User user);
 
     /**
      * 本地路径是否存在

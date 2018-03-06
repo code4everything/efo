@@ -6,7 +6,8 @@ $("#file-input").fileinput({
         return {
             categoryId: $("#category-id").val(),
             tag: $("#tag").val(),
-            description: $("#description").val()
+            description: $("#description").val(),
+            prefix: getQuery("prefix")
         };
     },
     maxFilePreviewSize: 10485760

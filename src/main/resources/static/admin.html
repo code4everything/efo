@@ -138,15 +138,27 @@
                 <button class="btn btn-primary" onclick="showFileShareModal();"><i
                         class="glyphicon glyphicon-share"></i> 共享
                 </button>
-                <button class="btn btn-success"><i class="glyphicon glyphicon-cloud-upload"></i> 上传</button>
-                <button class="btn btn-warning"><i class="glyphicon glyphicon-wrench"></i> 修改</button>
+                <button class="btn btn-success to-upload-button"><i
+                        class="glyphicon glyphicon-cloud-upload"></i> 上传
+                </button>
+                <button class="btn btn-warning" onclick="showFileModifyModal();"><i
+                        class="glyphicon glyphicon-wrench"></i> 修改
+                </button>
                 <button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> 删除</button>
             </div>
             <br/>
-            <table class="table table-bordered table-hover table-responsive table-condensed">
+            <table class="table table-bordered table-hover table-responsive table-condensed" id="file-manager-table">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th>
+                        <div class="pretty p-default p-curve p-thick">
+                            <input type="checkbox" id="file-toggle-box" name="file" title=""
+                                   onchange="toggleCheckBoxStatus();"/>
+                            <div class="state p-info-o">
+                                <label></label>
+                            </div>
+                        </div>
+                    </th>
                     <th>编号</th>
                     <th>文件编号</th>
                     <th>用户名</th>
@@ -167,7 +179,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>{{key+1}}</td>
+                    <td class="file-index" v-bind:data-key="key">{{key+1}}</td>
                     <td>{{file.id}}</td>
                     <td>{{file.username}}</td>
                     <td><a href="javascript:" onclick="alerts($(event.srcElement).attr('data-title'));"
@@ -234,7 +246,7 @@
     <div class="row text-center" id="footer"></div>
 </div>
 <br/>
-<!--模态框-->
+<!--文件共享模态框-->
 <div class="modal fade" id="fileAddedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -253,7 +265,7 @@
                         </div>
                     </div>
                     <div class="col-sm-5 col-5">
-                        <input type="text" class="form-control" placeholder="链接前缀" id="link-prefix">
+                        <input type="text" class="form-control" placeholder="链接前缀，支持规则" id="link-prefix">
                         <br/>
                         <div id="selected-file-list">
                             <ul class="list-group" id="selected-file-list-group"></ul>
@@ -276,6 +288,63 @@
                 <button type="button" class="btn btn-primary" id="server-file-share-button"
                         style="background-color: #9b58b5;border-color: #9b58b5;"><i
                         class="glyphicon glyphicon-send"></i> 共享文件
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--文件修改模态框-->
+<div class="modal fade" id="fileModifiedModal" tabindex="-1" role="dialog" aria-labelledby="modifiedModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="modifiedModalLabel">修改文件路径（包括文件名）</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="file-id" value="0">
+                    <div class="col-sm-12 col-12">
+                        <input title="原本地路径" type="text" class="form-control" id="old-file-local-url" disabled
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="新本地路径" type="text" class="form-control" id="new-file-local-url"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="原访问链接" type="text" class="form-control" id="old-file-visit-url" disabled
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="新访问链接" type="text" class="form-control" id="new-file-visit-url"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="rowIndex-=1;setModifyFile();"><i
+                        class="glyphicon glyphicon-arrow-left"></i> 上个
+                </button>
+                <button class="btn btn-outline-primary" onclick="rowIndex+=1;setModifyFile();">下个 <i
+                        class="glyphicon glyphicon-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-info" data-dismiss="modal"><i
+                        class="glyphicon glyphicon-remove"></i> 关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="file-modify-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;"><i
+                        class="glyphicon glyphicon-floppy-open"></i> 更新
                 </button>
             </div>
         </div>

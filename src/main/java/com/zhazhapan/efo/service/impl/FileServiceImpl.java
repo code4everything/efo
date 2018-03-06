@@ -11,6 +11,7 @@ import com.zhazhapan.efo.model.AuthRecord;
 import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
+import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.IAuthService;
 import com.zhazhapan.efo.service.ICategoryService;
 import com.zhazhapan.efo.service.IFileService;
@@ -27,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,6 +45,10 @@ import java.util.regex.Pattern;
 public class FileServiceImpl implements IFileService {
 
     private final static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+
+    private static final String FILE_SUFFIX = "{fileSuffix}";
+
+    private static final String RANDOM_ID = "{randomId}";
 
     private static final String YEAR = "{year}";
 
@@ -190,7 +197,8 @@ public class FileServiceImpl implements IFileService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
             Exception.class)
-    public boolean upload(int categoryId, String tag, String description, MultipartFile multipartFile, User user) {
+    public boolean upload(int categoryId, String tag, String description, String prefix, MultipartFile multipartFile,
+                          User user) {
         if (user.getIsUploadable() == 1) {
             String name = multipartFile.getOriginalFilename();
             String suffix = FileExecutor.getFileSuffix(name);
@@ -222,13 +230,9 @@ public class FileServiceImpl implements IFileService {
             logger.info("is empty [" + multipartFile.isEmpty() + "], file size [" + size + "], max file size [" +
                     maxSize + "]");
             if (canUpload) {
-                Date date = new Date();
-                String visitUrl = EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING)
-                        .replace(YEAR, Utils.getYear(date)).replace(MONTH, Utils.getMonth(date)).replace(DAY, Utils
-                                .getDay(date)).replace(AUTHOR, user.getUsername()).replace(FILE_NAME, name).replace
-                                (CATEGORY_NAME, Checker.checkNull(Checker.isNull(category) ? "uncategorized" :
-                                        category.getName()));
-                visitUrl = "/file" + (visitUrl.startsWith("/") ? "" : "/") + visitUrl;
+                String visitUrl = getRegularVisitUrl(Checker.isNotEmpty(prefix) && user.getPermission() > 1 ? prefix
+                        : EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING), user,
+                        name, suffix, category);
                 if (fileExists) {
                     removeByLocalUrl(localUrl);
                 }
@@ -264,21 +268,39 @@ public class FileServiceImpl implements IFileService {
         return false;
     }
 
+    private String getRegularVisitUrl(String customUrl, User user, String fileName, String suffix, Category category) {
+        Date date = new Date();
+        suffix = suffix.startsWith(".") ? "" : "." + suffix;
+        try {
+            customUrl = URLDecoder.decode(customUrl, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage());
+        }
+        if (!customUrl.contains(FILE_NAME) && !customUrl.contains(RANDOM_ID)) {
+            customUrl += (customUrl.endsWith("/") ? "" : "/") + fileName;
+        }
+        customUrl = customUrl.replace(YEAR, Utils.getYear(date)).replace(MONTH, Utils.getMonth(date)).replace(DAY,
+                Utils.getDay(date)).replace(AUTHOR, user.getUsername()).replace(FILE_NAME, fileName).replace
+                (CATEGORY_NAME, Checker.checkNull(Checker.isNull(category) ? "uncategorized" : category.getName()))
+                .replace(RANDOM_ID, String.valueOf(RandomUtils.getRandomInteger(ValueConsts.NINE_INT))).replace
+                        (FILE_SUFFIX, suffix);
+        return "/file" + (customUrl.startsWith("/") ? "" : "/") + customUrl;
+    }
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
             Exception.class)
-    public boolean shareFiles(String prefix, String files, int userId) {
+    public boolean shareFiles(String prefix, String files, User user) {
         if (Checker.isNotEmpty(files)) {
             String[] paths = files.split(ValueConsts.COMMA_SIGN);
             for (String path : paths) {
                 java.io.File f = new java.io.File(path);
                 String name = f.getName();
-                String visitUrl = "/file" + (prefix.startsWith("/") ? "" : "/") + prefix + (prefix.endsWith("/") ? ""
-                        : "/") + name;
+                String suffix = FileExecutor.getFileSuffix(name);
+                String visitUrl = getRegularVisitUrl(prefix, user, name, suffix, null);
                 if (f.exists() && f.isFile() && !localUrlExists(path) && !visitUrlExists(visitUrl)) {
-                    String suffix = FileExecutor.getFileSuffix(name);
                     File file = new File(name, suffix, path, visitUrl, ValueConsts.EMPTY_STRING, ValueConsts
-                            .EMPTY_STRING, userId, ValueConsts.ONE_INT);
+                            .EMPTY_STRING, user.getId(), categoryService.getIdByName(DefaultValues.UNCATEGORIZED));
                     file.setAuth(ValueConsts.ONE_INT, ValueConsts.ZERO_INT, ValueConsts.ZERO_INT, ValueConsts
                             .ZERO_INT, ValueConsts.ONE_INT);
                     fileDAO.insertFile(file);

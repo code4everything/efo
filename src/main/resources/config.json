@@ -118,14 +118,16 @@
         "orderBy": "id desc",
         "coverIfExists": false,
         "linkRule": {
-            "custom": "/{year}/{month}/{day}/{author}/{fileName}",
+            "custom": "/{year}/{month}/{day}/{randomId}{fileSuffix}",
             "support": [
                 "{year}",
                 "{month}",
                 "{day}",
                 "{author}",
                 "{fileName}",
-                "{categoryName}"
+                "{categoryName}",
+                "{randomId}",
+                "{fileSuffix}"
             ]
         },
         "suffixMatch": {

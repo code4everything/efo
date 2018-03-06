@@ -9,6 +9,11 @@ import com.zhazhapan.modules.constant.ValueConsts;
 public class DefaultValues {
 
     /**
+     * 未分类
+     */
+    public static final String UNCATEGORIZED = "未分类";
+
+    /**
      * 404页面路径
      */
     public static final String NOT_FOUND_PAGE = "/404.html";
