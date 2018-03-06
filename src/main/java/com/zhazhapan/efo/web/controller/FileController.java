@@ -118,7 +118,7 @@ public class FileController {
         return Formatter.listToJson(fileService.getBasicAll(user, file, category, offset));
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/server", method = RequestMethod.GET)
     public String getServerFilesByPath(String path) {
         File[] files = FileExecutor.listFile(Checker.isEmpty(path) ? (Checker.isWindows() ? "C:\\" : "/") : path);
@@ -131,11 +131,37 @@ public class FileController {
         return array.toJSONString();
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/server/share", method = RequestMethod.POST)
     public String shareFile(String prefix, String files) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         return ControllerUtils.getResponse(fileService.shareFiles(Checker.checkNull(prefix), files, user));
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/{id}/url", method = RequestMethod.PUT)
+    public String uploadFileUrl(@PathVariable("id") int id, String oldLocalUrl, String localUrl, String visitUrl) {
+        boolean[] b = fileService.updateUrl(id, oldLocalUrl, localUrl, visitUrl);
+        String responseJson = "{status:{localUrl:" + b[0] + ",visitUrl:" + b[1] + "}}";
+        return Formatter.formatJson(responseJson);
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/batch/{ids}", method = RequestMethod.DELETE)
+    public String deleteFiles(@PathVariable("ids") String ids) {
+        return ControllerUtils.getResponse(fileService.deleteFiles(ids));
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/{id}/auth", method = RequestMethod.GET)
+    public String getAuth(@PathVariable("id") long id) {
+        return BeanUtils.toPrettyJson(fileService.getAuth(id));
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/{id}/auth", method = RequestMethod.PUT)
+    public String updateAuth(@PathVariable("id") long id, String auth) {
+        return ControllerUtils.getResponse(fileService.updateAuth(id, auth));
     }
 
     /**

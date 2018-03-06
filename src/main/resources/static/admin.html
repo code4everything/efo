@@ -141,10 +141,13 @@
                 <button class="btn btn-success to-upload-button"><i
                         class="glyphicon glyphicon-cloud-upload"></i> 上传
                 </button>
-                <button class="btn btn-warning" onclick="showFileModifyModal();"><i
+                <button class="btn btn-warning" onclick="showFileModal('#fileModifiedModal');"><i
                         class="glyphicon glyphicon-wrench"></i> 修改
                 </button>
-                <button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> 删除</button>
+                <button class="btn btn-dark" onclick="showFileModal('#fileAuthModal');"><i
+                        class="glyphicon glyphicon-eye-close"></i> 权限
+                </button>
+                <button class="btn btn-danger file-delete"><i class="glyphicon glyphicon-trash"></i> 删除</button>
             </div>
             <br/>
             <table class="table table-bordered table-hover table-responsive table-condensed" id="file-manager-table">
@@ -343,6 +346,61 @@
                         class="glyphicon glyphicon-remove"></i> 关闭
                 </button>
                 <button type="button" class="btn btn-primary" id="file-modify-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;"><i
+                        class="glyphicon glyphicon-floppy-open"></i> 更新
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--文件权限模态框-->
+<div class="modal fade" id="fileAuthModal" tabindex="-1" role="dialog" aria-labelledby="authModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="authModalLabel">编辑文件权限</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control" id="file-auth-id" value="0">
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="文件本地路径" type="text" class="form-control" id="file-local-url"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <input title="下载权限" type="number" class="form-control" id="file-downloadable-auth"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="删除权限" type="number" class="form-control" id="file-deletable-auth"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="编辑权限" type="number" class="form-control" id="file-updatable-auth"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="可见权限" type="number" class="form-control" id="file-visible-auth"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="rowIndex-=1;setFileAuth();"><i
+                        class="glyphicon glyphicon-arrow-left"></i> 上个
+                </button>
+                <button class="btn btn-outline-primary" onclick="rowIndex+=1;setFileAuth();">下个 <i
+                        class="glyphicon glyphicon-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-info" data-dismiss="modal"><i
+                        class="glyphicon glyphicon-remove"></i> 关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="file-auth-update-button"
                         style="background-color: #9b58b5;border-color: #9b58b5;"><i
                         class="glyphicon glyphicon-floppy-open"></i> 更新
                 </button>

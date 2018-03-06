@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Formatter;
 import com.zhazhapan.util.enums.FieldModifier;
 import org.slf4j.Logger;
@@ -19,6 +20,23 @@ public class BeanUtils {
     private static Logger logger = LoggerFactory.getLogger(BeanUtils.class);
 
     private BeanUtils() {}
+
+    /**
+     * 将权限字符串装换成权限数组
+     *
+     * @param auth 权限字符串
+     *
+     * @return 权限数组
+     */
+    public static int[] getAuth(String auth) {
+        int[] a = new int[5];
+        String[] u = auth.split(ValueConsts.COMMA_SIGN);
+        int len = Math.min(a.length, u.length);
+        for (int i = 0; i < len; i++) {
+            a[i] = Formatter.stringToInt(u[i]);
+        }
+        return a;
+    }
 
     /**
      * 将Bean转换成JSON

@@ -2,6 +2,7 @@ package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.dao.sqlprovider.FileSqlProvider;
 import com.zhazhapan.efo.entity.File;
+import com.zhazhapan.efo.model.BaseAuthRecord;
 import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import org.apache.ibatis.annotations.*;
@@ -15,6 +16,16 @@ import java.util.List;
  */
 @Repository
 public interface FileDAO {
+
+    /**
+     * 获取文件权限
+     *
+     * @param id 文件编号
+     *
+     * @return {@link BaseAuthRecord}
+     */
+    @Select("select is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible from file where id=#{id}")
+    BaseAuthRecord getAuth(long id);
 
     /**
      * 通过编号获取文件
@@ -174,11 +185,13 @@ public interface FileDAO {
      * @param isVisible 可查权限
      * @param isDeletable 删除权限
      * @param isUpdatable 上传权限
+     *
+     * @return 是否更新成功
      */
     @UpdateProvider(type = FileSqlProvider.class, method = "updateAuthById")
-    void updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int
-            isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param
-            ("isUpdatable") int isUpdatable);
+    boolean updateAuthById(@Param("id") long id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable")
+            int isUploadable, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable, @Param
+            ("isVisible") int isVisible);
 
     /**
      * 更新文件名

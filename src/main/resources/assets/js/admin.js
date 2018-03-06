@@ -170,19 +170,44 @@ function showFileShareModal() {
     $(modal).modal("show");
 }
 
-var selectedRows;
+var selectedRows = [];
 
 var rowIndex;
 
-function showFileModifyModal() {
+function showFileModal(modal) {
     rowIndex = 0;
     selectedRows = getSelectedRows($("#file-manager-table").children("tbody"));
     if (selectedRows.length < 1) {
         alerts("请至少选择一行");
     } else {
-        setModifyFile();
-        $("#fileModifiedModal").modal("show");
+        if (modal === "#fileModifiedModal") {
+            setModifyFile();
+        } else if (modal === "#fileAuthModal") {
+            setFileAuth();
+        }
+        $(modal).modal("show");
     }
+}
+
+function setFileAuth() {
+    checkRowIndex();
+    var file = app.files[$(selectedRows[rowIndex]).children(".file-index").attr("data-key")];
+    /** @namespace file.localUrl */
+    $("#file-local-url").val(file.localUrl);
+    $("#file-auth-id").val(file.id);
+    layer.load(1);
+    $.get("/file/" + file.id + "/auth", function (data) {
+        layer.closeAll();
+        var json = JSON.parse(data);
+        /** @namespace json.isDownloadable */
+        $("#file-downloadable-auth").val(json.isDownloadable);
+        /** @namespace json.isDeletable */
+        $("#file-deletable-auth").val(json.isDeletable);
+        /** @namespace json.isUpdatable */
+        $("#file-updatable-auth").val(json.isUpdatable);
+        /** @namespace json.isVisible */
+        $("#file-visible-auth").val(json.isVisible);
+    });
 }
 
 function checkRowIndex() {
@@ -263,10 +288,6 @@ function saveCategory() {
     setCategoryToDefault();
 }
 
-function shareFiles() {
-
-}
-
 function toggleRowSelectedStatus(ele) {
     if (event.srcElement.toString() === "[object HTMLTableCellElement]") {
         var cb = $(ele).find("input[type='checkbox']")[0];
@@ -306,7 +327,26 @@ function removeSelectedServerFile() {
     $(liEle).remove();
 }
 
+function toOneOrZero(val) {
+    return val > 0 ? 1 : 0;
+}
+
 $(document).ready(function () {
+    $("#file-auth-update-button").click(function () {
+        var down = $("#file-downloadable-auth").val();
+        var dele = $("#file-deletable-auth").val();
+        var upda = $("#file-updatable-auth").val();
+        var visi = $("#file-visible-auth").val();
+        var auth = toOneOrZero(down) + ",1," + toOneOrZero(dele) + "," + toOneOrZero(upda) + "," + toOneOrZero(visi);
+        var id = app.files[$(selectedRows[rowIndex]).children(".file-index").attr("data-key")].id;
+        layer.load(1);
+        $.ajax({
+            url: "/file/" + id + "/auth", type: "PUT", data: {auth: auth}, success: function (data) {
+                layer.closeAll();
+                alerts("更新" + boolToChinese(data.indexOf("success") > 0));
+            }
+        });
+    });
     setTimeout(function () {
         if (isEmpty(location.hash)) {
             location.hash = "#upload-manager";
@@ -317,11 +357,11 @@ $(document).ready(function () {
     }, 1000);
     $("#server-file-share-button").click(function () {
         if (app.selectedServerFiles.length > 0) {
-            layer.load(1);
             var files = "";
             app.selectedServerFiles.forEach(function (json) {
                 files += json.absolutePath + ",";
             });
+            layer.load(1);
             $.post("/file/server/share", {
                 prefix: $("#link-prefix").val(),
                 files: files.substr(0, files.length - 1)
@@ -359,5 +399,69 @@ $(document).ready(function () {
             layer.close(index);
             window.open("upload?prefix=" + encodeURI(prefix));
         });
+    });
+    $("#file-modify-button").click(function () {
+        var localUrl = $("#new-file-local-url").val();
+        var visitUrl = $("#new-file-visit-url").val();
+        if (isEmpty(localUrl) && isEmpty(visitUrl)) {
+            alerts("内容为空，无法更新");
+        } else {
+            layer.load(1);
+            $.ajax({
+                url: "/file/" + $("#file-id").val() + "/url",
+                data: {oldLocalUrl: $("#old-file-local-url").val(), localUrl: localUrl, visitUrl: visitUrl},
+                type: "PUT",
+                success: function (data) {
+                    layer.closeAll();
+                    var json = JSON.parse(data);
+                    var key = $(selectedRows[rowIndex]).children(".file-index").attr("data-key");
+                    if (json.status.localUrl) {
+                        app.files[key].localUrl = localUrl;
+                        $("[data-toggle='tooltip']").tooltip();
+                    }
+                    if (json.status.visitUrl) {
+                        app.files[key].visitUrl = visitUrl;
+                    }
+                    alerts((isEmpty(localUrl) ? "" : "更新本地路径" + boolToChinese(json.status.localUrl)) + (isEmpty(visitUrl) ? "" : (isEmpty(localUrl) ? "" : "，") + "更新访问链接" + boolToChinese(json.status.visitUrl)));
+                },
+                error: function () {
+                    alerts("连接到服务器异常");
+                }
+            });
+        }
+    });
+    $(".file-delete").click(function () {
+        selectedRows = getSelectedRows($("#file-manager-table").children("tbody"));
+        if (selectedRows.length < 1) {
+            alerts("请至少选中一行");
+        } else {
+            layer.confirm('是否确定删除选中的所有行', {
+                btn: ['确定', '取消']
+            }, function () {
+                var ids = "";
+                selectedRows.forEach(function (tr) {
+                    ids += app.files[$(tr).children(".file-index").attr("data-key")].id + ",";
+                });
+                ids = ids.substr(0, ids.length - 1);
+                layer.load(1);
+                $.ajax({
+                    url: "/file/batch/" + ids, type: "DELETE", success: function (data) {
+                        layer.closeAll();
+                        var json = JSON.parse(data);
+                        if (json.status === "success") {
+                            selectedRows.forEach(function (tr) {
+                                app.files.splice($(tr).children(".file-index").attr("data-key"), 1);
+                            });
+                            $("[data-toggle='tooltip']").tooltip();
+                            layer.msg("删除成功");
+                        } else {
+                            alerts("删除失败");
+                        }
+                    }
+                })
+            }, function () {
+                layer.msg("取消了操作");
+            });
+        }
     });
 });

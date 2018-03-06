@@ -1,3 +1,7 @@
+function boolToChinese(bool) {
+    return bool ? "成功" : "失败";
+}
+
 function setCheckboxesStatus(tableBody, status) {
     var cbx = $(tableBody).find("input[type='checkbox']");
     for (var i = 0; i < cbx.length; i++) {

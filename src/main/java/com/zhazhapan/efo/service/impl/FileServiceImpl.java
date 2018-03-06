@@ -8,6 +8,7 @@ import com.zhazhapan.efo.entity.Category;
 import com.zhazhapan.efo.entity.File;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.model.AuthRecord;
+import com.zhazhapan.efo.model.BaseAuthRecord;
 import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
@@ -15,6 +16,7 @@ import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.IAuthService;
 import com.zhazhapan.efo.service.ICategoryService;
 import com.zhazhapan.efo.service.IFileService;
+import com.zhazhapan.efo.util.BeanUtils;
 import com.zhazhapan.efo.util.ServiceUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.*;
@@ -77,6 +79,51 @@ public class FileServiceImpl implements IFileService {
         this.categoryService = categoryService;
         this.authService = authService;
         this.downloadDAO = downloadDAO;
+    }
+
+    @Override
+    public boolean updateAuth(long id, String auth) {
+        int[] au = BeanUtils.getAuth(auth);
+        return fileDAO.updateAuthById(id, au[0], au[1], au[2], au[3], au[4]);
+    }
+
+    @Override
+    public BaseAuthRecord getAuth(long id) {
+        return fileDAO.getAuth(id);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
+            Exception.class)
+    public boolean deleteFiles(String ids) {
+        if (Checker.isNotEmpty(ids)) {
+            String[] id = ids.split(ValueConsts.COMMA_SIGN);
+            for (String s : id) {
+                long fileId = Formatter.stringToLong(s);
+                String localUrl = fileDAO.getLocalUrlById(fileId);
+                FileExecutor.deleteFile(localUrl);
+                removeById(fileId);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor =
+            Exception.class)
+    public boolean[] updateUrl(int id, String oldLocalUrl, String localUrl, String visitUrl) {
+        boolean[] b = new boolean[]{false, false};
+        if (Checker.isNotEmpty(localUrl) && Checker.isNotExists(localUrl) && !localUrlExists(localUrl)) {
+            FileExecutor.renameTo(oldLocalUrl, localUrl);
+            fileDAO.updateLocalUrlById(id, localUrl);
+            b[0] = true;
+        }
+        if (Checker.isNotEmpty(visitUrl) && !visitUrlExists(visitUrl)) {
+            fileDAO.updateVisitUrlById(id, visitUrl);
+            b[1] = true;
+        }
+        return b;
     }
 
     @Override

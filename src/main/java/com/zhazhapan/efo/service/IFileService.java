@@ -1,6 +1,7 @@
 package com.zhazhapan.efo.service;
 
 import com.zhazhapan.efo.entity.User;
+import com.zhazhapan.efo.model.BaseAuthRecord;
 import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.FileRecord;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,46 @@ import java.util.List;
  * @since 2018/1/29
  */
 public interface IFileService {
+
+    /**
+     * 更新文件权限
+     *
+     * @param id 文件编号
+     * @param auth 权限集
+     *
+     * @return 是否更新成功
+     */
+    boolean updateAuth(long id, String auth);
+
+    /**
+     * 获取文件权限
+     *
+     * @param id 文件编号
+     *
+     * @return {@link BaseAuthRecord}
+     */
+    BaseAuthRecord getAuth(long id);
+
+    /**
+     * 批量删除文件
+     *
+     * @param ids 所有文件编号
+     *
+     * @return 是否删除成功
+     */
+    boolean deleteFiles(String ids);
+
+    /**
+     * 更新文件路径
+     *
+     * @param id 文件编号
+     * @param oldLocalUrl 原本地路径
+     * @param localUrl 本地路径
+     * @param visitUrl 访问路径
+     *
+     * @return 是否更新成功
+     */
+    boolean[] updateUrl(int id, String oldLocalUrl, String localUrl, String visitUrl);
 
     /**
      * 更新文件信息
