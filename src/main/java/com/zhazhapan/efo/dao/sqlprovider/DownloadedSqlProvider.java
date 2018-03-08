@@ -34,12 +34,11 @@ public class DownloadedSqlProvider {
             }
             if (fileId > 0) {
                 WHERE("d.file_id=#{fileId}");
+            } else if (Checker.isNotEmpty(fileName)) {
+                WHERE("f.local_url like '%" + fileName + "%'");
             }
             if (categoryId > 0) {
                 WHERE("c.id=#{categoryId}");
-            }
-            if (Checker.isNotEmpty(fileName)) {
-                WHERE("f.local_url like '%" + fileName + "%'");
             }
             ORDER_BY("d." + EfoApplication.settings.getStringUseEval(ConfigConsts.DOWNLOAD_ORDER_BY_OF_SETTINGS));
         }}.toString();

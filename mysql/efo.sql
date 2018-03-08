@@ -179,7 +179,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 INSERT INTO user(username,real_name,email,password,permission,is_deletable,is_updatable) VALUES("system","系统","system@local.host",sha2("123456",256),3,1,1);
 
 #请确保数据库中始终有“未分类”这个分类，否则系统运行时有可能出错
-INSERT INTO category (name) VALUES("未分类");
+INSERT INTO category(name) VALUES("未分类");
 
 DROP USER IF EXISTS 'zhazhapan'@'localhost';
 

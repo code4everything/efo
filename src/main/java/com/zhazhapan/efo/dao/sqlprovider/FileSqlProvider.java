@@ -40,12 +40,11 @@ public class FileSqlProvider {
             }
             if (fileId > 0) {
                 WHERE("f.id=#{fileId}");
+            } else if (Checker.isNotEmpty(fileName)) {
+                WHERE("f.local_url like '%" + fileName + "%'");
             }
             if (categoryId > 0) {
                 WHERE("c.id=#{categoryId}");
-            }
-            if (Checker.isNotEmpty(fileName)) {
-                WHERE("f.local_url like '%" + fileName + "%'");
             }
             ORDER_BY("f." + EfoApplication.settings.getStringUseEval(ConfigConsts.FILE_ORDER_BY_OF_SETTING));
         }}.toString();

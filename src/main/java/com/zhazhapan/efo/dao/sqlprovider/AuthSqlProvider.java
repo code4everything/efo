@@ -2,6 +2,7 @@ package com.zhazhapan.efo.dao.sqlprovider;
 
 import com.zhazhapan.efo.EfoApplication;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
+import com.zhazhapan.util.Checker;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -15,7 +16,13 @@ public class AuthSqlProvider {
         return CommonSqlProvider.updateAuthById("auth");
     }
 
-    public String getAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId) {
+    public String batchDelete(@Param("ids") String ids) {
+        return "delete from auth where id in " + (ids.startsWith("(") ? "" : "(") + ids + (ids.endsWith(")") ? "" :
+                ")");
+    }
+
+    public String getAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId, @Param
+            ("fileName") String fileName) {
         String sql = new SQL() {{
             SELECT("a.id,a.user_id,a.file_id,u.username,f.name file_name,f.local_url,a.is_downloadable,a" + "" + "" +
                     ".is_uploadable,a.is_deletable,a.is_updatable,a.is_visible,a.create_time");
@@ -30,6 +37,8 @@ public class AuthSqlProvider {
             }
             if (fileId > 0) {
                 WHERE("f.id=#{fileId}");
+            } else if (Checker.isNotEmpty(fileName)) {
+                WHERE("f.local_url like '%" + fileName + "%'");
             }
             ORDER_BY("a." + EfoApplication.settings.getStringUseEval(ConfigConsts.AUTH_ORDER_BY_OF_SETTINGS));
         }}.toString();

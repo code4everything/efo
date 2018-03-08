@@ -6,6 +6,8 @@ import com.zhazhapan.efo.entity.Auth;
 import com.zhazhapan.efo.model.AuthRecord;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IAuthService;
+import com.zhazhapan.efo.util.BeanUtils;
+import com.zhazhapan.efo.util.ServiceUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,27 @@ public class AuthServiceImpl implements IAuthService {
     public AuthServiceImpl(AuthDAO authDAO) {this.authDAO = authDAO;}
 
     @Override
+    public boolean batchDelete(String ids) {
+        return Checker.isNotEmpty(ids) && authDAO.batchDelete(ids);
+    }
+
+    @Override
+    public boolean updateAuth(long id, String auths) {
+        int[] auth = BeanUtils.getAuth(auths);
+        return authDAO.updateAuthById(id, auth[0], auth[1], auth[2], auth[3], auth[4]);
+    }
+
+    @Override
+    public List<AuthRecord> getAuth(String usernameOrEmail, String fileName, int offset) {
+        long fileId = ServiceUtils.getFileId(fileName);
+        int userId = ServiceUtils.getUserId(usernameOrEmail);
+        return authDAO.getAuthBy(ValueConsts.ZERO_INT, userId, fileId, fileName, offset);
+    }
+
+    @Override
     public AuthRecord getByFileIdAndUserId(long fileId, int userId) {
-        List<AuthRecord> authRecords = authDAO.getAuthBy(ValueConsts.ZERO_INT, userId, fileId, ValueConsts.ZERO_INT);
+        List<AuthRecord> authRecords = authDAO.getAuthBy(ValueConsts.ZERO_INT, userId, fileId, ValueConsts
+                .EMPTY_STRING, ValueConsts.ZERO_INT);
         if (Checker.isNotEmpty(authRecords)) {
             return authRecords.get(0);
         }

@@ -25,6 +25,6 @@ public class AuthDAOTest {
 
     @Test
     public void testGetAuthBy() {
-        System.out.println(Formatter.listToJson(authDAO.getAuthBy(0, 0, 0, 0)));
+        System.out.println(Formatter.listToJson(authDAO.getAuthBy(0, 0, 0, "", 0)));
     }
 }

@@ -16,6 +16,16 @@ import java.util.List;
 public interface AuthDAO {
 
     /**
+     * 批量删除权限记录
+     *
+     * @param ids 权限编号集
+     *
+     * @return 是否删除成功
+     */
+    @DeleteProvider(type = AuthSqlProvider.class, method = "batchDelete")
+    boolean batchDelete(@Param("ids") String ids);
+
+    /**
      * 添加一条权限记录
      *
      * @param auth {@link Auth}
@@ -61,11 +71,13 @@ public interface AuthDAO {
      * @param isVisible 可查权限
      * @param isDeletable 删除权限
      * @param isUpdatable 更新权限
+     *
+     * @return 是否更新成功
      */
     @UpdateProvider(type = AuthSqlProvider.class, method = "updateAuthById")
-    void updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable") int
-            isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param
-            ("isUpdatable") int isUpdatable);
+    boolean updateAuthById(@Param("id") long id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable")
+            int isUploadable, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable, @Param
+            ("isVisible") int isVisible);
 
     /**
      * 获取权限记录
@@ -73,11 +85,12 @@ public interface AuthDAO {
      * @param id 编号，值小于等于0时不作为条件
      * @param userId 用户编号，值小于等于0时不作为条件
      * @param fileId 文件编号，值小于等于0时不作为条件
+     * @param fileName 模糊搜索文件名（当参数不为空时）
      * @param offset 偏移
      *
      * @return {@link List}
      */
     @SelectProvider(type = AuthSqlProvider.class, method = "getAuthBy")
     List<AuthRecord> getAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId,
-                               @Param("offset") int offset);
+                               @Param("fileName") String fileName, @Param("offset") int offset);
 }

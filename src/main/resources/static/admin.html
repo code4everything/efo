@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cn" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml" lang="cn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -86,7 +86,8 @@
             </table>
         </div>
         <br/>
-        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getUploaded();"><b>获取更多</b></button>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getUploaded();"><b><i
+                class="glyphicon glyphicon-arrow-down"></i> 获取更多</b></button>
         <br/>
     </div>
     <!--下载记录-->
@@ -125,7 +126,8 @@
             </table>
         </div>
         <br/>
-        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getDownloaded();"><b>获取更多</b></button>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getDownloaded();"><b><i
+                class="glyphicon glyphicon-arrow-down"></i> 获取更多</b></button>
         <br/>
     </div>
     <!--文件管理-->
@@ -141,10 +143,10 @@
                 <button class="btn btn-success to-upload-button"><i
                         class="glyphicon glyphicon-cloud-upload"></i> 上传
                 </button>
-                <button class="btn btn-warning" onclick="showFileModal('#fileModifiedModal');"><i
+                <button class="btn btn-warning" onclick="showFileModal('#file-manager-table','#fileModifiedModal');"><i
                         class="glyphicon glyphicon-wrench"></i> 修改
                 </button>
-                <button class="btn btn-dark" onclick="showFileModal('#fileAuthModal');"><i
+                <button class="btn btn-dark" onclick="showFileModal('#file-manager-table','#fileAuthModal');"><i
                         class="glyphicon glyphicon-eye-close"></i> 权限
                 </button>
                 <button class="btn btn-danger file-delete"><i class="glyphicon glyphicon-trash"></i> 删除</button>
@@ -156,7 +158,7 @@
                     <th>
                         <div class="pretty p-default p-curve p-thick">
                             <input type="checkbox" id="file-toggle-box" name="file" title=""
-                                   onchange="toggleCheckBoxStatus();"/>
+                                   onchange="toggleCheckBoxStatus('file');"/>
                             <div class="state p-info-o">
                                 <label></label>
                             </div>
@@ -197,10 +199,92 @@
             </table>
         </div>
         <br/>
-        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getDownloaded();"><b>获取更多</b></button>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getDownloaded();"><b><i
+                class="glyphicon glyphicon-arrow-down"></i> 获取更多</b></button>
         <br/>
     </div>
-    <div class="row jq-tab hide" id="auth-manager">权限管理</div>
+    <!--权限管理-->
+    <div class="row jq-tab hide" id="auth-manager">
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="row">
+                <div class="col-sm-4 col-6">
+                    <input type="text" class="form-control auth-search user-filter" placeholder="用户名或邮箱"
+                           onkeyup="fileFilter();"/>
+                </div>
+                <div class="col-sm-4 col-6">
+                    <input type="text" class="form-control auth-search file-name-filter" placeholder="文件名，模糊搜索"
+                           onkeyup="fileFilter();"/>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="col-12 col-sm-10 offset-sm-1"><br/></div>
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="text-right">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#authAddedModal"><i
+                        class="glyphicon glyphicon-flash"></i> 新增
+                </button>
+                <button class="btn btn-success" onclick="showFileModal('#auth-manager-table','#authEditModal');"><i
+                        class="glyphicon glyphicon-edit"></i> 编辑
+                </button>
+                <button class="btn btn-danger auth-delete"><i class="glyphicon glyphicon-trash"></i> 删除</button>
+            </div>
+            <br/>
+            <table class="table table-bordered table-hover table-responsive table-condensed" id="auth-manager-table">
+                <thead>
+                <tr>
+                    <th>
+                        <div class="pretty p-default p-curve p-thick">
+                            <input type="checkbox" id="auth-toggle-box" name="file" title=""
+                                   onchange="toggleCheckBoxStatus('auth');"/>
+                            <div class="state p-info-o">
+                                <label></label>
+                            </div>
+                        </div>
+                    </th>
+                    <th>编号</th>
+                    <th>用户名</th>
+                    <th>文件名</th>
+                    <th>本地路径</th>
+                    <th>下载权限</th>
+                    <th>删除权限</th>
+                    <th>修改权限</th>
+                    <th>可见权限</th>
+                    <th>创建时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(auth,key) in auths" onclick="toggleRowSelectedStatus(this);">
+                    <td>
+                        <div class="pretty p-default p-curve p-thick">
+                            <input type="checkbox" name="file" title=""/>
+                            <div class="state p-info-o">
+                                <label></label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="auth-index" v-bind:data-key="key">{{key+1}}</td>
+                    <td>{{auth.username}}</td>
+                    <td>{{auth.fileName}}</td>
+                    <td><a href="javascript:" onclick="alerts($(event.srcElement).attr('data-title'));"
+                           v-bind:title="auth.localUrl" data-toggle="tooltip"
+                           v-bind:data-title="auth.localUrl">查看</a></td>
+                    <td class="text-center" v-html="getIconYesOrNo(auth.isDownloadable)"></td>
+                    <td class="text-center" v-html="getIconYesOrNo(auth.isDeletable)"></td>
+                    <td class="text-center" v-html="getIconYesOrNo(auth.isUpdatable)"></td>
+                    <td class="text-center" v-html="getIconYesOrNo(auth.isVisible)"></td>
+                    <td>{{new Date(auth.createTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getAuth();"><b><i
+                class="glyphicon glyphicon-arrow-down"></i> 获取更多</b></button>
+        <br/>
+    </div>
     <!--分类管理-->
     <div class="row jq-tab hide" id="category-manager">
         <div class="col-sm-3 col-12 offset-sm-1 padding-0">
@@ -403,6 +487,130 @@
                 <button type="button" class="btn btn-primary" id="file-auth-update-button"
                         style="background-color: #9b58b5;border-color: #9b58b5;"><i
                         class="glyphicon glyphicon-floppy-open"></i> 更新
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--权限编辑模态框-->
+<div class="modal fade" id="authEditModal" tabindex="-1" role="dialog" aria-labelledby="authEditModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="authEditModalLabel">编辑文件权限</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="form-control" id="auth-id" value="0">
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="用户名" type="text" class="form-control" id="auth-username"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="文件本地路径" type="text" class="form-control" id="auth-file-local-url"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <input title="下载权限" type="number" class="form-control" id="auth-downloadable"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="删除权限" type="number" class="form-control" id="auth-deletable"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="编辑权限" type="number" class="form-control" id="auth-updatable"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="可见权限" type="number" class="form-control" id="auth-visible"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="rowIndex-=1;setAuth();"><i
+                        class="glyphicon glyphicon-arrow-left"></i> 上个
+                </button>
+                <button class="btn btn-outline-primary" onclick="rowIndex+=1;setAuth();">下个 <i
+                        class="glyphicon glyphicon-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-info" data-dismiss="modal"><i
+                        class="glyphicon glyphicon-remove"></i> 关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="auth-update-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;"><i
+                        class="glyphicon glyphicon-floppy-open"></i> 更新
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--文件共享模态框-->
+<div class="modal fade" id="authAddedModal" tabindex="-1" role="dialog" aria-labelledby="authAddedModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="authAddedModalLabel">添加权限记录</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="height: 10rem;overflow: scroll;">
+                    <div class="col-sm-12 col-12">
+                        <input type="text" class="form-control" v-on:keyup.enter="searchFileInAuth"
+                               placeholder="通过本地路径搜索文件（模糊搜索）" id="auth-file-search"/>
+                        <br/>
+                        <div id="auth-file-list">
+                            <ul class="list-group" id="auth-file-list-group"></ul>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row" style="height: 10rem;overflow: scroll;">
+                    <div class="col-sm-12 col-12">
+                        <input type="text" class="form-control" placeholder="搜索用户" id="auth-user-search"/>
+                        <br/>
+                        <div id="auth-user-list">
+                            <ul class="list-group" id="auth-user-list-group"></ul>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <input title="下载权限" type="number" class="form-control" id="auth-downloadable-new"
+                               data-toggle="tooltip" value="1"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="删除权限" type="number" class="form-control" id="auth-deletable-new"
+                               data-toggle="tooltip" value="0"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="编辑权限" type="number" class="form-control" id="auth-updatable-new"
+                               data-toggle="tooltip" value="0"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="可见权限" type="number" class="form-control" id="auth-visible-new"
+                               data-toggle="tooltip" value="1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal"><i
+                        class="glyphicon glyphicon-remove"></i> 关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="auth-add-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;"><i
+                        class="glyphicon glyphicon-asterisk"></i> 添加权限记录
                 </button>
             </div>
         </div>

@@ -1,6 +1,47 @@
 var app = new Vue({
     el: "#container",
-    data: {categories: [], downloaded: [], uploaded: [], files: [], serverFiles: [], selectedServerFiles: []}
+    data: {
+        categories: [],
+        downloaded: [],
+        uploaded: [],
+        files: [],
+        serverFiles: [],
+        selectedServerFiles: [],
+        auths: []
+    }
+});
+
+var authModal = new Vue({
+    el: "#authAddedModal", methods: {
+        searchFileInAuth: function () {
+            var file = $("#auth-file-search").val();
+            if (isEmpty(file)) {
+                alerts("内容不能为空");
+            } else {
+                layer.load(1);
+                $.get("/file/basic/all", {
+                    user: "",
+                    file: file,
+                    category: "",
+                    offset: 0
+                }, function (data) {
+                    layer.closeAll();
+                    var json = JSON.parse(data);
+                    if (json.length < 1) {
+                        alerts("糟糕，没有数据了");
+                    } else {
+                        var ele = $("#auth-file-list-group");
+                        $(ele).empty();
+                        $.each(json, function (i, n) {
+                            var li = "<li class='list-group-item list-group-item-success'><a href='javascript:' class='auth-file' onclick='$(event.srcElement).parent().remove();' data-key='" + n.id + "'>" + n.localUrl + "</a></li>";
+                            $(ele).append(li);
+                        });
+                        $('[data-toggle="tooltip"]').tooltip();
+                    }
+                });
+            }
+        }
+    }
 });
 
 var serverFileSearchHistory = [];
@@ -47,7 +88,7 @@ function changeTabInfo(tabId) {
     } else if (tabId === "file-manager") {
         getFile();
     } else if (tabId === "auth-manager") {
-
+        getAuth();
     } else if (tabId === "category-manager") {
         setCategoryToDefault();
         getCategory();
@@ -64,6 +105,25 @@ function changeTabInfo(tabId) {
         $('[data-toggle="tooltip"]').tooltip();
         setCSS();
     }, 1000);
+}
+
+function getIconYesOrNo(flag) {
+    return "<i class='text-" + (flag > 0 ? "success" : "danger") + " glyphicon glyphicon-" + (flag > 0 ? "ok" : "remove") + "'></i>";
+}
+
+function getAuth() {
+    layer.load(1);
+    $.get("/auth/all", getFileFilterParameters(), function (data) {
+        layer.closeAll();
+        var json = JSON.parse(data);
+        if (json.length < 1) {
+            alerts("糟糕，没有数据了");
+        } else if (offset < 1) {
+            app.auths = json;
+        } else {
+            app.auths = app.auths.concat(json);
+        }
+    });
 }
 
 var fileFilterDivParent;
@@ -84,12 +144,14 @@ function getFile() {
 }
 
 function getFileFilterParameters() {
-    return {
+    var res = {
         user: enableSearch ? $(fileFilterDivParent).find(".user-filter").val() : "",
         file: enableSearch ? $(fileFilterDivParent).find(".file-name-filter").val() : "",
         category: enableSearch ? $(fileFilterDivParent).find(".category-filter").val() : "",
         offset: offset
-    }
+    };
+    enableSearch = false;
+    return res;
 }
 
 function fileFilter() {
@@ -162,10 +224,10 @@ function showFileShareModal() {
     }
     var modal = $("#fileAddedModal");
     var ele = $(modal).find(".modal-content");
-    if (!isMobile()) {
-        $(ele).addClass("width-60-vm");
-    } else {
+    if (isMobile()) {
         $(ele).removeClass("width-60-vm");
+    } else {
+        $(ele).addClass("width-60-vm");
     }
     $(modal).modal("show");
 }
@@ -174,9 +236,9 @@ var selectedRows = [];
 
 var rowIndex;
 
-function showFileModal(modal) {
+function showFileModal(table, modal) {
     rowIndex = 0;
-    selectedRows = getSelectedRows($("#file-manager-table").children("tbody"));
+    selectedRows = getSelectedRows($(table).children("tbody"));
     if (selectedRows.length < 1) {
         alerts("请至少选择一行");
     } else {
@@ -184,6 +246,8 @@ function showFileModal(modal) {
             setModifyFile();
         } else if (modal === "#fileAuthModal") {
             setFileAuth();
+        } else if (modal === "#authEditModal") {
+            setAuth();
         }
         $(modal).modal("show");
     }
@@ -210,6 +274,18 @@ function setFileAuth() {
     });
 }
 
+function setAuth() {
+    checkRowIndex();
+    var auth = app.auths[$(selectedRows[rowIndex]).children(".auth-index").attr("data-key")];
+    $("#auth-username").val(auth.username);
+    $("#auth-file-local-url").val(auth.localUrl);
+    $("#auth-id").val(auth.id);
+    $("#auth-downloadable").val(auth.isDownloadable);
+    $("#auth-deletable").val(auth.isDeletable);
+    $("#auth-updatable").val(auth.isUpdatable);
+    $("#auth-visible").val(auth.isVisible);
+}
+
 function checkRowIndex() {
     if (rowIndex < 0) {
         rowIndex = selectedRows.length - 1;
@@ -218,8 +294,8 @@ function checkRowIndex() {
     }
 }
 
-function toggleCheckBoxStatus() {
-    setCheckboxesStatus($("#file-manager-table").children("tbody"), document.getElementById("file-toggle-box").checked);
+function toggleCheckBoxStatus(tab) {
+    setCheckboxesStatus($("#" + tab + "-manager-table").children("tbody"), document.getElementById(tab + "-toggle-box").checked);
 }
 
 function setModifyFile() {
@@ -331,21 +407,83 @@ function toOneOrZero(val) {
     return val > 0 ? 1 : 0;
 }
 
+function updateAuth(url, down, dele, upda, visi) {
+    var auth = toOneOrZero(down) + ",1," + toOneOrZero(dele) + "," + toOneOrZero(upda) + "," + toOneOrZero(visi);
+    layer.load(1);
+    $.ajax({
+        url: url, type: "PUT", data: {auth: auth}, success: function (data) {
+            layer.closeAll();
+            alerts("更新" + boolToChinese(data.indexOf("success") > 0));
+        }
+    });
+}
+
+function doDelete(table, json, index, url) {
+    selectedRows = getSelectedRows($(table).children("tbody"));
+    if (selectedRows.length < 1) {
+        alerts("请至少选中一行");
+    } else {
+        layer.confirm('是否确定删除选中的所有行', {
+            btn: ['确定', '取消']
+        }, function () {
+            var ids = "";
+            selectedRows.forEach(function (tr) {
+                ids += json[$(tr).children(index).attr("data-key")].id + ",";
+            });
+            ids = ids.substr(0, ids.length - 1);
+            layer.load(1);
+            $.ajax({
+                url: url + ids, type: "DELETE", success: function (data) {
+                    layer.closeAll();
+                    var json = JSON.parse(data);
+                    if (json.status === "success") {
+                        selectedRows.forEach(function (tr) {
+                            var key = $(tr).children(index).attr("data-key");
+                            if (table.indexOf("file") > 0) {
+                                app.files.splice(key, 1);
+                            } else if (table.indexOf("auth") > 0) {
+                                app.auths.splice(key, 1);
+                            }
+                        });
+                        $("[data-toggle='tooltip']").tooltip();
+                        layer.msg("删除成功");
+                    } else {
+                        alerts("删除失败");
+                    }
+                }
+            })
+        }, function () {
+            layer.msg("取消了操作");
+        });
+    }
+}
+
 $(document).ready(function () {
+    $(".auth-delete").click(function () {
+        doDelete("#auth-manager-table", app.auths, ".auth-index", "/auth/batch/");
+    });
+    $("#auth-update-button").click(function () {
+        var down = $("#auth-downloadable").val();
+        var dele = $("#auth-deletable").val();
+        var upda = $("#auth-updatable").val();
+        var visi = $("#auth-visible").val();
+        var key = $(selectedRows[rowIndex]).children(".auth-index").attr("data-key");
+        var id = app.auths[key].id;
+        updateAuth("/auth/" + id, down, dele, upda, visi);
+        setTimeout(function () {
+            app.auths[key].isDownloadable = down;
+            app.auths[key].isDeletable = dele;
+            app.auths[key].isUpdatable = upda;
+            app.auths[key].isVisible = visi;
+        }, 1000);
+    });
     $("#file-auth-update-button").click(function () {
         var down = $("#file-downloadable-auth").val();
         var dele = $("#file-deletable-auth").val();
         var upda = $("#file-updatable-auth").val();
         var visi = $("#file-visible-auth").val();
-        var auth = toOneOrZero(down) + ",1," + toOneOrZero(dele) + "," + toOneOrZero(upda) + "," + toOneOrZero(visi);
         var id = app.files[$(selectedRows[rowIndex]).children(".file-index").attr("data-key")].id;
-        layer.load(1);
-        $.ajax({
-            url: "/file/" + id + "/auth", type: "PUT", data: {auth: auth}, success: function (data) {
-                layer.closeAll();
-                alerts("更新" + boolToChinese(data.indexOf("success") > 0));
-            }
-        });
+        updateAuth("/file/" + id + "/auth", down, dele, upda, visi);
     });
     setTimeout(function () {
         if (isEmpty(location.hash)) {
@@ -431,37 +569,6 @@ $(document).ready(function () {
         }
     });
     $(".file-delete").click(function () {
-        selectedRows = getSelectedRows($("#file-manager-table").children("tbody"));
-        if (selectedRows.length < 1) {
-            alerts("请至少选中一行");
-        } else {
-            layer.confirm('是否确定删除选中的所有行', {
-                btn: ['确定', '取消']
-            }, function () {
-                var ids = "";
-                selectedRows.forEach(function (tr) {
-                    ids += app.files[$(tr).children(".file-index").attr("data-key")].id + ",";
-                });
-                ids = ids.substr(0, ids.length - 1);
-                layer.load(1);
-                $.ajax({
-                    url: "/file/batch/" + ids, type: "DELETE", success: function (data) {
-                        layer.closeAll();
-                        var json = JSON.parse(data);
-                        if (json.status === "success") {
-                            selectedRows.forEach(function (tr) {
-                                app.files.splice($(tr).children(".file-index").attr("data-key"), 1);
-                            });
-                            $("[data-toggle='tooltip']").tooltip();
-                            layer.msg("删除成功");
-                        } else {
-                            alerts("删除失败");
-                        }
-                    }
-                })
-            }, function () {
-                layer.msg("取消了操作");
-            });
-        }
+        doDelete("#file-manager-table", app.files, ".file-index", "/file/batch/");
     });
 });

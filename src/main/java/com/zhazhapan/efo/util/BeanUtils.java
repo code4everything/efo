@@ -2,6 +2,7 @@ package com.zhazhapan.efo.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.modules.constant.ValueConsts;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.Formatter;
 import com.zhazhapan.util.enums.FieldModifier;
 import org.slf4j.Logger;
@@ -30,10 +31,12 @@ public class BeanUtils {
      */
     public static int[] getAuth(String auth) {
         int[] a = new int[5];
-        String[] u = auth.split(ValueConsts.COMMA_SIGN);
-        int len = Math.min(a.length, u.length);
-        for (int i = 0; i < len; i++) {
-            a[i] = Formatter.stringToInt(u[i]);
+        if (Checker.isNotEmpty(auth)) {
+            String[] u = auth.split(ValueConsts.COMMA_SIGN);
+            int len = Math.min(a.length, u.length);
+            for (int i = 0; i < len; i++) {
+                a[i] = Formatter.stringToInt(u[i]);
+            }
         }
         return a;
     }
