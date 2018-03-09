@@ -236,6 +236,11 @@ var selectedRows = [];
 
 var rowIndex;
 
+/**
+ * 演示同类型的模态框
+ * @param table tableId
+ * @param modal 模态框
+ */
 function showFileModal(table, modal) {
     rowIndex = 0;
     selectedRows = getSelectedRows($(table).children("tbody"));
@@ -407,13 +412,22 @@ function toOneOrZero(val) {
     return val > 0 ? 1 : 0;
 }
 
-function updateAuth(url, down, dele, upda, visi) {
+function updateAuth(url, down, dele, upda, visi, key) {
     var auth = toOneOrZero(down) + ",1," + toOneOrZero(dele) + "," + toOneOrZero(upda) + "," + toOneOrZero(visi);
     layer.load(1);
     $.ajax({
         url: url, type: "PUT", data: {auth: auth}, success: function (data) {
             layer.closeAll();
-            alerts("更新" + boolToChinese(data.indexOf("success") > 0));
+            var result = data.indexOf("success") > 0;
+            alerts("更新" + boolToChinese(result));
+            if (result) {
+                if (url.indexOf("auth") > 0) {
+                    app.auths[key].isDownloadable = down;
+                    app.auths[key].isDeletable = dele;
+                    app.auths[key].isUpdatable = upda;
+                    app.auths[key].isVisible = visi;
+                }
+            }
         }
     });
 }
@@ -469,13 +483,7 @@ $(document).ready(function () {
         var visi = $("#auth-visible").val();
         var key = $(selectedRows[rowIndex]).children(".auth-index").attr("data-key");
         var id = app.auths[key].id;
-        updateAuth("/auth/" + id, down, dele, upda, visi);
-        setTimeout(function () {
-            app.auths[key].isDownloadable = down;
-            app.auths[key].isDeletable = dele;
-            app.auths[key].isUpdatable = upda;
-            app.auths[key].isVisible = visi;
-        }, 1000);
+        updateAuth("/auth/" + id, down, dele, upda, visi, key);
     });
     $("#file-auth-update-button").click(function () {
         var down = $("#file-downloadable-auth").val();
@@ -483,7 +491,8 @@ $(document).ready(function () {
         var upda = $("#file-updatable-auth").val();
         var visi = $("#file-visible-auth").val();
         var id = app.files[$(selectedRows[rowIndex]).children(".file-index").attr("data-key")].id;
-        updateAuth("/file/" + id + "/auth", down, dele, upda, visi);
+        //无须传递KEY
+        updateAuth("/file/" + id + "/auth", down, dele, upda, visi, 0);
     });
     setTimeout(function () {
         if (isEmpty(location.hash)) {
