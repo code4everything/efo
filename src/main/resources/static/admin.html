@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <link rel="shortcut icon" href="/assets/img/efo-favicon.png"/>
+    <!--<link rel="stylesheet" href="/assets/css/foundation.min.css">-->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/css/nav.css"/>
     <link rel="stylesheet" href="/assets/css/glyphicons.css">
@@ -15,6 +16,7 @@
     <script src="/assets/js/layer.js"></script>
     <script src="/assets/js/vue.js"></script>
     <script src="/assets/js/utils.js"></script>
+    <!--<script src="/assets/js/jsoneditor.js"></script>-->
     <link rel="stylesheet" href="/assets/css/style.css"/>
     <title>管理员</title>
 </head>
@@ -43,7 +45,7 @@
             <a href="#user-manager"><span class="glyphicon glyphicon-user">&nbsp;<b>用户管理</b></span></a>
         </li>
         <!--<li class="jq-nav-item">-->
-            <!--<a href="#admin-manager"><span class="glyphicon glyphicon-globe">&nbsp;<b>管理员管理</b></span></a>-->
+        <!--<a href="#admin-manager"><span class="glyphicon glyphicon-globe">&nbsp;<b>管理员管理</b></span></a>-->
         <!--</li>-->
         <li class="jq-nav-item">
             <a href="#system-setting"><span class="glyphicon glyphicon-cog">&nbsp;<b>系统设置</b></span></a>
@@ -327,12 +329,250 @@
             <br/>
         </div>
     </div>
-    <div class="row jq-tab hide" id="user-manager">用户管理</div>
-    <div class="row jq-tab hide" id="admin-manager">管理员管理</div>
-    <div class="row jq-tab hide" id="system-setting">系统设置</div>
+    <!--用户管理-->
+    <div class="row jq-tab hide" id="user-manager">
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="row">
+                <div class="col-sm-5 col-12">
+                    <input type="text" class="form-control user-filter" placeholder="用户名或邮箱"
+                           onkeyup="fileFilter();"/>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="col-12 col-sm-10 offset-sm-1"><br/></div>
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="text-right">
+                <button class="btn btn-info" onclick="showFileModal('#user-manager-table','#userFileAuthModal')"><i
+                        class="glyphicon glyphicon-edit"></i> 编辑用户默认文件权限
+                </button>
+                <button class="btn btn-warning" onclick="showFileModal('#user-manager-table','#userAuthModal')"><i
+                        class="glyphicon glyphicon-wrench"></i> 修改用户权限
+                </button>
+                <button class="btn btn-danger" onclick="showFileModal('#user-manager-table','#userPasswordModal');"><i
+                        class="glyphicon glyphicon-warning-sign"></i> 重置用户密码
+                </button>
+            </div>
+            <br/>
+            <table class="table table-bordered table-hover table-responsive table-condensed" id="user-manager-table">
+                <thead>
+                <tr>
+                    <th>
+                        <div class="pretty p-default p-curve p-thick">
+                            <input type="checkbox" id="user-toggle-box" name="file" title=""
+                                   onchange="toggleCheckBoxStatus('user');"/>
+                            <div class="state p-info-o">
+                                <label></label>
+                            </div>
+                        </div>
+                    </th>
+                    <th>编号</th>
+                    <th>头像</th>
+                    <th>用户名</th>
+                    <th>真实名</th>
+                    <th>邮箱</th>
+                    <th>权限</th>
+                    <th>最近登录时间</th>
+                    <th>注册时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(user,key) in users" onclick="toggleRowSelectedStatus(this);">
+                    <td>
+                        <div class="pretty p-default p-curve p-thick">
+                            <input type="checkbox" name="file" title=""/>
+                            <div class="state p-info-o">
+                                <label></label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="user-index" v-bind:data-key="key">{{key+1}}</td>
+                    <td><img v-bind:src="user.avatar ? user.avatar : '/assets/img/default-user.jpg'" width="30rem"
+                             height="30rem"></td>
+                    <td>{{user.username}}</td>
+                    <td>{{user.realName}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.permission<1?"禁止登录":(user.permission<2?"普通用户":"管理员")}}</td>
+                    <td>{{new Date(user.lastLoginTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
+                    <td>{{new Date(user.createTime).format('yyyy-MM-dd hh:mm:ss')}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <button class="btn btn-lg btn-link btn-block" onclick="offset+=1;getUser();"><b><i
+                class="glyphicon glyphicon-arrow-down"></i> 获取更多</b></button>
+        <br/>
+    </div>
+    <!--<div class="row jq-tab hide" id="admin-manager">管理员管理</div>-->
+    <!--系统设置-->
+    <div class="row jq-tab hide" id="system-setting">
+        <div class="col-12 col-sm-10 offset-sm-1 content-box rounded">
+            <br/>
+            <div class="row">
+                <div class="col-12 col-sm-12 text-right">
+                    <button class="btn btn-outline-info" onclick="saveConfig();"><i
+                            class="glyphicon glyphicon-floppy-disk"></i> 保存
+                    </button>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm-12 col-12" id="json-editor">
+                    <textarea class="form-control" style="height: 100vh;width: 100%;" title="编辑配置文件"
+                              data-toggle="tooltip"></textarea>
+                </div>
+            </div>
+            <br/>
+        </div>
+    </div>
     <div class="row text-center" id="footer"></div>
 </div>
 <br/>
+<!--用户权限模态框-->
+<div class="modal fade" id="userAuthModal" tabindex="-1" role="dialog" aria-labelledby="userAuthModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="userAuthModalLabel">重置用户密码</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="用户名" type="text" class="form-control username"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <select class="form-control user-permission" title="用户权限" data-toggle="tooltip">
+                            <option value="0">禁止登录</option>
+                            <option value="1">普通用户</option>
+                            <option value="2">管理员</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="rowIndex-=1;setUsername('#userAuthModal','auth');"><i
+                        class="glyphicon glyphicon-arrow-left"></i> 上个
+                </button>
+                <button class="btn btn-outline-primary" onclick="rowIndex+=1;setUsername('#userAuthModal','auth');">下个
+                    <i class="glyphicon glyphicon-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-info" data-dismiss="modal"><i
+                        class="glyphicon glyphicon-remove"></i> 关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="user-auth-update-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;"><i
+                        class="glyphicon glyphicon-floppy-open"></i> 更新
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--用户文件权限编辑模态框-->
+<div class="modal fade" id="userPasswordModal" tabindex="-1" role="dialog" aria-labelledby="userPasswordModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="userPasswordModalLabel">重置用户密码</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="用户名" type="text" class="form-control username"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="密码" type="text" maxlength="30" minlength="6" class="form-control user-password"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="rowIndex-=1;setUsername('#userPasswordModal','');"><i
+                        class="glyphicon glyphicon-arrow-left"></i> 上个
+                </button>
+                <button class="btn btn-outline-primary" onclick="rowIndex+=1;setUsername('#userPasswordModal','');">下个
+                    <i
+                            class="glyphicon glyphicon-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-info" data-dismiss="modal"><i
+                        class="glyphicon glyphicon-remove"></i> 关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="user-password-update-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;"><i
+                        class="glyphicon glyphicon-floppy-open"></i> 更新
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--用户文件权限编辑模态框-->
+<div class="modal fade" id="userFileAuthModal" tabindex="-1" role="dialog" aria-labelledby="userFileAuthModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left" id="userFileAuthModalLabel">编辑用户默认文件权限</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 col-12">
+                        <input title="用户名" type="text" class="form-control username"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <input title="下载权限" type="number" class="form-control user-downloadable"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="上传权限" type="number" class="form-control user-uploadable"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="删除权限" type="number" class="form-control user-deletable"
+                               data-toggle="tooltip"/>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <input title="编辑权限" type="number" class="form-control user-updatable"
+                               data-toggle="tooltip"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="rowIndex-=1;setUserFileAuth();"><i
+                        class="glyphicon glyphicon-arrow-left"></i> 上个
+                </button>
+                <button class="btn btn-outline-primary" onclick="rowIndex+=1;setUserFileAuth();">下个 <i
+                        class="glyphicon glyphicon-arrow-right"></i>
+                </button>
+                <button type="button" class="btn btn-info" data-dismiss="modal"><i
+                        class="glyphicon glyphicon-remove"></i> 关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="user-file-auth-update-button"
+                        style="background-color: #9b58b5;border-color: #9b58b5;"><i
+                        class="glyphicon glyphicon-floppy-open"></i> 更新
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--文件共享模态框-->
 <div class="modal fade" id="fileAddedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -577,7 +817,7 @@
                 <br/>
                 <div class="row" style="height: 10rem;overflow: auto;">
                     <div class="col-sm-12 col-12">
-                        <input type="text" class="form-control" placeholder="搜索用户" id="auth-user-search"/>
+                        <input type="text" class="form-control" v-on:keyup.enter="searchUserInAuth" placeholder="搜索用户" id="auth-user-search"/>
                         <br/>
                         <div id="auth-user-list">
                             <ul class="list-group" id="auth-user-list-group"></ul>

@@ -7,7 +7,8 @@ var app = new Vue({
         files: [],
         serverFiles: [],
         selectedServerFiles: [],
-        auths: []
+        auths: [],
+        users: []
     }
 });
 
@@ -34,6 +35,32 @@ var authModal = new Vue({
                         $(ele).empty();
                         $.each(json, function (i, n) {
                             var li = "<li class='list-group-item list-group-item-success'><a href='javascript:' class='auth-file' onclick='$(event.srcElement).parent().remove();' data-key='" + n.id + "'>" + n.localUrl + "</a></li>";
+                            $(ele).append(li);
+                        });
+                        $('[data-toggle="tooltip"]').tooltip();
+                    }
+                });
+            }
+        },
+        "searchUserInAuth": function () {
+            var user = $("#auth-user-search").val();
+            if (isEmpty(user)) {
+                alerts("内容不能为空");
+            } else {
+                layer.load(1);
+                $.get("/user/all", {
+                    user: user,
+                    offset: 0
+                }, function (data) {
+                    layer.closeAll();
+                    var json = JSON.parse(data);
+                    if (json.length < 1) {
+                        alerts("糟糕，没有数据了");
+                    } else {
+                        var ele = $("#auth-user-list-group");
+                        $(ele).empty();
+                        $.each(json, function (i, n) {
+                            var li = "<li class='list-group-item list-group-item-success'><a href='javascript:' class='auth-file' onclick='$(event.srcElement).parent().remove();' data-key='" + n.id + "'>" + n.username + "</a></li>";
                             $(ele).append(li);
                         });
                         $('[data-toggle="tooltip"]').tooltip();
@@ -93,11 +120,11 @@ function changeTabInfo(tabId) {
         setCategoryToDefault();
         getCategory();
     } else if (tabId === "user-manager") {
-
+        getUser();
     } else if (tabId === "admin-manager") {
 
     } else if (tabId === "system-setting") {
-
+        getConfig();
     } else {
         alerts("没有找到可执行的方法");
     }
@@ -105,6 +132,46 @@ function changeTabInfo(tabId) {
         $('[data-toggle="tooltip"]').tooltip();
         setCSS();
     }, 1000);
+}
+
+function getConfig() {
+    layer.load(1);
+    $.get("/config/all", function (data) {
+        layer.closeAll();
+        $("#json-editor").children("textarea").val(JSON.stringify(JSON.parse(data), undefined, 4));
+    });
+}
+
+function saveConfig() {
+    layer.load(1);
+    $.ajax({
+        url: "/config",
+        type: "PUT",
+        data: {config: $("#json-editor").children("textarea").val()},
+        success: function (data) {
+            layer.closeAll();
+            alerts(JSON.parse(data).message);
+        }
+    });
+}
+
+// var editor = new JSONEditor(document.getElementById("json-editor"), {
+//     theme: 'foundation5'
+// });
+
+function getUser() {
+    layer.load(1);
+    $.get("/user/all", getFileFilterParameters(), function (data) {
+        layer.closeAll();
+        var json = JSON.parse(data);
+        if (json.length < 1) {
+            alerts("糟糕，没有数据了");
+        } else if (offset < 1) {
+            app.users = json;
+        } else {
+            app.users = app.users.concat(json);
+        }
+    });
 }
 
 function getIconYesOrNo(flag) {
@@ -253,6 +320,12 @@ function showFileModal(table, modal) {
             setFileAuth();
         } else if (modal === "#authEditModal") {
             setAuth();
+        } else if (modal === "#userFileAuthModal") {
+            setUserFileAuth();
+        } else if (modal === "#userPasswordModal") {
+            setUsername(modal, '');
+        } else if (modal === "#userAuthModal") {
+            setUsername(modal, "auth");
         }
         $(modal).modal("show");
     }
@@ -277,6 +350,28 @@ function setFileAuth() {
         /** @namespace json.isVisible */
         $("#file-visible-auth").val(json.isVisible);
     });
+}
+
+function setUsername(id, auth) {
+    checkRowIndex();
+    var user = app.users[$(selectedRows[rowIndex]).children(".user-index").attr("data-key")];
+    var parent = $(id);
+    $(parent).find(".username").val(user.username);
+    if (!isEmpty(auth)) {
+        $(parent).find(".user-permission").val(user.permission);
+    }
+}
+
+function setUserFileAuth() {
+    checkRowIndex();
+    var user = app.users[$(selectedRows[rowIndex]).children(".user-index").attr("data-key")];
+    var parent = $("#userFileAuthModal");
+    $(parent).find(".username").val(user.username);
+    $(parent).find(".user-downloadable").val(user.isDownloadable);
+    /** @namespace user.isUploadable */
+    $(parent).find(".user-uploadable").val(user.isUploadable);
+    $(parent).find(".user-deletable").val(user.isDeletable);
+    $(parent).find(".user-updatable").val(user.isUpdatable);
 }
 
 function setAuth() {
@@ -412,8 +507,8 @@ function toOneOrZero(val) {
     return val > 0 ? 1 : 0;
 }
 
-function updateAuth(url, down, dele, upda, visi, key) {
-    var auth = toOneOrZero(down) + ",1," + toOneOrZero(dele) + "," + toOneOrZero(upda) + "," + toOneOrZero(visi);
+function updateAuth(url, down, uplo, dele, upda, visi, key) {
+    var auth = toOneOrZero(down) + "," + toOneOrZero(uplo) + "," + toOneOrZero(dele) + "," + toOneOrZero(upda) + "," + toOneOrZero(visi);
     layer.load(1);
     $.ajax({
         url: url, type: "PUT", data: {auth: auth}, success: function (data) {
@@ -421,11 +516,16 @@ function updateAuth(url, down, dele, upda, visi, key) {
             var result = data.indexOf("success") > 0;
             alerts("更新" + boolToChinese(result));
             if (result) {
-                if (url.indexOf("auth") > 0) {
+                if (url.indexOf("auth") === 1) {
                     app.auths[key].isDownloadable = down;
                     app.auths[key].isDeletable = dele;
                     app.auths[key].isUpdatable = upda;
                     app.auths[key].isVisible = visi;
+                } else if (url.indexOf("user") === 1) {
+                    app.users[key].isDownloadable = down;
+                    app.users[key].isUploadable = uplo;
+                    app.users[key].isDeletable = dele;
+                    app.users[key].isUpdatable = upda;
                 }
             }
         }
@@ -473,6 +573,68 @@ function doDelete(table, json, index, url) {
 }
 
 $(document).ready(function () {
+    $("#auth-add-button").click(function () {
+        var fileList = $("#auth-file-list-group").find("a");
+        var files = "";
+        for (var i = 0; i < fileList.length; i++) {
+            files += $(fileList[i]).attr("data-key") + ",";
+        }
+        var userList = $("#auth-user-list-group").find("a");
+        var users = "";
+        for (var i = 0; i < userList.length; i++) {
+            users += $(userList[i]).attr("data-key") + ",";
+        }
+        if (isEmpty(files) || isEmpty(users)) {
+            alerts("内容不能为空");
+        } else {
+            files = files.substr(0, files.length - 1);
+            users = users.substr(0, users.length - 1);
+            var down = $("#auth-downloadable-new").val();
+            var dele = $("#auth-deletable-new").val();
+            var upda = $("#auth-updatable-new").val();
+            var visi = $("#auth-visible-new").val();
+            var auths = toOneOrZero(down) + ",1," + toOneOrZero(dele) + "," + toOneOrZero(upda) + "," + toOneOrZero(visi);
+            $.post("/auth", {files: files, users: users, auths: auths}, function (data) {
+                layer.closeAll();
+                getTabInfo("#auth-manager");
+                $("#authAddedModal").modal("hide");
+                alerts("添加" + boolToChinese(data.indexOf("success") > 0));
+            })
+        }
+    });
+    $("#user-auth-update-button").click(function () {
+        var key = $(selectedRows[rowIndex]).children(".user-index").attr("data-key");
+        var permission = $("#userAuthModal").find(".user-permission").val();
+        layer.load(1);
+        $.ajax({
+            url: "/user/" + app.users[key].id + "/" + permission + "/",
+            type: "PUT",
+            success: function (data) {
+                layer.closeAll();
+                alerts(JSON.parse(data).message);
+                if (data.indexOf("成功")) {
+                    app.users[key].permission = permission;
+                }
+            }
+        });
+    });
+    $("#user-password-update-button").click(function () {
+        var password = $("#userPasswordModal").find(".user-password").val();
+        if (isEmpty(password)) {
+            alerts("密码不能为空");
+        } else {
+            var user = app.users[$(selectedRows[rowIndex]).children(".user-index").attr("data-key")];
+            layer.load(1);
+            $.ajax({
+                url: "/user/reset/" + user.id + "/" + password + "/",
+                type: "PUT",
+                success: function (data) {
+                    layer.closeAll();
+                    alerts("更新" + boolToChinese(data.indexOf("success") > 0));
+                }
+            });
+        }
+    });
     $(".auth-delete").click(function () {
         doDelete("#auth-manager-table", app.auths, ".auth-index", "/auth/batch/");
     });
@@ -483,7 +645,16 @@ $(document).ready(function () {
         var visi = $("#auth-visible").val();
         var key = $(selectedRows[rowIndex]).children(".auth-index").attr("data-key");
         var id = app.auths[key].id;
-        updateAuth("/auth/" + id, down, dele, upda, visi, key);
+        updateAuth("/auth/" + id, down, 1, dele, upda, visi, key);
+    });
+    $("#user-file-auth-update-button").click(function () {
+        var key = $(selectedRows[rowIndex]).children(".user-index").attr("data-key");
+        var parent = $("#userFileAuthModal");
+        var down = $(parent).find(".user-downloadable").val();
+        var uplo = $(parent).find(".user-uploadable").val();
+        var dele = $(parent).find(".user-deletable").val();
+        var upda = $(parent).find(".user-updatable").val();
+        updateAuth("/user/" + app.users[key].id + "/auth", down, uplo, dele, upda, 1, key);
     });
     $("#file-auth-update-button").click(function () {
         var down = $("#file-downloadable-auth").val();
@@ -492,7 +663,7 @@ $(document).ready(function () {
         var visi = $("#file-visible-auth").val();
         var id = app.files[$(selectedRows[rowIndex]).children(".file-index").attr("data-key")].id;
         //无须传递KEY
-        updateAuth("/file/" + id + "/auth", down, dele, upda, visi, 0);
+        updateAuth("/file/" + id + "/auth", down, 1, dele, upda, visi, 0);
     });
     setTimeout(function () {
         if (isEmpty(location.hash)) {

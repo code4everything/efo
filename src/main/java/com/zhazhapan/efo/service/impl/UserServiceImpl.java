@@ -7,14 +7,18 @@ import com.zhazhapan.efo.dao.UserDAO;
 import com.zhazhapan.efo.entity.User;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.service.IUserService;
+import com.zhazhapan.efo.util.BeanUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.DateUtils;
+import com.zhazhapan.util.MailSender;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.zhazhapan.efo.EfoApplication.settings;
@@ -29,8 +33,40 @@ public class UserServiceImpl implements IUserService {
 
     private final UserDAO userDAO;
 
+    private Logger logger = Logger.getLogger(UserServiceImpl.class);
+
     @Autowired
     public UserServiceImpl(UserDAO userDAO) {this.userDAO = userDAO;}
+
+    @Override
+    public boolean updatePermission(int id, int permission) {
+        return userDAO.updatePermission(id, permission > 2 ? 2 : permission);
+    }
+
+    @Override
+    public boolean resetPassword(int id, String password) {
+        boolean result = Checker.isNotEmpty(password) && userDAO.updatePasswordById(id, password);
+        if (result) {
+            removeTokenByValue(id);
+            try {
+                MailSender.sendMail(getUserById(id).getEmail(), "密码重置通知", "您的密码已被管理员重置为：" + password);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean updateFileAuth(int id, String auths) {
+        int[] auth = BeanUtils.getAuth(auths);
+        return userDAO.updateAuthById(id, auth[0], auth[1], auth[2], auth[3], auth[4]);
+    }
+
+    @Override
+    public List<User> getUser(int permission, String condition, int offset) {
+        return userDAO.getUserBy(permission, condition, offset);
+    }
 
     @Override
     public User login(String loginName, String password, String token, HttpServletResponse response) {

@@ -3,12 +3,54 @@ package com.zhazhapan.efo.service;
 import com.zhazhapan.efo.entity.User;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author pantao
  * @since 2018/1/22
  */
 public interface IUserService {
+
+    /**
+     * 更新用户权限
+     *
+     * @param id 用户编号
+     * @param permission 权限
+     *
+     * @return 是否更新成功
+     */
+    boolean updatePermission(int id, int permission);
+
+    /**
+     * 重置用户密码
+     *
+     * @param id 用户编号
+     * @param password 密码
+     *
+     * @return 是否重置成功
+     */
+    boolean resetPassword(int id, String password);
+
+    /**
+     * 更新用户权限
+     *
+     * @param id 编号
+     * @param auths 操作文件的权限集
+     *
+     * @return 是否更新成功
+     */
+    boolean updateFileAuth(int id, String auths);
+
+    /**
+     * 获取用户
+     *
+     * @param permission 当前用户权限
+     * @param condition 筛选条件
+     * @param offset 偏移
+     *
+     * @return {@link List}
+     */
+    List<User> getUser(int permission, String condition, int offset);
 
     /**
      * 登录

@@ -12,6 +12,17 @@ import java.util.List;
 public interface IAuthService {
 
     /**
+     * 添加权限集
+     *
+     * @param files 文件
+     * @param users 用户
+     * @param auths 权限集
+     *
+     * @return 是否添加成功
+     */
+    boolean addAuth(String files, String users, String auths);
+
+    /**
      * 批量删除权限记录
      *
      * @param ids 权限编号集

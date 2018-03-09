@@ -54,6 +54,10 @@ public class Auth {
         this.isVisible = isVisible;
     }
 
+    public void setAuth(int[] auth) {
+        setAuth(auth[0], auth[1], auth[2], auth[3], auth[4]);
+    }
+
     @Override
     public String toString() {
         return BeanUtils.toPrettyJson(this);

@@ -16,6 +16,17 @@ import java.util.List;
 public interface AuthDAO {
 
     /**
+     * 检测某个权限是否存在
+     *
+     * @param userId 用户编号
+     * @param fileId 文件编号
+     *
+     * @return {@link Auth}
+     */
+    @Select("select * from auth where user_id=#{userId} and file_id=#{fileId}")
+    Auth exists(@Param("userId") int userId, @Param("fileId") long fileId);
+
+    /**
      * 批量删除权限记录
      *
      * @param ids 权限编号集

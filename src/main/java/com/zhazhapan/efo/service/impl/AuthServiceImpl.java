@@ -10,6 +10,7 @@ import com.zhazhapan.efo.util.BeanUtils;
 import com.zhazhapan.efo.util.ServiceUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.Formatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,26 @@ public class AuthServiceImpl implements IAuthService {
 
     @Autowired
     public AuthServiceImpl(AuthDAO authDAO) {this.authDAO = authDAO;}
+
+    @Override
+    public boolean addAuth(String files, String users, String auths) {
+        if (Checker.isNotEmpty(files) && Checker.isNotEmpty(users) && Checker.isNotEmpty(auths)) {
+            String[] file = files.split(ValueConsts.COMMA_SIGN);
+            String[] user = users.split(ValueConsts.COMMA_SIGN);
+            for (String f : file) {
+                long fileId = Formatter.stringToLong(f);
+                for (String u : user) {
+                    int userId = Formatter.stringToInt(u);
+                    if (Checker.isNull(authDAO.exists(userId, fileId))) {
+                        Auth auth = new Auth(userId, fileId);
+                        auth.setAuth(BeanUtils.getAuth(auths));
+                        authDAO.insertAuth(auth);
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
     @Override
     public boolean batchDelete(String ids) {

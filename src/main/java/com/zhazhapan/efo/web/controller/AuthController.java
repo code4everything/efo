@@ -25,6 +25,13 @@ public class AuthController {
     public AuthController(IAuthService authService) {this.authService = authService;}
 
     @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public String add(String files, String users, String auths) {
+        System.out.println("files: " + files + " users: " + users + " auths: " + auths);
+        return ControllerUtils.getResponse(authService.addAuth(files, users, auths));
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getAuth(String user, String file, int offset) {
         return Formatter.listToJson(authService.getAuth(user, file, offset));

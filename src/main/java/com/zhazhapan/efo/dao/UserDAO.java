@@ -15,6 +15,17 @@ import java.util.List;
 public interface UserDAO {
 
     /**
+     * 更新用户权限
+     *
+     * @param id 用户编号
+     * @param permission 权限
+     *
+     * @return 是否更新成功
+     */
+    @Update("update user set permission=#{permission} where id=#{id}")
+    boolean updatePermission(@Param("id") int id, @Param("permission") int permission);
+
+    /**
      * 用过用户名获取用户Id
      *
      * @param usernameOrEmail 用户名或邮箱
@@ -52,12 +63,14 @@ public interface UserDAO {
      * 通过权限获取用户
      *
      * @param permission 权限
+     * @param condition 条件
      * @param offset 偏移
      *
      * @return {@link List}
      */
     @SelectProvider(type = UserSqlProvider.class, method = "getUserBy")
-    List<User> getUserBy(@Param("permission") int permission, @Param("offset") int offset);
+    List<User> getUserBy(@Param("permission") int permission, @Param("condition") String condition, @Param("offset")
+            int offset);
 
     /**
      * 用户登录
@@ -107,8 +120,8 @@ public interface UserDAO {
      */
     @UpdateProvider(type = UserSqlProvider.class, method = "updateAuthById")
     boolean updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable")
-            int isUploadable, @Param("isVisible") int isVisible, @Param("isDeletable") int isDeletable, @Param
-            ("isUpdatable") int isUpdatable);
+            int isUploadable, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable, @Param
+            ("isVisible") int isVisible);
 
     /**
      * 通过编号哦更新密码

@@ -10,10 +10,13 @@ import com.zhazhapan.efo.enums.InterceptorLevel;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.efo.service.IUserService;
+import com.zhazhapan.efo.util.ControllerUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.Formatter;
 import com.zhazhapan.util.encryption.JavaEncrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +44,39 @@ public class UserController {
         this.userService = userService;
         this.request = request;
         this.jsonObject = jsonObject;
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/{id}/{permission}", method = RequestMethod.PUT)
+    public String updatePermission(@PathVariable("id") int id, @PathVariable("permission") int permission) {
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
+        if (user.getPermission() < ValueConsts.THREE_INT && permission > 1) {
+            jsonObject.put("message", "权限不够，设置失败");
+        } else if (userService.updatePermission(id, permission)) {
+            jsonObject.put("message", "更新成功");
+        } else {
+            jsonObject.put("message", "更新失败，请稍后重新尝试");
+        }
+        return jsonObject.toJSONString();
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/reset/{id}/{password}", method = RequestMethod.PUT)
+    public String resetPassword(@PathVariable("id") int id, @PathVariable("password") String password) {
+        return ControllerUtils.getResponse(userService.resetPassword(id, password));
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/{id}/auth", method = RequestMethod.PUT)
+    public String updateFileAuth(@PathVariable("id") int id, String auth) {
+        return ControllerUtils.getResponse(userService.updateFileAuth(id, auth));
+    }
+
+    @AuthInterceptor(InterceptorLevel.ADMIN)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public String getUser(String user, int offset) {
+        User u = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
+        return Formatter.listToJson(userService.getUser(u.getPermission(), user, offset));
     }
 
     @AuthInterceptor
@@ -108,7 +144,7 @@ public class UserController {
     public String login(String username, String password, boolean auto, String token) {
         //使用密码登录
         User user = userService.login(username, password, ValueConsts.NULL_STRING, ValueConsts.NULL_RESPONSE);
-        if (Checker.isNull(user)) {
+        if (Checker.isNull(user) || user.getPermission() < 1) {
             jsonObject.put("status", "failed");
         } else {
             request.getSession().setAttribute(ValueConsts.USER_STRING, user);
