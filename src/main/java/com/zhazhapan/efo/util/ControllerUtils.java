@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author pantao
@@ -40,10 +41,14 @@ public class ControllerUtils {
      *
      * @param response 返回的Response
      * @param path 资源路径
+     * @param download 直接下载
      */
-    public static void loadResource(HttpServletResponse response, String path) throws IOException {
+    public static void loadResource(HttpServletResponse response, String path, boolean download) throws IOException {
         if (Checker.isNotEmpty(path)) {
             File file = new File(path);
+            if (download) {
+                setReponseFileName(response, file.getName());
+            }
             OutputStream os = response.getOutputStream();
             os.write(FileExecutor.readFileToByteArray(file));
             os.flush();
@@ -51,5 +56,17 @@ public class ControllerUtils {
         } else {
             response.sendRedirect(DefaultValues.NOT_FOUND_PAGE);
         }
+    }
+
+    /**
+     * 设置响应头的文件名
+     *
+     * @param response {@link HttpServletResponse}
+     * @param fileName 文件名
+     */
+    public static void setReponseFileName(HttpServletResponse response, String fileName) throws
+            UnsupportedEncodingException {
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("UTF-8"),
+                "ISO-8859-1"));
     }
 }

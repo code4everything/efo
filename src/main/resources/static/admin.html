@@ -44,9 +44,10 @@
         <li class="jq-nav-item">
             <a href="#user-manager"><span class="glyphicon glyphicon-user">&nbsp;<b>用户管理</b></span></a>
         </li>
-        <!--<li class="jq-nav-item">-->
-        <!--<a href="#admin-manager"><span class="glyphicon glyphicon-globe">&nbsp;<b>管理员管理</b></span></a>-->
-        <!--</li>-->
+        <li class="jq-nav-item">
+            <a href="filemanager" target="_blank"><span
+                    class="glyphicon glyphicon-folder-close">&nbsp;<b>远程管理</b></span></a>
+        </li>
         <li class="jq-nav-item">
             <a href="#system-setting"><span class="glyphicon glyphicon-cog">&nbsp;<b>系统设置</b></span></a>
         </li>
@@ -817,7 +818,8 @@
                 <br/>
                 <div class="row" style="height: 10rem;overflow: auto;">
                     <div class="col-sm-12 col-12">
-                        <input type="text" class="form-control" v-on:keyup.enter="searchUserInAuth" placeholder="搜索用户" id="auth-user-search"/>
+                        <input type="text" class="form-control" v-on:keyup.enter="searchUserInAuth" placeholder="搜索用户"
+                               id="auth-user-search"/>
                         <br/>
                         <div id="auth-user-list">
                             <ul class="list-group" id="auth-user-list-group"></ul>

@@ -13,16 +13,18 @@ $(function () {
                 $('.jq-nav-item.jq-nav-show').removeClass('jq-nav-show');
             }
         }
-        $(".jq-tab").addClass("hide");
         var tab = $(this).attr("href");
-        $(tab).removeClass("hide");
-        try {
-            getTabInfo(tab);
-            if (isMobile()) {
-                $("#mini").click();
+        if (tab !== "filemanager") {
+            $(".jq-tab").addClass("hide");
+            $(tab).removeClass("hide");
+            try {
+                getTabInfo(tab);
+                if (isMobile()) {
+                    $("#mini").click();
+                }
+            } catch (e) {
+                console.info("function 'getTabInfo' not found");
             }
-        } catch (e) {
-            console.info("function 'getTabInfo' not found");
         }
     });
     //nav-mini切换

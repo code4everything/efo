@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ViewController {
 
+    @AuthInterceptor(InterceptorLevel.SYSTEM)
+    @RequestMapping(value = "/filemanager", method = RequestMethod.GET)
+    public String fileManager() {
+        return "/filemanager";
+    }
+
     @AuthInterceptor
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String upload() {

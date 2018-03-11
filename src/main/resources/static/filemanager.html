@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-ng-app="FileManagerApp">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>远程文件管理</title>
+    <link rel="shortcut icon" href="/assets/img/efo-favicon.png"/>
+    <link rel="stylesheet" href="/assets/css/glyphicons.css">
+    <script src="/assets/js/old/jquery.min.js"></script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="/assets/js/angular-translate.min.js"></script>
+    <script src="/assets/js/ng-file-upload.min.js"></script>
+    <script src="/assets/js/old/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/old/bootstrap.min.css"/>
+    <link href="/assets/css/angular-filemanager.min.css" rel="stylesheet">
+    <script src="/assets/js/angular-filemanager.min.js"></script>
+    <script type="text/javascript">
+        angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (config) {
+            var defaults = config.$get();
+            config.set({
+                appName: '远程文件管理',
+                pickCallback: function (item) {
+                    var msg = 'Picked %s "%s" for external use'
+                        .replace('%s', item.type)
+                        .replace('%s', item.fullPath());
+                    window.alert(msg);
+                },
+
+                allowedActions: angular.extend(defaults.allowedActions, {
+                    pickFiles: false,
+                    pickFolders: false
+                })
+            });
+        }]);
+    </script>
+</head>
+<body class="ng-cloak" id="particles-js">
+<angular-filemanager></angular-filemanager>
+</body>
+</html>

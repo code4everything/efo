@@ -31,8 +31,7 @@ public class WebInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
             Exception {
         String url = request.getServletPath();
-        boolean shouldIntercept = url.startsWith(DefaultValues.INDEX_PAGE);
-        InterceptorLevel level = InterceptorLevel.USER;
+        InterceptorLevel level = InterceptorLevel.NONE;
         if (handler instanceof HandlerMethod) {
             AuthInterceptor interceptor = ((HandlerMethod) handler).getMethodAnnotation(AuthInterceptor.class);
             //注解到类上面的注解，无法直接获取，只能通过扫描
@@ -52,10 +51,9 @@ public class WebInterceptor implements HandlerInterceptor {
             }
             if (Checker.isNotNull(interceptor)) {
                 level = interceptor.value();
-                shouldIntercept = true;
             }
         }
-        if (shouldIntercept && level != InterceptorLevel.NONE) {
+        if (level != InterceptorLevel.NONE) {
             User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
             if (Checker.isNull(user)) {
                 //读取token，自动登录
@@ -68,7 +66,8 @@ public class WebInterceptor implements HandlerInterceptor {
                     }
                 }
             }
-            boolean isRedirect = Checker.isNull(user) || (level == InterceptorLevel.ADMIN && user.getPermission() < 2);
+            boolean isRedirect = Checker.isNull(user) || (level == InterceptorLevel.ADMIN && user.getPermission() <
+                    2) || (level == InterceptorLevel.SYSTEM && user.getPermission() < 3);
             if (isRedirect) {
                 response.sendRedirect(DefaultValues.SIGNIN_PAGE);
                 return false;

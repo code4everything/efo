@@ -172,6 +172,7 @@ public class FileController {
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/**", method = RequestMethod.GET)
     public void getResource(HttpServletResponse response) throws IOException {
-        ControllerUtils.loadResource(response, fileService.getResource(request.getServletPath(), request));
+        ControllerUtils.loadResource(response, fileService.getResource(request.getServletPath(), request),
+                ValueConsts.FALSE);
     }
 }

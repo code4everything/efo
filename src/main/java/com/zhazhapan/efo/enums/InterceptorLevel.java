@@ -20,5 +20,10 @@ public enum InterceptorLevel {
     /**
      * 管理员级别拦截
      */
-    ADMIN
+    ADMIN,
+
+    /**
+     * 系统用户
+     */
+    SYSTEM
 }

@@ -46,7 +46,7 @@ public class CommonController {
     @RequestMapping(value = "/avatar/{name}", method = RequestMethod.GET)
     public void getAvatar(HttpServletResponse response, @PathVariable("name") String name) throws IOException {
         String path = SettingConfig.getAvatarStoragePath() + ValueConsts.SEPARATOR + name;
-        ControllerUtils.loadResource(response, path);
+        ControllerUtils.loadResource(response, path, ValueConsts.FALSE);
     }
 
     @AuthInterceptor
