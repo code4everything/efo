@@ -41,7 +41,7 @@ public class FileMangerController {
     @AuthInterceptor(InterceptorLevel.SYSTEM)
     @RequestMapping(value = "/multidownload", method = RequestMethod.GET)
     public void multiDownload(HttpServletResponse response, String[] items, String toFilename) throws IOException {
-        ControllerUtils.setReponseFileName(response, toFilename);
+        ControllerUtils.setResponseFileName(response, toFilename);
         fileManagerService.multiDownload(response, items, toFilename);
     }
 

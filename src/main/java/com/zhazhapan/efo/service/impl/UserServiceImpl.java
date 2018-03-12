@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.zhazhapan.efo.EfoApplication.settings;
-import static com.zhazhapan.efo.EfoApplication.tokens;
 
 /**
  * @author pantao
@@ -47,7 +46,7 @@ public class UserServiceImpl implements IUserService {
     public boolean resetPassword(int id, String password) {
         boolean result = Checker.isNotEmpty(password) && userDAO.updatePasswordById(id, password);
         if (result) {
-            removeTokenByValue(id);
+            TokenConfig.removeTokenByValue(id);
             try {
                 MailSender.sendMail(getUserById(id).getEmail(), "密码重置通知", "您的密码已被管理员重置为：" + password);
             } catch (Exception e) {
@@ -85,7 +84,7 @@ public class UserServiceImpl implements IUserService {
             if (Checker.isNull(user) && Checker.isNotEmpty(loginName) && Checker.isNotEmpty(password)) {
                 user = userDAO.login(loginName, password);
                 if (Checker.isNotNull(user)) {
-                    removeTokenByValue(user.getId());
+                    TokenConfig.removeTokenByValue(user.getId());
                 }
             }
             updateUserLoginTime(user);
@@ -156,23 +155,6 @@ public class UserServiceImpl implements IUserService {
         if (Checker.isNotNull(user)) {
             user.setLastLoginTime(DateUtils.getCurrentTimestamp());
             userDAO.updateUserLoginTime(user.getId());
-        }
-    }
-
-    @Override
-    public void removeTokenByValue(int userId) {
-        if (userId > 0) {
-            String removeKey = "";
-            for (String key : tokens.keySet()) {
-                if (tokens.get(key) == userId) {
-                    removeKey = key;
-                    break;
-                }
-            }
-            if (Checker.isNotEmpty(removeKey)) {
-                tokens.remove(removeKey);
-                TokenConfig.saveToken();
-            }
         }
     }
 

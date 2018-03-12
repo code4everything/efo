@@ -2,7 +2,6 @@ package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.dao.DownloadedDAO;
 import com.zhazhapan.efo.model.DownloadRecord;
-import com.zhazhapan.efo.model.UploadedRecord;
 import com.zhazhapan.efo.service.IDownloadedService;
 import com.zhazhapan.efo.util.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;

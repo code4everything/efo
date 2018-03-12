@@ -61,4 +61,20 @@ public class TokenConfig {
         }
         return tokens;
     }
+
+    public static void removeTokenByValue(int userId) {
+        if (userId > 0) {
+            String removeKey = "";
+            for (String key : EfoApplication.tokens.keySet()) {
+                if (EfoApplication.tokens.get(key) == userId) {
+                    removeKey = key;
+                    break;
+                }
+            }
+            if (Checker.isNotEmpty(removeKey)) {
+                EfoApplication.tokens.remove(removeKey);
+                TokenConfig.saveToken();
+            }
+        }
+    }
 }

@@ -111,13 +111,6 @@ public interface IUserService {
     void updateUserLoginTime(User user);
 
     /**
-     * 通知值删除Token
-     *
-     * @param userId {@link Integer}
-     */
-    void removeTokenByValue(int userId);
-
-    /**
      * 更新密码
      *
      * @param password 密码

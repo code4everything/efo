@@ -96,19 +96,23 @@ function getUserInfo() {
     layer.load(1);
     $.get("/user/info", function (data) {
         layer.closeAll();
-        var json = JSON.parse(data);
-        userInfo = json;
-        app.permission = json.permission;
-        /** @namespace app.lastLoginTime */
-        app.loginTime = new Date(json.lastLoginTime).format("yyyy-MM-dd hh:mm:ss");
-        /** @namespace json.avator */
-        if (!isEmpty(json.avatar)) {
-            $("#avatar").attr("src", json.avatar);
+        try {
+            var json = JSON.parse(data);
+            userInfo = json;
+            app.permission = json.permission;
+            /** @namespace app.lastLoginTime */
+            app.loginTime = new Date(json.lastLoginTime).format("yyyy-MM-dd hh:mm:ss");
+            /** @namespace json.avator */
+            if (!isEmpty(json.avatar)) {
+                $("#avatar").attr("src", json.avatar);
+            }
+            app.username = json.username;
+            $("#email").val(json.email);
+            $("#real-name").val(json.realName);
+            checkEmailChange(json.email);
+        } catch (e) {
+            window.location.href = "/signin";
         }
-        app.username = json.username;
-        $("#email").val(json.email);
-        $("#real-name").val(json.realName);
-        checkEmailChange(json.email);
     });
 }
 
@@ -244,7 +248,11 @@ function getUserDownloaded() {
     layer.load(1);
     $.get("/file/user/downloaded", {offset: offset, search: search}, function (data) {
         layer.closeAll();
-        setResources(JSON.parse(data), currentTab);
+        try {
+            setResources(JSON.parse(data), currentTab);
+        } catch (e) {
+            window.location.href = "/signin";
+        }
     });
 }
 
@@ -253,7 +261,11 @@ function getUserUploaded() {
     layer.load(1);
     $.get("/file/user/uploaded", {offset: offset, search: search}, function (data) {
         layer.closeAll();
-        setResources(JSON.parse(data), currentTab);
+        try {
+            setResources(JSON.parse(data), currentTab);
+        } catch (e) {
+            window.location.href = "/signin";
+        }
     });
 }
 

@@ -47,7 +47,7 @@ public class ControllerUtils {
         if (Checker.isNotEmpty(path)) {
             File file = new File(path);
             if (download) {
-                setReponseFileName(response, file.getName());
+                setResponseFileName(response, file.getName());
             }
             OutputStream os = response.getOutputStream();
             os.write(FileExecutor.readFileToByteArray(file));
@@ -64,7 +64,7 @@ public class ControllerUtils {
      * @param response {@link HttpServletResponse}
      * @param fileName 文件名
      */
-    public static void setReponseFileName(HttpServletResponse response, String fileName) throws
+    public static void setResponseFileName(HttpServletResponse response, String fileName) throws
             UnsupportedEncodingException {
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("UTF-8"),
                 "ISO-8859-1"));

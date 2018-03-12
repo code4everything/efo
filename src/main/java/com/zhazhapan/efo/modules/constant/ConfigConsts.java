@@ -1,7 +1,5 @@
 package com.zhazhapan.efo.modules.constant;
 
-import com.zhazhapan.modules.constant.ValueConsts;
-
 /**
  * @author pantao
  * @since 2018/1/12
@@ -192,8 +190,7 @@ public class ConfigConsts {
     /**
      * 默认上传路径，如果配置文件中的上传路径无法创建，将使用默认的上传路径
      */
-    public static final String DEFAULT_UPLOAD_PATH = ValueConsts.USER_HOME + ValueConsts.SEPARATOR + "Desktop" +
-            ValueConsts.SEPARATOR + "upload";
+    public static final String DEFAULT_UPLOAD_PATH = DefaultValues.STORAGE_PATH + "upload";
 
     private ConfigConsts() {}
 }

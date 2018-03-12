@@ -52,8 +52,12 @@ public class SettingConfig {
     public static String getUploadStoragePath() {
         String parent = getStoragePath(ConfigConsts.UPLOAD_PATH_OF_SETTING);
         String formatWay = EfoApplication.settings.getStringUseEval(ConfigConsts.UPLOAD_FORM_OF_SETTING);
-        String path = parent + ValueConsts.SEPARATOR + Formatter.datetimeToCustomString(new Date(), formatWay);
-        FileExecutor.createFolder(path);
+        String childPath = ValueConsts.SEPARATOR + Formatter.datetimeToCustomString(new Date(), formatWay);
+        String path = parent + childPath;
+        if (!FileExecutor.createFolder(path)) {
+            path = ConfigConsts.DEFAULT_UPLOAD_PATH + childPath;
+            FileExecutor.createFolder(path);
+        }
         logger.info("upload path: " + path);
         return path;
     }

@@ -116,7 +116,7 @@ public class UserController {
             if (user.getPassword().equals(JavaEncrypt.sha256(oldPassword))) {
                 if (userService.updatePasswordById(newPassword, user.getId())) {
                     jsonObject.put("status", "success");
-                    userService.removeTokenByValue(user.getId());
+                    TokenConfig.removeTokenByValue(user.getId());
                 } else {
                     jsonObject.put("message", "新密码格式不正确");
                 }
@@ -153,7 +153,7 @@ public class UserController {
                 jsonObject.put("token", TokenConfig.generateToken(token, user.getId()));
             } else {
                 jsonObject.put("token", "");
-                userService.removeTokenByValue(user.getId());
+                TokenConfig.removeTokenByValue(user.getId());
             }
         }
         return jsonObject.toString();
