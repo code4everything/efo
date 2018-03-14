@@ -184,6 +184,7 @@ $(document).ready(
         });
         $(".sendVerifyCode").click(function () {
             var eventSrc = event.srcElement;
+            console.info("test");
             sendVerifyCode($(eventSrc).parents(location.hash + "-div").find(".email").val(), eventSrc);
         });
         $(".email-verify-code").keyup(function () {

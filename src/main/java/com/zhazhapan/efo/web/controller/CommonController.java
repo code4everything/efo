@@ -42,7 +42,7 @@ public class CommonController {
         this.jsonObject = jsonObject;
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/avatar/{name}", method = RequestMethod.GET)
     public void getAvatar(HttpServletResponse response, @PathVariable("name") String name) throws IOException {
         String path = SettingConfig.getAvatarStoragePath() + ValueConsts.SEPARATOR + name;

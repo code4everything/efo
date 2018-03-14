@@ -312,8 +312,7 @@ function setResources(resources, tabId) {
                 "&emsp;标签：<b class='file-tag'>" + resource.tag + "</b>&emsp;下载次数：<b>" + resource.downloadTimes + "</b>" +
                 "</p></div></div><br/></div></div><br/>";
         });
-        /** @namespace globalConfig.paging */
-        if (offset > 0 && globalConfig.paging.mode === "more") {
+        if (offset > 0) {
             $(tabId).append(contentHtml);
         } else {
             $(tabId).html(contentHtml);

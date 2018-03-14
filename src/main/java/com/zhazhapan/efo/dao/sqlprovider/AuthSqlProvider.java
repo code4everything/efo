@@ -22,7 +22,7 @@ public class AuthSqlProvider {
     }
 
     public String getAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId, @Param
-            ("fileName") String fileName) {
+            ("fileName") String fileName, @Param("offset") int offset) {
         String sql = new SQL() {{
             SELECT("a.id,a.user_id,a.file_id,u.username,f.name file_name,f.local_url,a.is_downloadable,a" + "" + "" +
                     ".is_uploadable,a.is_deletable,a.is_updatable,a.is_visible,a.create_time");
@@ -42,7 +42,7 @@ public class AuthSqlProvider {
             }
             ORDER_BY("a." + EfoApplication.settings.getStringUseEval(ConfigConsts.AUTH_ORDER_BY_OF_SETTINGS));
         }}.toString();
-        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts
-                .AUTH_PAGE_SIZE_OF_SETTINGS);
+        int size = EfoApplication.settings.getIntegerUseEval(ConfigConsts.AUTH_PAGE_SIZE_OF_SETTINGS);
+        return sql + " limit " + (offset * size) + "," + size;
     }
 }

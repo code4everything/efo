@@ -12,6 +12,10 @@ var app = new Vue({
     }
 });
 
+var authFileSearch = "";
+
+var authSearchOffset = 0;
+
 var authModal = new Vue({
     el: "#authAddedModal", methods: {
         searchFileInAuth: function () {
@@ -19,12 +23,18 @@ var authModal = new Vue({
             if (isEmpty(file)) {
                 alerts("内容不能为空");
             } else {
+                if (file === authFileSearch) {
+                    authSearchOffset += 1;
+                } else {
+                    authSearchOffset = 0;
+                    authFileSearch = file;
+                }
                 layer.load(1);
                 $.get("/file/basic/all", {
                     user: "",
                     file: file,
                     category: "",
-                    offset: 0
+                    offset: authSearchOffset
                 }, function (data) {
                     layer.closeAll();
                     var json = JSON.parse(data);

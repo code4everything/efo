@@ -17,7 +17,8 @@ public class UserSqlProvider {
         return CommonSqlProvider.updateAuthById("user");
     }
 
-    public String getUserBy(@Param("permission") int permission, @Param("condition") String condition) {
+    public String getUserBy(@Param("permission") int permission, @Param("condition") String condition, @Param
+            ("offset") int offset) {
         String sql = new SQL() {{
             SELECT("*");
             FROM("user");
@@ -34,7 +35,7 @@ public class UserSqlProvider {
             }
             ORDER_BY(EfoApplication.settings.getStringUseEval(ConfigConsts.USER_ORDER_BY_OF_SETTINGS));
         }}.toString();
-        return sql + " limit #{offset}," + EfoApplication.settings.getIntegerUseEval(ConfigConsts
-                .USER_PAGE_SIZE_OF_SETTINGS);
+        int size = EfoApplication.settings.getIntegerUseEval(ConfigConsts.USER_PAGE_SIZE_OF_SETTINGS);
+        return sql + " limit " + (offset * size) + "," + size;
     }
 }
