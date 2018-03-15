@@ -33,6 +33,7 @@ public class DownloadedServiceImpl implements IDownloadedService {
         downloadDAO.removeByFileId(fileId);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<DownloadRecord> getAll(String user, String file, String category, int offset) {
         return (List<DownloadRecord>) ServiceUtils.invokeFileFilter(downloadDAO, "getDownloadedBy", user, file,

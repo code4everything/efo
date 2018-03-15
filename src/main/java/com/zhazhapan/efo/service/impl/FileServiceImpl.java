@@ -376,6 +376,7 @@ public class FileServiceImpl implements IFileService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<FileBasicRecord> getBasicAll(String user, String file, String category, int offset) {
         return (List<FileBasicRecord>) ServiceUtils.invokeFileFilter(fileDAO, "getBasicBy", user, file, category,

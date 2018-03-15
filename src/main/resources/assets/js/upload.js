@@ -2,6 +2,7 @@ $("#file-input").fileinput({
     uploadUrl: "/file",
     uploadAsync: true,
     maxFileCount: 100,
+    previewFileType: ['image', 'html', 'text', 'video', 'audio', 'flash'],
     uploadExtraData: function () {
         return {
             categoryId: $("#category-id").val(),
@@ -10,7 +11,7 @@ $("#file-input").fileinput({
             prefix: getQuery("prefix")
         };
     },
-    maxFilePreviewSize: 10485760
+    maxFilePreviewSize: 51200
 }).on('fileuploaded', function (event, data, previewId, index) {
     var json = data.response;
     if (json.status === "success") {

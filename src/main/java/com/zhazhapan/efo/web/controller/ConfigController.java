@@ -42,12 +42,13 @@ public class ConfigController {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
         if (user.getPermission() > ValueConsts.TWO_INT) {
             EfoApplication.settings.setJsonObject(config);
+            //打包成jar之后无法修改config.json文件
             try {
                 FileExecutor.saveFile(NetUtils.urlToString(EfoApplication.class.getResource(DefaultValues
                         .SETTING_PATH)), EfoApplication.settings.toString());
             } catch (IOException e) {
                 logger.error(e.getMessage());
-                return "{\"message\":\"internal error\"}";
+                return "{\"message\":\"internal error, cannot save\"}";
             }
             return "{\"message\":\"saved successfully\"}";
         } else {

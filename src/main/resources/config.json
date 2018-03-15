@@ -84,7 +84,7 @@
             "description": "用户名只能使用长度为4到16位的英文字母和数字，且必须以字母开始"
         },
         "defaultAuth": {
-            "isDownloadable": false,
+            "isDownloadable": true,
             "isUploadable": true,
             "isDeletable": false,
             "isUpdatable": false,

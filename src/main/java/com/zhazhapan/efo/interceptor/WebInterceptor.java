@@ -53,19 +53,19 @@ public class WebInterceptor implements HandlerInterceptor {
                 level = interceptor.value();
             }
         }
-        if (level != InterceptorLevel.NONE) {
-            User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
-            if (Checker.isNull(user)) {
-                //读取token，自动登录
-                Cookie cookie = HttpUtils.getCookie(ValueConsts.TOKEN_STRING, request.getCookies());
-                if (Checker.isNotNull(cookie)) {
-                    user = userService.login(ValueConsts.EMPTY_STRING, ValueConsts.EMPTY_STRING, cookie.getValue(),
-                            response);
-                    if (Checker.isNotNull(user)) {
-                        request.getSession().setAttribute(ValueConsts.USER_STRING, user);
-                    }
+        User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
+        if (Checker.isNull(user)) {
+            //读取token，自动登录
+            Cookie cookie = HttpUtils.getCookie(ValueConsts.TOKEN_STRING, request.getCookies());
+            if (Checker.isNotNull(cookie)) {
+                user = userService.login(ValueConsts.EMPTY_STRING, ValueConsts.EMPTY_STRING, cookie.getValue(),
+                        response);
+                if (Checker.isNotNull(user)) {
+                    request.getSession().setAttribute(ValueConsts.USER_STRING, user);
                 }
             }
+        }
+        if (level != InterceptorLevel.NONE) {
             boolean isRedirect = Checker.isNull(user) || (level == InterceptorLevel.ADMIN && user.getPermission() <
                     2) || (level == InterceptorLevel.SYSTEM && user.getPermission() < 3);
             if (isRedirect) {

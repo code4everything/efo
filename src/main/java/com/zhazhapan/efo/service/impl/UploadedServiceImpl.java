@@ -1,8 +1,6 @@
 package com.zhazhapan.efo.service.impl;
 
 import com.zhazhapan.efo.dao.UploadedDAO;
-import com.zhazhapan.efo.model.DownloadRecord;
-import com.zhazhapan.efo.model.FileBasicRecord;
 import com.zhazhapan.efo.model.UploadedRecord;
 import com.zhazhapan.efo.service.IUploadedService;
 import com.zhazhapan.efo.util.ServiceUtils;
@@ -23,6 +21,7 @@ public class UploadedServiceImpl implements IUploadedService {
     @Autowired
     public UploadedServiceImpl(UploadedDAO uploadedDAO) {this.uploadedDAO = uploadedDAO;}
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<UploadedRecord> getAll(String user, String file, String category, int offset) {
         return (List<UploadedRecord>) ServiceUtils.invokeFileFilter(uploadedDAO, "getUploadedBy", user, file,
