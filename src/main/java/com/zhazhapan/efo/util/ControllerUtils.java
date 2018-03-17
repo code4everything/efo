@@ -3,12 +3,12 @@ package com.zhazhapan.efo.util;
 import com.alibaba.fastjson.JSONObject;
 import com.zhazhapan.efo.modules.constant.DefaultValues;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.FileExecutor;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -49,8 +49,15 @@ public class ControllerUtils {
             if (download) {
                 setResponseFileName(response, file.getName());
             }
-            OutputStream os = response.getOutputStream();
-            os.write(FileExecutor.readFileToByteArray(file));
+            FileInputStream in = new FileInputStream(file);
+            ServletOutputStream os = response.getOutputStream();
+            byte[] b;
+            while (in.available() > 0) {
+                b = in.available() > 1024 ? new byte[1024] : new byte[in.available()];
+                in.read(b, 0, b.length);
+                os.write(b, 0, b.length);
+            }
+            in.close();
             os.flush();
             os.close();
         } else {
