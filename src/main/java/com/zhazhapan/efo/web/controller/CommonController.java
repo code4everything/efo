@@ -49,7 +49,7 @@ public class CommonController {
         ControllerUtils.loadResource(response, path, ValueConsts.FALSE);
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public String avatarUpload(@RequestParam("file") MultipartFile multipartFile) {
         String name = commonService.uploadAvatar(multipartFile);
@@ -78,12 +78,8 @@ public class CommonController {
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/{code}/verification", method = RequestMethod.PUT)
     public String verifyCode(@PathVariable("code") String code) {
-        if (Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute(DefaultValues
-                .CODE_STRING)))) {
-            jsonObject.put("status", "success");
-        } else {
-            jsonObject.put("status", "error");
-        }
-        return jsonObject.toString();
+        boolean isSuccess = Checker.checkNull(code).equals(String.valueOf(request.getSession().getAttribute
+                (DefaultValues.CODE_STRING)));
+        return ControllerUtils.getResponse(isSuccess);
     }
 }

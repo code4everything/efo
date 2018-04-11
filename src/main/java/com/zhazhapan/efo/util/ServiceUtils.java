@@ -3,7 +3,6 @@ package com.zhazhapan.efo.util;
 import com.zhazhapan.efo.service.ICategoryService;
 import com.zhazhapan.efo.service.IFileService;
 import com.zhazhapan.efo.service.IUserService;
-import com.zhazhapan.efo.service.impl.UserServiceImpl;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.ReflectUtils;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 /**
  * @author pantao

@@ -29,16 +29,16 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public boolean remove(int id) {
-        return !isUncategorized(id) && categoryDAO.removeCategoryById(id);
+        return isCategorized(id) && categoryDAO.removeCategoryById(id);
     }
 
     @Override
     public boolean update(int id, String name) {
-        return Checker.isNotEmpty(name) && !isUncategorized(id) && categoryDAO.updateNameById(id, name);
+        return Checker.isNotEmpty(name) && isCategorized(id) && categoryDAO.updateNameById(id, name);
     }
 
-    private boolean isUncategorized(int id) {
-        return DefaultValues.UNCATEGORIZED.equals(getById(id).getName());
+    private boolean isCategorized(int id) {
+        return !DefaultValues.UNCATEGORIZED.equals(getById(id).getName());
     }
 
     @Override

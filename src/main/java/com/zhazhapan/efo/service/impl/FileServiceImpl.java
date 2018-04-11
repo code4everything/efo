@@ -326,11 +326,11 @@ public class FileServiceImpl implements IFileService {
         if (!customUrl.contains(FILE_NAME) && !customUrl.contains(RANDOM_ID)) {
             customUrl += (customUrl.endsWith("/") ? "" : "/") + fileName;
         }
-        customUrl = customUrl.replace(YEAR, Utils.getYear(date)).replace(MONTH, Utils.getMonth(date)).replace(DAY,
-                Utils.getDay(date)).replace(AUTHOR, user.getUsername()).replace(FILE_NAME, fileName).replace
-                (CATEGORY_NAME, Checker.checkNull(Checker.isNull(category) ? "uncategorized" : category.getName()))
-                .replace(RANDOM_ID, String.valueOf(RandomUtils.getRandomInteger(ValueConsts.NINE_INT))).replace
-                        (FILE_SUFFIX, suffix);
+        customUrl = customUrl.replace(YEAR, DateUtils.getYear(date)).replace(MONTH, DateUtils.getMonth(date)).replace
+                (DAY, DateUtils.getDay(date)).replace(AUTHOR, user.getUsername()).replace(FILE_NAME, fileName)
+                .replace(CATEGORY_NAME, Checker.checkNull(Checker.isNull(category) ? "uncategorized" : category
+                        .getName())).replace(RANDOM_ID, String.valueOf(RandomUtils.getRandomInteger(ValueConsts
+                        .NINE_INT))).replace(FILE_SUFFIX, suffix);
         return "/file" + (customUrl.startsWith("/") ? "" : "/") + customUrl;
     }
 

@@ -79,7 +79,7 @@ public class UserController {
         return Formatter.listToJson(userService.getUser(u.getPermission(), user, offset));
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/info", method = RequestMethod.PUT)
     public String updateBasicInfo(String avatar, String realName, String email, String code) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
@@ -107,7 +107,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/password", method = RequestMethod.PUT)
     public String updatePassword(String oldPassword, String newPassword) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
@@ -129,7 +129,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public String getInfo() {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);

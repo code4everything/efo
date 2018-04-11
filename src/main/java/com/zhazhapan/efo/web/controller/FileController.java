@@ -58,7 +58,7 @@ public class FileController {
         return Formatter.listToJson(fileService.getUserUploaded(user.getId(), offset, search));
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String upload(int categoryId, String tag, String description, String prefix, @RequestParam("file")
             MultipartFile multipartFile) {
@@ -81,7 +81,7 @@ public class FileController {
         }
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public String removeFile(@PathVariable("id") long id) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
@@ -98,7 +98,7 @@ public class FileController {
         return jsonObject.toString();
     }
 
-    @AuthInterceptor
+    @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String updateFileInfo(@PathVariable("id") long id, String name, String category, String tag, String
             description) {

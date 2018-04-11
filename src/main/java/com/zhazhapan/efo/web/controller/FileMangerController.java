@@ -11,7 +11,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -26,15 +25,11 @@ public class FileMangerController {
 
     private final IFileManagerService fileManagerService;
 
-    private final HttpServletRequest request;
-
     private final JSONObject jsonObject;
 
     @Autowired
-    public FileMangerController(IFileManagerService fileManagerService, HttpServletRequest request, JSONObject
-            jsonObject) {
+    public FileMangerController(IFileManagerService fileManagerService, JSONObject jsonObject) {
         this.fileManagerService = fileManagerService;
-        this.request = request;
         this.jsonObject = jsonObject;
     }
 
