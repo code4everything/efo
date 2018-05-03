@@ -38,23 +38,11 @@
         <dependency>
             <groupId>com.zhazhapan</groupId>
             <artifactId>util</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-io</artifactId>
                     <groupId>commons-io</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>cglib</artifactId>
-                    <groupId>cglib</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>docx4j-ImportXHTML</artifactId>
-                    <groupId>org.docx4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>poi</artifactId>
-                    <groupId>org.apache.poi</groupId>
                 </exclusion>
             </exclusions>
         </dependency>

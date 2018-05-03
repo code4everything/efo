@@ -61,11 +61,14 @@ public class FileSqlProvider {
     public String getAll(@Param("offset") int offset, @Param("categoryId") int categoryId, @Param("orderBy") String
             orderBy, @Param("search") String search) {
         return getBaseSql(ValueConsts.FALSE) + " where f.is_visible=1" + (categoryId < 1 ? "" : "  and " +
-                "category_id=#{categoryId}") + " and ((select a.is_visible from auth a where a.file_id=f.id and a.user_id=#{userId}) is null or (a.user_id=#{userId} and a.is_visible=1))" + getSqlEnds(offset, orderBy, search);
+                "category_id=#{categoryId}") + " and ((select a.is_visible from auth a where a.file_id=f.id and a" +
+                ".user_id=#{userId}) is null or (a.user_id=#{userId} and a.is_visible=1))" + getSqlEnds(offset,
+                orderBy, search);
     }
 
     public String getUserUploaded(@Param("offset") int offset, @Param("search") String search) {
-        return getBaseSql(ValueConsts.FALSE) + " where f.is_visible=1 and f.user_id=#{userId}" + getSqlEnds(offset,
+        return getBaseSql(ValueConsts.FALSE) + " where f.is_visible=1 and (f.user_id=#{userId} or a.is_updatable=1 or" +
+                " a.is_deletable=1)" + getSqlEnds(offset,
                 ValueConsts.EMPTY_STRING, search);
     }
 
@@ -82,7 +85,8 @@ public class FileSqlProvider {
 
     private String getBaseSql(boolean isDownloaded) {
         return new SQL() {{
-            SELECT("distinct f.id,f.user_id,u.username,u.avatar,f.name file_name,f.size,f.create_time,c.name category_name,f"
+            SELECT("distinct f.id,f.user_id,u.username,u.avatar,f.name file_name,f.size,f.create_time,c.name " +
+                    "category_name,f"
                     + ".description,f.tag,f.check_times,f.download_times,f.visit_url,f.is_uploadable,f.is_deletable,"
                     + "f.is_updatable,f.is_downloadable,f.is_visible");
             if (isDownloaded) {
