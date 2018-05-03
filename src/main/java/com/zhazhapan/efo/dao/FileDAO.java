@@ -278,8 +278,8 @@ public interface FileDAO {
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getAll")
-    List<FileRecord> getAll(@Param("userId") int userId, @Param("offset") int offset, @Param("categoryId") int categoryId, @Param("orderBy")
-            String orderBy, @Param("search") String search);
+    List<FileRecord> getAll(@Param("userId") int userId, @Param("offset") int offset, @Param("categoryId") int
+            categoryId, @Param("orderBy") String orderBy, @Param("search") String search);
 
     /**
      * 获取用户的上传资源
