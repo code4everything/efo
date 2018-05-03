@@ -237,8 +237,8 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<FileRecord> getAll(int offset, int categoryId, String orderBy, String search) {
-        return fileDAO.getAll(offset, categoryId, orderBy, search);
+    public List<FileRecord> getAll(int userId, int offset, int categoryId, String orderBy, String search) {
+        return fileDAO.getAll(userId, offset, categoryId, orderBy, search);
     }
 
     @Override
@@ -278,7 +278,7 @@ public class FileServiceImpl implements IFileService {
                     maxSize + "]");
             if (canUpload) {
                 String visitUrl = getRegularVisitUrl(Checker.isNotEmpty(prefix) && user.getPermission() > 1 ? prefix
-                        : EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING), user,
+                                : EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING), user,
                         name, suffix, category);
                 if (fileExists) {
                     removeByLocalUrl(localUrl);

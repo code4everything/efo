@@ -74,7 +74,8 @@ public class FileController {
         boolean canGet = EfoApplication.settings.getBooleanUseEval(ConfigConsts.ANONYMOUS_VISIBLE_OF_SETTING) ||
                 (Checker.isNotNull(user) && user.getIsVisible() == 1);
         if (canGet) {
-            return Formatter.listToJson(fileService.getAll(offset, categoryId, orderBy, search));
+            int userId = Checker.isNull(user) ? 0 : user.getId();
+            return Formatter.listToJson(fileService.getAll(userId, offset, categoryId, orderBy, search));
         } else {
             jsonObject.put("error", "权限被限制，无法获取资源，请联系管理员");
             return jsonObject.toString();
