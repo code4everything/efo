@@ -60,3 +60,4 @@ nbdist/
 /META-INF/
 src/main/resources/templates/
 /out/
+/bin/
