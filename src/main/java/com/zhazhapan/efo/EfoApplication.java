@@ -1,5 +1,6 @@
 package com.zhazhapan.efo;
 
+import com.spring4all.swagger.EnableSwagger2Doc;
 import com.zhazhapan.config.JsonParser;
 import com.zhazhapan.efo.config.TokenConfig;
 import com.zhazhapan.efo.modules.constant.ConfigConsts;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author pantao
  */
 @SpringBootApplication
+@EnableSwagger2Doc
 @MapperScan("com.zhazhapan.efo.dao")
 @EnableAutoConfiguration
 @EnableTransactionManagement

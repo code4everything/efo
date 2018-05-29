@@ -10,14 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * filemanager api
+ * <a href="https://github.com/joni2back/angular-filemanager/blob/master/API.md">see api doc</a>
+ *
  * @author pantao
  * @since 2018/1/29
  */
+@ApiIgnore
 @RestController
 @RequestMapping("/filemanager")
 @AuthInterceptor(InterceptorLevel.SYSTEM)
@@ -42,7 +47,7 @@ public class FileMangerController {
 
     @AuthInterceptor(InterceptorLevel.SYSTEM)
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public void upload(HttpServletResponse response, String path) throws IOException {
+    public void download(HttpServletResponse response, String path) throws IOException {
         ControllerUtils.loadResource(response, path, ValueConsts.TRUE);
     }
 
