@@ -24,6 +24,7 @@ public class FileSqlProvider {
      *
      * @param userId 用户编号
      * @param fileId 文件编号
+     *
      * @return SQL语句
      */
     public String getBasicBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName") String
@@ -54,7 +55,7 @@ public class FileSqlProvider {
     private String getSqlEnds(int offset, String orderBy, String search) {
         int size = EfoApplication.settings.getIntegerUseEval(ConfigConsts.FILE_PAGE_SIZE_OF_SETTING);
         return getSearch(search) + " order by " + (Checker.isEmpty(orderBy) ? EfoApplication.settings
-                .getStringUseEval(ConfigConsts.FILE_ORDER_BY_OF_SETTING) : orderBy) + " " + "limit " + offset * size
+                .getStringUseEval(ConfigConsts.FILE_ORDER_BY_OF_SETTING) : orderBy) + " limit " + offset * size
                 + "," + size;
     }
 
@@ -78,9 +79,13 @@ public class FileSqlProvider {
     }
 
     private String getSearch(String search) {
-        search = "'%" + Checker.checkNull(search) + "%'";
-        return search.length() < 5 ? "" : " and (f.name like " + search + " or f.visit_url like " + search + " or " +
-                "f" + "" + ".description like " + search + " or f.tag like " + search + ")";
+        if (Checker.isEmpty(search)) {
+            return ValueConsts.EMPTY_STRING;
+        } else {
+            search = "'%" + search + "%'";
+            return " and (f.name like " + search + " or f.visit_url like " + search + " or f.description like " +
+                    search + " or f.tag like " + search + ")";
+        }
     }
 
     private String getBaseSql(boolean isDownloaded) {

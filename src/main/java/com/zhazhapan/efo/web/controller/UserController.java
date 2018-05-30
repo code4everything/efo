@@ -15,6 +15,10 @@ import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.Formatter;
 import com.zhazhapan.util.encryption.JavaEncrypt;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +35,7 @@ import java.security.NoSuchAlgorithmException;
  */
 @RestController
 @RequestMapping("/user")
+@Api(value = "/user", description = "用户相关操作")
 public class UserController {
 
     private final IUserService userService;
@@ -46,6 +51,7 @@ public class UserController {
         this.jsonObject = jsonObject;
     }
 
+    @ApiOperation(value = "更新用户权限（注：不是文件权限）")
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/{id}/{permission}", method = RequestMethod.PUT)
     public String updatePermission(@PathVariable("id") int id, @PathVariable("permission") int permission) {
@@ -60,18 +66,24 @@ public class UserController {
         return jsonObject.toJSONString();
     }
 
+    @ApiOperation("重置用户密码（管理员接口）")
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/reset/{id}/{password}", method = RequestMethod.PUT)
     public String resetPassword(@PathVariable("id") int id, @PathVariable("password") String password) {
         return ControllerUtils.getResponse(userService.resetPassword(id, password));
     }
 
+    @ApiOperation(value = "更新用户的默认文件权限")
+    @ApiImplicitParam(name = "auth", value = "权限", example = "1,1,1,1", required = true)
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/{id}/auth", method = RequestMethod.PUT)
     public String updateFileAuth(@PathVariable("id") int id, String auth) {
         return ControllerUtils.getResponse(userService.updateFileAuth(id, auth));
     }
 
+    @ApiOperation(value = "获取所有用户")
+    @ApiImplicitParams({@ApiImplicitParam(name = "user", value = "指定用户（默认所有用户）"), @ApiImplicitParam(name = "offset",
+            value = "偏移量", required = true)})
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getUser(String user, int offset) {
@@ -79,6 +91,10 @@ public class UserController {
         return Formatter.listToJson(userService.getUser(u.getPermission(), user, offset));
     }
 
+    @ApiOperation(value = "更新我的基本信息")
+    @ApiImplicitParams({@ApiImplicitParam(name = "avatar", value = "头像（可空）"), @ApiImplicitParam(name = "realName",
+            value = "真实姓名（可空）"), @ApiImplicitParam(name = "email", value = "邮箱（可空）"), @ApiImplicitParam(name =
+            "code", value = "验证码（可空）")})
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/info", method = RequestMethod.PUT)
     public String updateBasicInfo(String avatar, String realName, String email, String code) {
@@ -107,6 +123,9 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "更新我的密码")
+    @ApiImplicitParams({@ApiImplicitParam(name = "oldPassword", value = "原密码", required = true), @ApiImplicitParam
+            (name = "newPassword", value = "新密码", required = true)})
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/password", method = RequestMethod.PUT)
     public String updatePassword(String oldPassword, String newPassword) {
@@ -129,6 +148,7 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "获取我的基本信息")
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public String getInfo() {
@@ -139,6 +159,10 @@ public class UserController {
         return object.toString();
     }
 
+    @ApiOperation(value = "登录（用户名密码和token必须有一个输入）")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名"), @ApiImplicitParam(name
+            = "password", value = "密码"), @ApiImplicitParam(name = "auto", value = "是否自动登录", dataType = "Boolean"),
+            @ApiImplicitParam(name = "token", value = "用于自动登录")})
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/login", method = RequestMethod.PUT)
     public String login(String username, String password, boolean auto, String token) {
@@ -159,6 +183,10 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "用户注册（当不需要验证邮箱时，邮箱和验证码可空）")
+    @ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true), @ApiImplicitParam(name
+            = "email", value = "邮箱"), @ApiImplicitParam(name = "password", value = "密码", required = true),
+            @ApiImplicitParam(name = "code", value = "验证码")})
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(String username, String email, String password, String code) {
@@ -180,6 +208,10 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "重置我的密码")
+    @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "邮箱", required = true), @ApiImplicitParam(name =
+            "code", value = "验证码", required = true), @ApiImplicitParam(name = "password", value = "密码", required =
+            true)})
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/password/reset", method = RequestMethod.PUT)
     public String resetPassword(String email, String code, String password) {
@@ -196,6 +228,8 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "检测用户名是否已经注册")
+    @ApiImplicitParam(name = "username", value = "用户名", required = true)
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/username/exists", method = RequestMethod.GET)
     public String usernameExists(String username) {
@@ -203,6 +237,8 @@ public class UserController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "检测邮箱是否已经注册")
+    @ApiImplicitParam(name = "email", value = "邮箱", required = true)
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/email/exists", method = RequestMethod.GET)
     public String emailExists(String email) {

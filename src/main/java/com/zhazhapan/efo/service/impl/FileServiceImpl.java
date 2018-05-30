@@ -114,7 +114,9 @@ public class FileServiceImpl implements IFileService {
             Exception.class)
     public boolean[] updateUrl(int id, String oldLocalUrl, String localUrl, String visitUrl) {
         boolean[] b = new boolean[]{false, false};
-        if (Checker.isNotEmpty(localUrl) && Checker.isNotExists(localUrl) && !localUrlExists(localUrl)) {
+        boolean canUpdateLocalUrl = Checker.isExists(oldLocalUrl) && Checker.isNotEmpty(localUrl) && Checker
+                .isNotExists(localUrl) && !localUrlExists(localUrl);
+        if (canUpdateLocalUrl) {
             FileExecutor.renameTo(oldLocalUrl, localUrl);
             fileDAO.updateLocalUrlById(id, localUrl);
             b[0] = true;
@@ -278,7 +280,7 @@ public class FileServiceImpl implements IFileService {
                     maxSize + "]");
             if (canUpload) {
                 String visitUrl = getRegularVisitUrl(Checker.isNotEmpty(prefix) && user.getPermission() > 1 ? prefix
-                                : EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING), user,
+                        : EfoApplication.settings.getStringUseEval(ConfigConsts.CUSTOM_LINK_RULE_OF_SETTING), user,
                         name, suffix, category);
                 if (fileExists) {
                     removeByLocalUrl(localUrl);
@@ -318,10 +320,12 @@ public class FileServiceImpl implements IFileService {
     private String getRegularVisitUrl(String customUrl, User user, String fileName, String suffix, Category category) {
         Date date = new Date();
         suffix = suffix.startsWith(".") ? "" : "." + suffix;
-        try {
-            customUrl = URLDecoder.decode(customUrl, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage());
+        if (Checker.isNotEmpty(customUrl)) {
+            try {
+                customUrl = URLDecoder.decode(customUrl, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                logger.error(e.getMessage());
+            }
         }
         if (!customUrl.contains(FILE_NAME) && !customUrl.contains(RANDOM_ID)) {
             customUrl += (customUrl.endsWith("/") ? "" : "/") + fileName;

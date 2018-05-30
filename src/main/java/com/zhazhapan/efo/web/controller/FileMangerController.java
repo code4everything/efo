@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * filemanager api
  * <a href="https://github.com/joni2back/angular-filemanager/blob/master/API.md">see api doc</a>
  *
  * @author pantao
@@ -73,10 +72,14 @@ public class FileMangerController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String upload(String destination, @RequestParam("file-0") MultipartFile file0, @Nullable @RequestParam
             ("file-1") MultipartFile file1, @Nullable @RequestParam("file-2") MultipartFile file2, @Nullable
-    @RequestParam("file-3") MultipartFile file3, @Nullable @RequestParam("file-4") MultipartFile file4, @Nullable
-    @RequestParam("file-5") MultipartFile file5, @Nullable @RequestParam("file-6") MultipartFile file6, @Nullable
-    @RequestParam("file-7") MultipartFile file7, @Nullable @RequestParam("file-8") MultipartFile file8, @Nullable
-    @RequestParam("file-9") MultipartFile file9, @Nullable @RequestParam("file-10") MultipartFile file10) {
+                         @RequestParam("file-3") MultipartFile file3, @Nullable @RequestParam("file-4") MultipartFile
+            file4, @Nullable
+                         @RequestParam("file-5") MultipartFile file5, @Nullable @RequestParam("file-6") MultipartFile
+            file6, @Nullable
+                         @RequestParam("file-7") MultipartFile file7, @Nullable @RequestParam("file-8") MultipartFile
+            file8, @Nullable
+                         @RequestParam("file-9") MultipartFile file9, @Nullable @RequestParam("file-10")
+            MultipartFile file10) {
         jsonObject.put("result", fileManagerService.upload(destination, file0, file1, file2, file3, file4, file5,
                 file6, file7, file8, file9, file10));
         return jsonObject.toJSONString();
