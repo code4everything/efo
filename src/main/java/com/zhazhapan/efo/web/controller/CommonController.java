@@ -9,6 +9,9 @@ import com.zhazhapan.efo.service.ICommonService;
 import com.zhazhapan.efo.util.ControllerUtils;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/common")
+@Api(value = "/common", description = "公共接口")
 public class CommonController {
 
     private static Logger logger = LoggerFactory.getLogger(ConfigController.class);
@@ -42,6 +46,7 @@ public class CommonController {
         this.jsonObject = jsonObject;
     }
 
+    @ApiOperation(value = "获取头像资源")
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/avatar/{name}", method = RequestMethod.GET)
     public void getAvatar(HttpServletResponse response, @PathVariable("name") String name) throws IOException {
@@ -49,6 +54,8 @@ public class CommonController {
         ControllerUtils.loadResource(response, path, ValueConsts.FALSE);
     }
 
+    @ApiOperation(value = "上传头像")
+    @ApiImplicitParam(name = "multipartFile", value = "头像", required = true)
     @AuthInterceptor(InterceptorLevel.USER)
     @RequestMapping(value = "/avatar", method = RequestMethod.POST)
     public String avatarUpload(@RequestParam("file") MultipartFile multipartFile) {
@@ -61,6 +68,7 @@ public class CommonController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "发送验证码")
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/{email}/code", method = RequestMethod.POST)
     public String sendVerifyCode(@PathVariable("email") String email) {
@@ -75,6 +83,7 @@ public class CommonController {
         return jsonObject.toString();
     }
 
+    @ApiOperation(value = "验证验证码是否正确")
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/{code}/verification", method = RequestMethod.PUT)
     public String verifyCode(@PathVariable("code") String code) {
