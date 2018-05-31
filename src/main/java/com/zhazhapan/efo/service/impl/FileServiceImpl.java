@@ -179,13 +179,13 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<FileRecord> getUserDownloaded(int userId, int offset, String search) {
-        return fileDAO.getUserDownloaded(userId, offset, search);
+    public List<FileRecord> listUserDownloaded(int userId, int offset, String search) {
+        return fileDAO.listUserDownloaded(userId, offset, search);
     }
 
     @Override
-    public List<FileRecord> getUserUploaded(int userId, int offset, String search) {
-        return fileDAO.getUserUploaded(userId, offset, search);
+    public List<FileRecord> listUserUploaded(int userId, int offset, String search) {
+        return fileDAO.listUserUploaded(userId, offset, search);
     }
 
     @Override
@@ -239,8 +239,8 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<FileRecord> getAll(int userId, int offset, int categoryId, String orderBy, String search) {
-        return fileDAO.getAll(userId, offset, categoryId, orderBy, search);
+    public List<FileRecord> listAll(int userId, int offset, int categoryId, String orderBy, String search) {
+        return fileDAO.listAll(userId, offset, categoryId, orderBy, search);
     }
 
     @Override
@@ -382,8 +382,8 @@ public class FileServiceImpl implements IFileService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<FileBasicRecord> getBasicAll(String user, String file, String category, int offset) {
-        return (List<FileBasicRecord>) ServiceUtils.invokeFileFilter(fileDAO, "getBasicBy", user, file, category,
+    public List<FileBasicRecord> listBasicAll(String user, String file, String category, int offset) {
+        return (List<FileBasicRecord>) ServiceUtils.invokeFileFilter(fileDAO, "listBasicBy", user, file, category,
                 offset);
     }
 }

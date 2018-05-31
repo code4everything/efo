@@ -25,6 +25,6 @@ public class DownloadedDAOTest {
 
     @Test
     public void testGetDownloadBy() {
-        System.out.println(downloadDAO.getDownloadedBy(1, 1, "", ValueConsts.ZERO_INT, 0));
+        System.out.println(downloadDAO.listDownloadedBy(1, 1, "", ValueConsts.ZERO_INT, 0));
     }
 }

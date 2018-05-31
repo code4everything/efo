@@ -63,8 +63,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> getUser(int permission, String condition, int offset) {
-        return userDAO.getUserBy(permission, condition, offset);
+    public List<User> listUser(int permission, String condition, int offset) {
+        return userDAO.listUserBy(permission, condition, offset);
     }
 
     @Override

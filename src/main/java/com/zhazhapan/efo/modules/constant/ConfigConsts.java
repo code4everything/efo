@@ -7,6 +7,11 @@ package com.zhazhapan.efo.modules.constant;
 public class ConfigConsts {
 
     /**
+     * 认证方式
+     */
+    public static final String AUTHENTICATION_OF_SETTING = "system.authentication";
+
+    /**
      * 最大标签长度
      */
     public static final String TAG_SIZE_OF_SETTING = "file.tag.maxSize";

@@ -1,7 +1,6 @@
 package com.zhazhapan.efo.dao;
 
 import com.zhazhapan.efo.dao.sqlprovider.UploadedSqlProvider;
-import com.zhazhapan.efo.model.DownloadRecord;
 import com.zhazhapan.efo.model.UploadedRecord;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -28,6 +27,6 @@ public interface UploadedDAO {
      * @return 上传记录
      */
     @SelectProvider(type = UploadedSqlProvider.class, method = "getDownloadBy")
-    List<UploadedRecord> getUploadedBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName")
+    List<UploadedRecord> listUploadedBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName")
             String fileName, @Param("categoryId") int categoryId, @Param("offset") int offset);
 }

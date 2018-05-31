@@ -23,8 +23,8 @@ public class UploadedServiceImpl implements IUploadedService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<UploadedRecord> getAll(String user, String file, String category, int offset) {
-        return (List<UploadedRecord>) ServiceUtils.invokeFileFilter(uploadedDAO, "getUploadedBy", user, file,
+    public List<UploadedRecord> list(String user, String file, String category, int offset) {
+        return (List<UploadedRecord>) ServiceUtils.invokeFileFilter(uploadedDAO, "listUploadedBy", user, file,
                 category, offset);
     }
 }

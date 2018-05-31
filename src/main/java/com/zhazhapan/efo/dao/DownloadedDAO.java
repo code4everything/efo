@@ -38,7 +38,7 @@ public interface DownloadedDAO {
      * @return 下载记录
      */
     @SelectProvider(type = DownloadedSqlProvider.class, method = "getDownloadBy")
-    List<DownloadRecord> getDownloadedBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param
+    List<DownloadRecord> listDownloadedBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param
             ("fileName") String fileName, @Param("categoryId") int categoryId, @Param("offset") int offset);
 
     /**

@@ -21,6 +21,7 @@ public interface FileDAO {
      * 获取文件权限
      *
      * @param id 文件编号
+     *
      * @return {@link BaseAuthRecord}
      */
     @Select("select is_downloadable,is_uploadable,is_deletable,is_updatable,is_visible from file where id=#{id}")
@@ -30,6 +31,7 @@ public interface FileDAO {
      * 通过编号获取文件
      *
      * @param id 编号
+     *
      * @return {@link File}
      */
     @Select("select * from file where id=#{id}")
@@ -39,6 +41,7 @@ public interface FileDAO {
      * 通过ID获取本地路径
      *
      * @param fileId 文件编号
+     *
      * @return {@link String}
      */
     @Select("select local_url from file where id=#{id}")
@@ -48,6 +51,7 @@ public interface FileDAO {
      * 通过编号删除文件
      *
      * @param id 编号
+     *
      * @return 是否删除成功
      */
     @Delete("delete from file where id=#{id}")
@@ -57,6 +61,7 @@ public interface FileDAO {
      * 通过本地路径获取文件编号
      *
      * @param visitUrl 本地路径
+     *
      * @return 编号
      */
     @Select("select id from file where visit_url=#{visitUrl}")
@@ -66,6 +71,7 @@ public interface FileDAO {
      * 通过本地路径获取文件编号
      *
      * @param localUrl 本地路径
+     *
      * @return 编号
      */
     @Select("select id from file where local_url=#{localUrl}")
@@ -75,6 +81,7 @@ public interface FileDAO {
      * 通过访问路径获取本地文件路径
      *
      * @param visitUrl 访问路径
+     *
      * @return {@link String}
      */
     @Select("select local_url from file where visit_url=#{visitUrl}")
@@ -84,6 +91,7 @@ public interface FileDAO {
      * 通过访问路径删除
      *
      * @param visitUrl 访问路径
+     *
      * @return 是否删除成功
      */
     @Delete("delete from file where visit_url=#{visitUrl}")
@@ -93,6 +101,7 @@ public interface FileDAO {
      * 通过本地路径删除
      *
      * @param localUrl 本地路径
+     *
      * @return 是否删除成功
      */
     @Delete("delete from file where local_url=#{localUrl}")
@@ -102,6 +111,7 @@ public interface FileDAO {
      * 检查本地路径
      *
      * @param localUrl 本地路径
+     *
      * @return {@link Integer}
      */
     @Select("select count(*) from file where local_url=#{localUrl}")
@@ -111,6 +121,7 @@ public interface FileDAO {
      * 检查访问路径
      *
      * @param visitUrl 访问路径
+     *
      * @return {@link Integer}
      */
     @Select("select count(*) from file where visit_url=#{visitUrl}")
@@ -120,6 +131,7 @@ public interface FileDAO {
      * 添加一个文件
      *
      * @param file {@link File}
+     *
      * @return 是否添加成功
      */
     @Insert("insert into file(name,suffix,local_url,visit_url,size,description,tag,user_id,category_id," +
@@ -156,6 +168,7 @@ public interface FileDAO {
      * 更新文件基本信息
      *
      * @param file 文件
+     *
      * @return 是否更新成功
      */
     @Update("update file set name=#{name},suffix=#{suffix},local_url=#{localUrl},visit_url=#{visitUrl}," +
@@ -172,6 +185,7 @@ public interface FileDAO {
      * @param isVisible 可查权限
      * @param isDeletable 删除权限
      * @param isUpdatable 上传权限
+     *
      * @return 是否更新成功
      */
     @UpdateProvider(type = FileSqlProvider.class, method = "updateAuthById")
@@ -262,6 +276,7 @@ public interface FileDAO {
      * 获取文件信息
      *
      * @param visitUrl 访问链接
+     *
      * @return {@link File}
      */
     @Select("select * from file where visit_url=#{visitUrl}")
@@ -275,10 +290,11 @@ public interface FileDAO {
      * @param categoryId 分类编号
      * @param orderBy 排序方式
      * @param search 搜索
+     *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getAll")
-    List<FileRecord> getAll(@Param("userId") int userId, @Param("offset") int offset, @Param("categoryId") int
+    List<FileRecord> listAll(@Param("userId") int userId, @Param("offset") int offset, @Param("categoryId") int
             categoryId, @Param("orderBy") String orderBy, @Param("search") String search);
 
     /**
@@ -287,10 +303,11 @@ public interface FileDAO {
      * @param userId 用户编号
      * @param offset 偏移
      * @param search 搜索
+     *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getUserUploaded")
-    List<FileRecord> getUserUploaded(@Param("userId") int userId, @Param("offset") int offset, @Param("search")
+    List<FileRecord> listUserUploaded(@Param("userId") int userId, @Param("offset") int offset, @Param("search")
             String search);
 
     /**
@@ -299,10 +316,11 @@ public interface FileDAO {
      * @param userId 用户编号
      * @param offset 偏移
      * @param search 搜索
+     *
      * @return {@link List}
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getUserDownloaded")
-    List<FileRecord> getUserDownloaded(@Param("userId") int userId, @Param("offset") int offset, @Param("search")
+    List<FileRecord> listUserDownloaded(@Param("userId") int userId, @Param("offset") int offset, @Param("search")
             String search);
 
     /**
@@ -313,9 +331,10 @@ public interface FileDAO {
      * @param categoryId 分类编号，不用分类编号作为条件时设置值小于等于0即可
      * @param fileName 文件名，不使用文件名作为条件时设置值为空即可
      * @param offset 偏移
+     *
      * @return 上传记录
      */
     @SelectProvider(type = FileSqlProvider.class, method = "getBasicBy")
-    List<FileBasicRecord> getBasicBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName")
+    List<FileBasicRecord> listBasicBy(@Param("userId") int userId, @Param("fileId") long fileId, @Param("fileName")
             String fileName, @Param("categoryId") int categoryId, @Param("offset") int offset);
 }

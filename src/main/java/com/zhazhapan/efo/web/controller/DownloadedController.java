@@ -36,6 +36,6 @@ public class DownloadedController {
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "all", method = RequestMethod.GET)
     public String getAll(String user, String file, String category, int offset) {
-        return Formatter.listToJson(downloadService.getAll(user, file, category, offset));
+        return Formatter.listToJson(downloadService.list(user, file, category, offset));
     }
 }

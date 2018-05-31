@@ -1,4 +1,7 @@
 {
+    "system": {
+        "authentication": "shiro"
+    },
     "global": {
         "uploadPath": {
             "windows": "upload",

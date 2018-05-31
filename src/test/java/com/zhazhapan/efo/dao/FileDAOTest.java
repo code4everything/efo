@@ -27,6 +27,6 @@ public class FileDAOTest {
     @Test
     public void testGetUserDownloaded() {
         EfoApplicationTest.setSettings();
-        System.out.println(Formatter.listToJson(fileDAO.getUserDownloaded(2, 0, "")));
+        System.out.println(Formatter.listToJson(fileDAO.listUserDownloaded(2, 0, "")));
     }
 }

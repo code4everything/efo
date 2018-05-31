@@ -79,7 +79,7 @@ public interface CategoryDAO {
      * @return {@link List}
      */
     @Select("select * from category")
-    List<Category> getAllCategory();
+    List<Category> listCategory();
 
     /**
      * 通过编号获取一个分类

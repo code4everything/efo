@@ -52,7 +52,7 @@ public interface ICategoryService {
      *
      * @return {@link List}
      */
-    List<Category> getAll();
+    List<Category> list();
 
     /**
      * 通过分类名获取ID

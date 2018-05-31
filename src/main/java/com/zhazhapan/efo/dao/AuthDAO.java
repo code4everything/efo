@@ -102,6 +102,6 @@ public interface AuthDAO {
      * @return {@link List}
      */
     @SelectProvider(type = AuthSqlProvider.class, method = "getAuthBy")
-    List<AuthRecord> getAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId,
-                               @Param("fileName") String fileName, @Param("offset") int offset);
+    List<AuthRecord> listAuthBy(@Param("id") long id, @Param("userId") int userId, @Param("fileId") long fileId,
+                                @Param("fileName") String fileName, @Param("offset") int offset);
 }

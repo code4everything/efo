@@ -60,15 +60,15 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public List<AuthRecord> getAuth(String usernameOrEmail, String fileName, int offset) {
+    public List<AuthRecord> listAuth(String usernameOrEmail, String fileName, int offset) {
         long fileId = ServiceUtils.getFileId(fileName);
         int userId = ServiceUtils.getUserId(usernameOrEmail);
-        return authDAO.getAuthBy(ValueConsts.ZERO_INT, userId, fileId, fileName, offset);
+        return authDAO.listAuthBy(ValueConsts.ZERO_INT, userId, fileId, fileName, offset);
     }
 
     @Override
     public AuthRecord getByFileIdAndUserId(long fileId, int userId) {
-        List<AuthRecord> authRecords = authDAO.getAuthBy(ValueConsts.ZERO_INT, userId, fileId, ValueConsts
+        List<AuthRecord> authRecords = authDAO.listAuthBy(ValueConsts.ZERO_INT, userId, fileId, ValueConsts
                 .EMPTY_STRING, ValueConsts.ZERO_INT);
         if (Checker.isNotEmpty(authRecords)) {
             return authRecords.get(0);

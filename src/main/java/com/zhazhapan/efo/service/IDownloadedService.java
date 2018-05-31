@@ -35,5 +35,5 @@ public interface IDownloadedService {
      *
      * @return {@link DownloadRecord}
      */
-    List<DownloadRecord> getAll(String user, String file, String category, int offset);
+    List<DownloadRecord> list(String user, String file, String category, int offset);
 }

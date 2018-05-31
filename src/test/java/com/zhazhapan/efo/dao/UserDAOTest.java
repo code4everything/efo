@@ -53,7 +53,7 @@ public class UserDAOTest {
 
     @Test
     public void testGetAllUser() {
-        System.out.println(Formatter.listToJson(userDAO.getUserBy(3, "", 0)));
+        System.out.println(Formatter.listToJson(userDAO.listUserBy(3, "", 0)));
     }
 
     @Test

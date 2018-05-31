@@ -38,7 +38,7 @@ public class CategoryDAOTest {
 
     @Test
     public void testGetAllCategory() {
-        System.out.println(Formatter.listToJson(categoryDAO.getAllCategory()));
+        System.out.println(Formatter.listToJson(categoryDAO.listCategory()));
     }
 
     @Test

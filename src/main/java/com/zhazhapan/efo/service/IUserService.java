@@ -50,7 +50,7 @@ public interface IUserService {
      *
      * @return {@link List}
      */
-    List<User> getUser(int permission, String condition, int offset);
+    List<User> listUser(int permission, String condition, int offset);
 
     /**
      * 登录

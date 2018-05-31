@@ -56,7 +56,7 @@ public class FileController {
     @RequestMapping(value = "/user/downloaded", method = RequestMethod.GET)
     public String getUserDownloaded(int offset, String search) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
-        return Formatter.listToJson(fileService.getUserDownloaded(user.getId(), offset, search));
+        return Formatter.listToJson(fileService.listUserDownloaded(user.getId(), offset, search));
     }
 
     @ApiOperation(value = "获取我的上传记录")
@@ -66,7 +66,7 @@ public class FileController {
     @RequestMapping(value = "/user/uploaded", method = RequestMethod.GET)
     public String getUserUploaded(int offset, String search) {
         User user = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
-        return Formatter.listToJson(fileService.getUserUploaded(user.getId(), offset, search));
+        return Formatter.listToJson(fileService.listUserUploaded(user.getId(), offset, search));
     }
 
     @ApiOperation(value = "文件上传")
@@ -94,7 +94,7 @@ public class FileController {
                 (Checker.isNotNull(user) && user.getIsVisible() == 1);
         if (canGet) {
             int userId = Checker.isNull(user) ? 0 : user.getId();
-            return Formatter.listToJson(fileService.getAll(userId, offset, categoryId, orderBy, search));
+            return Formatter.listToJson(fileService.listAll(userId, offset, categoryId, orderBy, search));
         } else {
             jsonObject.put("error", "权限被限制，无法获取资源，请联系管理员");
             return jsonObject.toString();
@@ -144,7 +144,7 @@ public class FileController {
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/basic/all", method = RequestMethod.GET)
     public String getBasicAll(String user, String file, String category, int offset) {
-        return Formatter.listToJson(fileService.getBasicAll(user, file, category, offset));
+        return Formatter.listToJson(fileService.listBasicAll(user, file, category, offset));
     }
 
     @ApiOperation(value = "通过文件路径获取服务器端的文件")

@@ -20,5 +20,5 @@ public interface IUploadedService {
      *
      * @return {@link List}
      */
-    List<UploadedRecord> getAll(String user, String file, String category, int offset);
+    List<UploadedRecord> list(String user, String file, String category, int offset);
 }

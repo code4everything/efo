@@ -69,7 +69,7 @@ public interface UserDAO {
      * @return {@link List}
      */
     @SelectProvider(type = UserSqlProvider.class, method = "getUserBy")
-    List<User> getUserBy(@Param("permission") int permission, @Param("condition") String condition, @Param("offset")
+    List<User> listUserBy(@Param("permission") int permission, @Param("condition") String condition, @Param("offset")
             int offset);
 
     /**

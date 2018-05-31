@@ -88,7 +88,7 @@ public class UserController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getUser(String user, int offset) {
         User u = (User) request.getSession().getAttribute(ValueConsts.USER_STRING);
-        return Formatter.listToJson(userService.getUser(u.getPermission(), user, offset));
+        return Formatter.listToJson(userService.listUser(u.getPermission(), user, offset));
     }
 
     @ApiOperation(value = "更新我的基本信息")

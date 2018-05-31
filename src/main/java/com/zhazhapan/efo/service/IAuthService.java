@@ -50,7 +50,7 @@ public interface IAuthService {
      *
      * @return {@link List}
      */
-    List<AuthRecord> getAuth(String usernameOrEmail, String fileName, int offset);
+    List<AuthRecord> listAuth(String usernameOrEmail, String fileName, int offset);
 
     /**
      * 获取一个权限

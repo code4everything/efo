@@ -70,6 +70,6 @@ public class CategoryController {
     @AuthInterceptor(InterceptorLevel.NONE)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getAll() {
-        return Formatter.listToJson(categoryService.getAll());
+        return Formatter.listToJson(categoryService.list());
     }
 }

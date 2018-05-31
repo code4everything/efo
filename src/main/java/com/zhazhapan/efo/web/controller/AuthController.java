@@ -46,7 +46,7 @@ public class AuthController {
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getAuth(String user, String file, int offset) {
-        return Formatter.listToJson(authService.getAuth(user, file, offset));
+        return Formatter.listToJson(authService.listAuth(user, file, offset));
     }
 
     @ApiOperation(value = "更新权限记录")

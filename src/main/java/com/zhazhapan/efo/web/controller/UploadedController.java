@@ -34,6 +34,6 @@ public class UploadedController {
     @AuthInterceptor(InterceptorLevel.ADMIN)
     @RequestMapping(value = "all", method = RequestMethod.GET)
     public String getAll(String user, String file, String category, int offset) {
-        return Formatter.listToJson(uploadedService.getAll(user, file, category, offset));
+        return Formatter.listToJson(uploadedService.list(user, file, category, offset));
     }
 }
