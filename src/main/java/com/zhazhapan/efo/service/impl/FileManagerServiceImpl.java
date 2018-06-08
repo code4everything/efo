@@ -40,14 +40,13 @@ public class FileManagerServiceImpl implements IFileManagerService {
 
     @Override
     public JSONObject upload(String destination, MultipartFile... files) {
-        if (Checker.isNotNull(files)) {
+        System.out.println(files.length);
+        if (Checker.isNotEmpty(files)) {
             if (Checker.isWindows() && destination.length() < ValueConsts.TWO_INT) {
                 destination = "C:";
             }
             for (MultipartFile file : files) {
-                if (Checker.isNull(file) || file.isEmpty()) {
-                    break;
-                } else {
+                if (Checker.isNotNull(file) && !file.isEmpty()) {
                     try {
                         FileExecutor.writeByteArrayToFile(new File(destination + File.separator + file
                                 .getOriginalFilename()), file.getBytes());
