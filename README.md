@@ -36,10 +36,6 @@
 
 	![登录页面](http://oq4pzgtcb.bkt.clouddn.com/git/efo/filemanager.png)
 	
-	> 此功能基于 `angular-filamanager` 实现，其中上传部分我弄的还不是很明白，用的很笨的方法实现了上传（但是最多只能上传11个文件，可修改代码，自行设置）
-	
-	> 有知道怎么弄的大神，望告知啊。
-	
-	> [angular-filamanager](https://github.com/joni2back/angular-filemanager)
+	> 此功能基于 [angular-filamanager](https://github.com/joni2back/angular-filemanager) 实现
 	
 **项目有不足的地方欢迎提出来哦，大家一起交流学习，觉得不错的话，Star来一个呗**
