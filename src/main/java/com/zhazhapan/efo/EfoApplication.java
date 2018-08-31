@@ -10,7 +10,6 @@ import com.zhazhapan.util.MailSender;
 import com.zhazhapan.util.ReflectUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -24,7 +23,6 @@ import java.util.List;
 @SpringBootApplication
 @EnableSwagger2Doc
 @MapperScan("com.zhazhapan.efo.dao")
-@EnableAutoConfiguration
 @EnableTransactionManagement
 public class EfoApplication {
 

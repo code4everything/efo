@@ -19,7 +19,7 @@
         "loadParticle": false,
         "anonymousUser": {
             "visible": true,
-            "downloadable": false
+            "downloadable": true
         },
         "css": [
             {
@@ -73,7 +73,7 @@
             "minLength": 6,
             "maxLength": 20
         },
-        "emailVerify": true,
+        "emailVerify": false,
         "emailConfig": {
             "host": "mx1.hostinger.com.hk",
             "port": 587,
@@ -112,7 +112,7 @@
     },
     "file": {
         "pageSize": 30,
-        "maxSize": "1024 MB",
+        "maxSize": "10240 MB",
         "tag": {
             "require": false,
             "maxLength": 5,
