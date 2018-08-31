@@ -69,8 +69,8 @@ public interface UserDAO {
      * @return {@link List}
      */
     @SelectProvider(type = UserSqlProvider.class, method = "getUserBy")
-    List<User> listUserBy(@Param("permission") int permission, @Param("condition") String condition, @Param("offset")
-            int offset);
+    List<User> listUserBy(@Param("permission") int permission, @Param("condition") String condition,
+                          @Param("offset") int offset);
 
     /**
      * 用户登录
@@ -119,9 +119,9 @@ public interface UserDAO {
      * @return {@link Boolean}
      */
     @UpdateProvider(type = UserSqlProvider.class, method = "updateAuthById")
-    boolean updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable, @Param("isUploadable")
-            int isUploadable, @Param("isDeletable") int isDeletable, @Param("isUpdatable") int isUpdatable, @Param
-            ("isVisible") int isVisible);
+    boolean updateAuthById(@Param("id") int id, @Param("isDownloadable") int isDownloadable,
+                           @Param("isUploadable") int isUploadable, @Param("isDeletable") int isDeletable, @Param(
+                                   "isUpdatable") int isUpdatable, @Param("isVisible") int isVisible);
 
     /**
      * 通过编号哦更新密码
