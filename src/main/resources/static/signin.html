@@ -50,7 +50,7 @@
                 <input type="email" id="email" maxlength="100" class="form-control email" placeholder="电子邮箱，可用于登录">
                 <label class="form-check-label text-danger">{{emailErrorTip}}</label>
                 <br/>
-                <div v-if="emailVerify">
+                <div v-show="emailVerify">
                     <div class="form-inline text-justify-all row">
                         <div class="col-sm-7 col-6 col-md-7">
                             <input type="number" id="email-verify-code" maxlength="6"
