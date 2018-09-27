@@ -48,8 +48,7 @@ public class FileManagerServiceImpl implements IFileManagerService {
             for (MultipartFile file : files) {
                 if (Checker.isNotNull(file) && !file.isEmpty()) {
                     try {
-                        FileExecutor.writeByteArrayToFile(new File(destination + File.separator + file
-                                .getOriginalFilename()), file.getBytes());
+                        file.transferTo(new File(destination + File.separator + file.getOriginalFilename()));
                     } catch (IOException e) {
                         logger.error(e.getMessage());
                         return getBasicResponse(ValueConsts.FALSE);

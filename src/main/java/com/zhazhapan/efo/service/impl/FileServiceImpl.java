@@ -32,9 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -73,8 +70,8 @@ public class FileServiceImpl implements IFileService {
     private final DownloadedDAO downloadDAO;
 
     @Autowired
-    public FileServiceImpl(FileDAO fileDAO, ICategoryService categoryService, IAuthService authService, DownloadedDAO
-            downloadDAO) {
+    public FileServiceImpl(FileDAO fileDAO, ICategoryService categoryService, IAuthService authService,
+                           DownloadedDAO downloadDAO) {
         this.fileDAO = fileDAO;
         this.categoryService = categoryService;
         this.authService = authService;
@@ -136,9 +133,8 @@ public class FileServiceImpl implements IFileService {
         if (Checker.isNotNull(file) && file.getIsUpdatable() == 1) {
             AuthRecord authRecord = authService.getByFileIdAndUserId(id, user.getId());
             String suffix = FileExecutor.getFileSuffix(name);
-            boolean canUpdate = (Checker.isNull(authRecord) ? user.getIsUpdatable() == 1 : authRecord.getIsUpdatable
-                    () == 1) && Checker.isNotEmpty(name) && Pattern.compile(EfoApplication.settings.getStringUseEval
-                    (ConfigConsts.FILE_SUFFIX_MATCH_OF_SETTING)).matcher(suffix).matches();
+            boolean canUpdate = (Checker.isNull(authRecord) ? user.getIsUpdatable() == 1 :
+                    authRecord.getIsUpdatable() == 1) && Checker.isNotEmpty(name) && Pattern.compile(EfoApplication.settings.getStringUseEval(ConfigConsts.FILE_SUFFIX_MATCH_OF_SETTING)).matcher(suffix).matches();
             if (canUpdate) {
                 String localUrl = file.getLocalUrl();
                 java.io.File newFile = new java.io.File(localUrl);
@@ -289,10 +285,7 @@ public class FileServiceImpl implements IFileService {
                     removeByVisitUrl(visitUrl);
                 }
                 try {
-                    byte[] bytes = multipartFile.getBytes();
-                    FileExecutor.createNewFile(localUrl);
-                    Path path = Paths.get(localUrl);
-                    Files.write(path, bytes);
+                    multipartFile.transferTo(new java.io.File(localUrl));
                     logger.info("local url of upload file: " + localUrl);
                     File file = new File(name, suffix, localUrl, visitUrl, WebUtils.scriptFilter(description),
                             WebUtils.scriptFilter(tag), user.getId(), categoryId);
@@ -350,10 +343,11 @@ public class FileServiceImpl implements IFileService {
                 String suffix = FileExecutor.getFileSuffix(name);
                 String visitUrl = getRegularVisitUrl(prefix, user, name, suffix, null);
                 if (f.exists() && f.isFile() && !localUrlExists(path) && !visitUrlExists(visitUrl)) {
-                    File file = new File(name, suffix, path, visitUrl, ValueConsts.EMPTY_STRING, ValueConsts
-                            .EMPTY_STRING, user.getId(), categoryService.getIdByName(DefaultValues.UNCATEGORIZED));
-                    file.setAuth(ValueConsts.ONE_INT, ValueConsts.ZERO_INT, ValueConsts.ZERO_INT, ValueConsts
-                            .ZERO_INT, ValueConsts.ONE_INT);
+                    File file = new File(name, suffix, path, visitUrl, ValueConsts.EMPTY_STRING,
+                            ValueConsts.EMPTY_STRING, user.getId(),
+                            categoryService.getIdByName(DefaultValues.UNCATEGORIZED));
+                    file.setAuth(ValueConsts.ONE_INT, ValueConsts.ZERO_INT, ValueConsts.ZERO_INT,
+                            ValueConsts.ZERO_INT, ValueConsts.ONE_INT);
                     fileDAO.insertFile(file);
                 }
             }
