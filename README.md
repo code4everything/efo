@@ -18,23 +18,23 @@
 
 - 登录页面（包含登录、注册、密码重置），路径 `/signin` 
 
-	![登录页面](http://oq4pzgtcb.bkt.clouddn.com/git/efo/signin.png)
+	![登录页面](http://towerpan.qiniu.segocat.com/git/efo/signin.png)
 	
 - 资源首页，路径 `/index` 
 
-	![登录页面](http://oq4pzgtcb.bkt.clouddn.com/git/efo/index.png)
+	![登录页面](http://towerpan.qiniu.segocat.com/git/efo/index.png)
 	
 - 上传页面，路径 `/upload` 
 
-	![登录页面](http://oq4pzgtcb.bkt.clouddn.com/git/efo/upload.png)
+	![登录页面](http://towerpan.qiniu.segocat.com/git/efo/upload.png)
 	
 - 管理员管理页面，路径 `/admin` 
 
-	![登录页面](http://oq4pzgtcb.bkt.clouddn.com/git/efo/admin.png)
+	![登录页面](http://towerpan.qiniu.segocat.com/git/efo/admin.png)
 	
 - 远程文件管理（管理服务器端所有文件，只有系统用户才能进入此页面），路径 `/filemanager` 
 
-	![登录页面](http://oq4pzgtcb.bkt.clouddn.com/git/efo/filemanager.png)
+	![登录页面](http://towerpan.qiniu.segocat.com/git/efo/filemanager.png)
 	
 	> 此功能基于 [angular-filamanager](https://github.com/joni2back/angular-filemanager) 实现
 	
