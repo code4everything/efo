@@ -3,19 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>efo</artifactId>
+        <artifactId>efo-stand</artifactId>
         <groupId>org.code4everything</groupId>
         <version>2.0</version>
     </parent>
 
-    <modules>
-        <module>efo-stand-dao</module>
-        <module>efo-stand-service</module>
-        <module>efo-stand-files</module>
-        <module>efo-stand-web</module>
-    </modules>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>efo-stand</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>efo-stand-dao</artifactId>
+    <packaging>jar</packaging>
 </project>
