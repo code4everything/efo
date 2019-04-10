@@ -10,7 +10,6 @@
 
     <modules>
         <module>efo-stand-dao</module>
-        <module>efo-stand-service</module>
         <module>efo-stand-files</module>
         <module>efo-stand-web</module>
     </modules>

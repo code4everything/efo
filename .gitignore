@@ -1,3 +1,7 @@
+# Custom
+
+**/target/**
+
 # ---> macOS
 *.DS_Store
 .AppleDouble
