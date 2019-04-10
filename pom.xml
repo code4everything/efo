@@ -6,17 +6,18 @@
     <groupId>org.code4everything</groupId>
     <artifactId>efo</artifactId>
     <version>2.0</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>efo</name>
     <description>线上文件管理系统</description>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.4.RELEASE</version>
-        <relativePath/>
-    </parent>
+
+    <modules>
+        <module>efo-common</module>
+        <module>efo-stand</module>
+        <module>efo-cloud</module>
+        <module>efo-dubbo</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
