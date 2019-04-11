@@ -22,7 +22,7 @@ public class BaseUserServiceImpl<T> implements BaseUserService<T> {
             .maximumSize(1024).build();
 
     @Override
-    public void removeCache(String token) {
+    public void removeFromCache(String token) {
         userCache.invalidate(token);
     }
 

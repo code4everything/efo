@@ -23,6 +23,8 @@ public class CommonUtils {
 
     private static String codeTemplate = "";
 
+    private static boolean firstLoad = true;
+
     private CommonUtils() {}
 
     public static Response sendCode(BaseController controller, String email) throws MessagingException {
@@ -30,7 +32,7 @@ public class CommonUtils {
             return controller.errorResult(ErrorCode.CODE_FREQUENTLY, "请勿频繁发送");
         }
 
-        if (StrUtil.isEmpty(codeTitle) || StrUtil.isEmpty(codeTemplate)) {
+        if (firstLoad) {
             loadCodeTemplate();
         }
 
@@ -63,5 +65,6 @@ public class CommonUtils {
             }
         }
         codeTemplate = builder.toString();
+        firstLoad = false;
     }
 }
