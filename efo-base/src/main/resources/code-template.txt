@@ -1,0 +1,4 @@
+#title: while programme read this line which start with '#title' the next line will be the mail title
+验证码
+#content: while read this line that start with '#content' the follow full content will be the email content template
+您的验证码：{}，请勿泄漏给其他人，否则后果自负；如果您没有发送验证码，请忽略本消息。
