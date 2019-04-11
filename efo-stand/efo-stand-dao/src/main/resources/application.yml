@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: default
+  datasource:
+    url: jdbc:mysql://192.168.199.130:3306/efo?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    tomcat:
+      default-auto-commit: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.enable_lazy_load_no_trans: true
+  jackson:
+    time-zone: GMT+8
