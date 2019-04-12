@@ -33,14 +33,18 @@ public class CommonUtils {
         }
 
         if (firstLoad) {
-            loadCodeTemplate();
+            synchronized (CommonUtils.class) {
+                if (firstLoad) {
+                    loadCodeTemplate();
+                }
+            }
         }
 
         VerifyCodeUtils.sendByMail(email, codeTitle, codeTemplate);
         return controller.successResult("发送成功，请查收");
     }
 
-    private static synchronized void loadCodeTemplate() {
+    private static void loadCodeTemplate() {
         // 加载验证码模板
         InputStream is = CommonUtils.class.getResourceAsStream("code-template.txt");
         List<String> lines = IoUtil.readLines(is, CharsetUtil.UTF_8, new ArrayList<>());

@@ -24,4 +24,6 @@ public class CommonController extends BaseController {
     public Response sendCode(@PathVariable String email) throws MessagingException {
         return CommonUtils.sendCode(this, email);
     }
+
+
 }

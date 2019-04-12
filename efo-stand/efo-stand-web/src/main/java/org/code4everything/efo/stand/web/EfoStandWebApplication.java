@@ -1,10 +1,10 @@
 package org.code4everything.efo.stand.web;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
+import org.code4everything.efo.stand.dao.config.EfoDaoConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author pantao
@@ -12,8 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableSwagger2Doc
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "org.code4everything.efo.stand.dao.repository")
+@ImportAutoConfiguration(EfoDaoConfiguration.class)
 public class EfoStandWebApplication {
 
     public static void main(String[] args) {

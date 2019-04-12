@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
  * @since 2019-04-11
  */
 @Data
+@Entity
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
