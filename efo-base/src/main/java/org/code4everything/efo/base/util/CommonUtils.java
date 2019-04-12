@@ -19,9 +19,9 @@ import java.util.List;
  */
 public class CommonUtils {
 
-    private static String codeTitle = "";
+    static String codeTitle = "";
 
-    private static String codeTemplate = "";
+    static String codeTemplate = "";
 
     private static boolean firstLoad = true;
 
@@ -44,9 +44,9 @@ public class CommonUtils {
         return controller.successResult("发送成功，请查收");
     }
 
-    private static void loadCodeTemplate() {
+    static void loadCodeTemplate() {
         // 加载验证码模板
-        InputStream is = CommonUtils.class.getResourceAsStream("code-template.txt");
+        InputStream is = CommonUtils.class.getResourceAsStream("/code-template.txt");
         List<String> lines = IoUtil.readLines(is, CharsetUtil.UTF_8, new ArrayList<>());
 
         StringBuilder builder = new StringBuilder();
