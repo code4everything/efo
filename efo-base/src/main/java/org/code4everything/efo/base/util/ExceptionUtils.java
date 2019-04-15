@@ -4,7 +4,7 @@ import org.code4everything.boot.exception.BootException;
 import org.code4everything.boot.exception.ExceptionFactory;
 import org.code4everything.boot.exception.ExceptionThrower;
 import org.code4everything.boot.message.VerifyCodeUtils;
-import org.code4everything.efo.base.constant.ErrorCode;
+import org.code4everything.efo.base.constant.EfoError;
 import org.springframework.http.HttpStatus;
 
 import java.util.regex.Pattern;
@@ -36,14 +36,17 @@ public class ExceptionUtils {
     }
 
     public static void checkCode(String email, String code) {
-        throwIfFalse(VerifyCodeUtils.validate(email, code, true), ErrorCode.CODE_ERROR, "验证码不正确");
+        EfoError error = EfoError.CODE_ERROR;
+        throwIfFalse(VerifyCodeUtils.validate(email, code, true), error.getCode(), error.getMsg());
     }
 
     public static void checkPassword(String password) {
-        throwIfFalse(PASSWORD_PATTERN.matcher(password).matches(), ErrorCode.ILLEGAL_PASSWORD, "密码格式不合法");
+        EfoError error = EfoError.ILLEGAL_PASSWORD;
+        throwIfFalse(PASSWORD_PATTERN.matcher(password).matches(), error.getCode(), error.getMsg());
     }
 
     public static void checkUsername(String username) {
-        throwIfFalse(USERNAME_PATTERN.matcher(username).matches(), ErrorCode.ILLEGAL_USERNAME, "用户名格式不合法");
+        EfoError error = EfoError.ILLEGAL_USERNAME;
+        throwIfFalse(USERNAME_PATTERN.matcher(username).matches(), error.getCode(), error.getMsg());
     }
 }

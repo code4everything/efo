@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import org.code4everything.boot.bean.Response;
 import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.boot.web.mvc.BaseController;
-import org.code4everything.efo.base.constant.ErrorCode;
+import org.code4everything.efo.base.constant.EfoError;
 
 import javax.mail.MessagingException;
 import java.io.InputStream;
@@ -29,7 +29,8 @@ public class CommonUtils {
 
     public static Response sendCode(BaseController controller, String email) throws MessagingException {
         if (VerifyCodeUtils.isFrequently(email)) {
-            return controller.errorResult(ErrorCode.CODE_FREQUENTLY, "请勿频繁发送");
+            EfoError error = EfoError.CODE_FREQUENTLY;
+            return controller.errorResult(error.getCode(), error.getMsg());
         }
 
         if (firstLoad) {

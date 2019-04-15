@@ -3,7 +3,7 @@ package org.code4everything.efo.stand.web.service.impl;
 import cn.hutool.core.util.RandomUtil;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.code4everything.boot.annotation.AopLog;
-import org.code4everything.efo.base.constant.ErrorCode;
+import org.code4everything.efo.base.constant.EfoError;
 import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
 import org.code4everything.efo.base.service.impl.BaseUserServiceImpl;
@@ -30,12 +30,14 @@ public class UserServiceImpl extends BaseUserServiceImpl implements UserService 
 
     @Override
     public void checkEmail(String email) {
-        ExceptionUtils.throwIf(userRepository.existsByEmail(email), ErrorCode.EMAIL_EXISTS, "邮箱已存在");
+        EfoError error = EfoError.EMAIL_EXISTS;
+        ExceptionUtils.throwIf(userRepository.existsByEmail(email), error.getCode(), error.getMsg());
     }
 
     @Override
     public void checkUsername(String username) {
-        ExceptionUtils.throwIf(userRepository.existsByUsername(username), ErrorCode.USERNAME_EXISTS, "用户名已存在");
+        EfoError error = EfoError.USERNAME_EXISTS;
+        ExceptionUtils.throwIf(userRepository.existsByUsername(username), error.getCode(), error.getMsg());
     }
 
     @Override
