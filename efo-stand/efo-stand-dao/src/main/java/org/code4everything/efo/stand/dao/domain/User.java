@@ -42,6 +42,9 @@ public class User implements BaseBean, Serializable {
     @Column(columnDefinition = "varchar(64)", nullable = false)
     private String password;
 
+    @Column(columnDefinition = "char(6)", nullable = false)
+    private String salt;
+
     @Column(columnDefinition = "varchar(64)")
     private String avatar;
 

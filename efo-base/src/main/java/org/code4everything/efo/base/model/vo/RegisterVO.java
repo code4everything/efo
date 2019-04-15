@@ -24,7 +24,7 @@ import java.io.Serializable;
 public class RegisterVO implements BaseBean, Serializable {
 
     @NotBlank
-    @ApiModelProperty(value = "用户名", required = true)
+    @ApiModelProperty(value = "用户名：^[a-zA-Z][a-zA-Z0-9]{3,9}$", required = true)
     private String username;
 
     @Email
@@ -32,7 +32,7 @@ public class RegisterVO implements BaseBean, Serializable {
     private String email;
 
     @NotBlank
-    @ApiModelProperty(value = "密码", required = true)
+    @ApiModelProperty(value = "密码：^.{6,20}$", required = true)
     private String password;
 
     @NotBlank

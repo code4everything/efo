@@ -21,5 +21,20 @@ public class ErrorCode {
      */
     public static final int USERNAME_EXISTS = 1003;
 
+    /**
+     * 密码格式不合法
+     */
+    public static final int ILLEGAL_PASSWORD = 1004;
+
+    /**
+     * 用户名格式不合法
+     */
+    public static final int ILLEGAL_USERNAME = 1005;
+
+    /**
+     * 验证码不正确
+     */
+    public static final int CODE_ERROR = 1006;
+
     private ErrorCode() {}
 }
