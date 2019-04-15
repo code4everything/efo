@@ -7,6 +7,8 @@ import org.code4everything.boot.bean.Response;
 import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.efo.base.util.CommonUtils;
+import org.code4everything.efo.stand.web.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -19,6 +21,11 @@ import javax.mail.MessagingException;
 @Api(tags = "公共接口")
 public class CommonController extends BaseController {
 
+    private final UserService userService;
+
+    @Autowired
+    public CommonController(UserService userService) {this.userService = userService;}
+
     @PostMapping("/code/send/{email}")
     @ApiOperation("发送验证码")
     public Response sendCode(@PathVariable String email) throws MessagingException {
@@ -30,5 +37,18 @@ public class CommonController extends BaseController {
     @ApiImplicitParam(name = "code", value = "验证码")
     public Response<Boolean> validateCode(@PathVariable String email, @RequestParam String code) {
         return parseBoolean("验证码正确", "验证码错误", VerifyCodeUtils.validate(email, code));
+    }
+
+    @GetMapping("/email/check/{email}")
+    @ApiOperation("检测邮箱已经注册")
+    public Response<Boolean> checkEmail(@PathVariable String email) {
+        userService.checkEmail(email);
+        return successResult("邮箱不存在，可注册");
+    }
+
+    @GetMapping("/username/check/{username}")
+    public Response<Boolean> checkUsername(@PathVariable String username) {
+        userService.checkUsername(username);
+        return successResult("用户名不存在，可注册");
     }
 }
