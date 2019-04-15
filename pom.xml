@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>efo</name>
-    <description>线上文件管理系统</description>
+    <description>文件管理系统</description>
 
 
     <modules>

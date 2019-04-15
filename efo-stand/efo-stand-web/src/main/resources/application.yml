@@ -1,18 +1,22 @@
 spring:
+  # 数据源配置
   datasource:
     url: jdbc:mysql://192.168.199.130:3306/efo
     username: efo
     password: efo
     tomcat:
       default-auto-commit: true
+  # JPA配置
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate.enable_lazy_load_no_trans: true
+  # 时区配置
   jackson:
     time-zone: GMT+8
+  # 邮箱配置
   mail:
     host: smtp.qq.com
     protocol: smtp
@@ -25,5 +29,19 @@ spring:
           starttls:
             enable: true
             required: true
+# HTTP端口配置
 server:
   port: 8787
+swagger:
+  title: 文件管理系统接口文档
+  version: 2.0
+  license: MIT
+  license-url: https://opensource.org/licenses/MIT
+  terms-of-service-url: https://github.com/code4everything/efo
+  contact:
+    name: easepan
+    email: easepan@qq.com
+    url: https://github.com/easepan
+  base-package: org.code4everything.efo
+  exclude-path: /error, /ops/**
+# Swagger配置
