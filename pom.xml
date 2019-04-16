@@ -35,6 +35,7 @@
         <javax.validation.version>2.0.1.Final</javax.validation.version>
         <spring.version>5.0.8.RELEASE</spring.version>
         <shiro.version>1.4.0</shiro.version>
+        <aspectj.version>1.9.2</aspectj.version>
     </properties>
 
     <dependencies>

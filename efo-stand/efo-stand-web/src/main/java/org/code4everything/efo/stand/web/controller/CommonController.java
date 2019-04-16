@@ -40,13 +40,14 @@ public class CommonController extends BaseController {
     }
 
     @GetMapping("/email/check/{email}")
-    @ApiOperation("检测邮箱已经注册")
+    @ApiOperation("检测邮箱是否已经存在")
     public Response<Boolean> checkEmail(@PathVariable String email) {
         userService.checkEmail(email);
         return successResult("邮箱不存在，可注册");
     }
 
     @GetMapping("/username/check/{username}")
+    @ApiOperation("检测用户名是否已经存在")
     public Response<Boolean> checkUsername(@PathVariable String username) {
         userService.checkUsername(username);
         return successResult("用户名不存在，可注册");

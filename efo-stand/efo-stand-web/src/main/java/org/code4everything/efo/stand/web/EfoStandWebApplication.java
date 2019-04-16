@@ -1,6 +1,7 @@
 package org.code4everything.efo.stand.web;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
+import org.code4everything.boot.annotation.EnableSurfaceAutoLog;
 import org.code4everything.boot.annotation.EnableSurfaceConfiguration;
 import org.code4everything.boot.annotation.EnableSurfaceMailSender;
 import org.code4everything.efo.stand.dao.config.EnableEfoDaoConfiguration;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableSwagger2Doc
 @EnableEfoDaoConfiguration
 @EnableSurfaceMailSender
+@EnableSurfaceAutoLog
 @EnableSurfaceConfiguration
 public class EfoStandWebApplication {
 

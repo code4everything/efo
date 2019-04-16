@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  * @since 2019-04-11
  */
 @Service
-public class UserServiceImpl extends BaseUserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseUserServiceImpl<User> implements UserService {
 
     private final UserRepository userRepository;
 
@@ -29,18 +29,21 @@ public class UserServiceImpl extends BaseUserServiceImpl implements UserService 
     public UserServiceImpl(UserRepository userRepository) {this.userRepository = userRepository;}
 
     @Override
+    @AopLog("检测有限是否已经注册")
     public void checkEmail(String email) {
         EfoError error = EfoError.EMAIL_EXISTS;
         ExceptionUtils.throwIf(userRepository.existsByEmail(email), error.getCode(), error.getMsg());
     }
 
     @Override
+    @AopLog("检测用户名是否已经注册")
     public void checkUsername(String username) {
         EfoError error = EfoError.USERNAME_EXISTS;
         ExceptionUtils.throwIf(userRepository.existsByUsername(username), error.getCode(), error.getMsg());
     }
 
     @Override
+    @AopLog("通过用户名或邮箱查询用户")
     public User getByUsernameOrEmail(String loginName) {
         return userRepository.getByUsernameOrEmail(loginName, loginName);
     }
