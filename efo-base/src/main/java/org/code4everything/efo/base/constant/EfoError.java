@@ -38,5 +38,4 @@ public enum EfoError {
         return msg;
     }
 
-
 }
