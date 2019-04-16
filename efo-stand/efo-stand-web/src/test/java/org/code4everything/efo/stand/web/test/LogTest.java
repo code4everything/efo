@@ -2,6 +2,7 @@ package org.code4everything.efo.stand.web.test;
 
 import cn.hutool.core.util.RandomUtil;
 import org.code4everything.efo.stand.web.service.LogTestService;
+import org.code4everything.efo.stand.web.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,16 @@ public class LogTest {
     @Autowired
     private LogTestService logTestService;
 
+    @Autowired
+    private UserService userService;
+
     @Test
     public void testLog() {
         logTestService.justLog(RandomUtil.randomString(12));
+    }
+
+    @Test
+    public void testUserService() {
+        userService.checkUsername("pan");
     }
 }
