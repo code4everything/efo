@@ -1,9 +1,9 @@
 spring:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://192.168.199.130:3306/efo
-    username: efo
-    password: efo
+    url: jdbc:mysql://192.168.1.210:3306/efo
+    username: root
+    password: root
     tomcat:
       default-auto-commit: true
   # JPA配置

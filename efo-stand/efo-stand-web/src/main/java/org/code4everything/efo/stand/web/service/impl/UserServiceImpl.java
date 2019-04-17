@@ -11,6 +11,7 @@ import org.code4everything.efo.base.util.ExceptionUtils;
 import org.code4everything.efo.stand.dao.domain.User;
 import org.code4everything.efo.stand.dao.repository.UserRepository;
 import org.code4everything.efo.stand.web.service.UserService;
+import org.code4everything.efo.stand.web.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,29 @@ public class UserServiceImpl extends BaseUserServiceImpl<User> implements UserSe
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {this.userRepository = userRepository;}
+
+    @Override
+    @AopLog("更新用户名")
+    public void updateUsername(String username) {
+        User user = ShiroUtils.getUser();
+        if (!user.getUsername().equals(username)) {
+            checkUsername(username);
+            user.setUsername(username);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    @AopLog("更新邮箱")
+    public void updateEmail(String email, String code) {
+        ExceptionUtils.checkCode(email, code);
+        User user = ShiroUtils.getUser();
+        if (!user.getEmail().equals(email)) {
+            checkEmail(email);
+            user.setEmail(email);
+            userRepository.save(user);
+        }
+    }
 
     @Override
     @AopLog("检测有限是否已经注册")

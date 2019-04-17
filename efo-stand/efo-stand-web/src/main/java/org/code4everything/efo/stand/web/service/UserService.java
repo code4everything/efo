@@ -10,6 +10,10 @@ import org.code4everything.efo.stand.dao.domain.User;
  */
 public interface UserService {
 
+    void updateUsername(String username);
+
+    void updateEmail(String email, String code);
+
     void checkEmail(String email);
 
     void checkUsername(String username);
