@@ -11,10 +11,11 @@ import org.code4everything.boot.bean.Response;
 import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
-import org.code4everything.efo.stand.dao.domain.User;
 import org.code4everything.efo.stand.web.service.UserService;
+import org.code4everything.efo.stand.web.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -31,6 +32,26 @@ public class UserController extends BaseController {
     @Autowired
     public UserController(UserService userService) {this.userService = userService;}
 
+    @PatchMapping("/user/avatar/update")
+    public Response<String> updateAvatar(@RequestBody MultipartFile avatar) {
+
+    }
+
+    @PatchMapping("/user/username/{username}/update")
+    @ApiOperation("更新用户名")
+    public Response<String> updateUsername(@PathVariable String username) {
+        userService.updateUsername(username);
+        return successResult("用户名更新成功", username);
+    }
+
+    @PatchMapping("/user/email/{email}/update")
+    @ApiOperation("更新邮箱")
+    @ApiImplicitParam(name = "code", value = "验证码")
+    public Response<String> updateEmail(@PathVariable String email, @RequestParam String code) {
+        userService.updateEmail(email, code);
+        return successResult("邮箱更新成功", email);
+    }
+
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public Response<UserInfoVO> register(@Valid @RequestBody RegisterVO registerVO) {
@@ -45,7 +66,7 @@ public class UserController extends BaseController {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(loginName, password, true);
         subject.login(token);
-        return successResult("登录成功", ((User) subject.getPrincipal()).copyInto(new UserInfoVO()));
+        return successResult("登录成功", ShiroUtils.getUser().copyInto(new UserInfoVO()));
     }
 
     @DeleteMapping("/logout")

@@ -26,27 +26,27 @@ public class CommonController extends BaseController {
     @Autowired
     public CommonController(UserService userService) {this.userService = userService;}
 
-    @PostMapping("/code/send/{email}")
+    @PostMapping("/code/{email}/send")
     @ApiOperation("发送验证码")
     public Response sendCode(@PathVariable String email) throws MessagingException {
         return CommonUtils.sendCode(this, email);
     }
 
-    @GetMapping("/code/validate/{email}")
+    @GetMapping("/code/{email}/validate")
     @ApiOperation("校验验证码")
     @ApiImplicitParam(name = "code", value = "验证码")
     public Response<Boolean> validateCode(@PathVariable String email, @RequestParam String code) {
         return parseBoolean("验证码正确", "验证码错误", VerifyCodeUtils.validate(email, code));
     }
 
-    @GetMapping("/email/check/{email}")
+    @GetMapping("/email/{email}/check")
     @ApiOperation("检测邮箱是否已经存在")
     public Response<Boolean> checkEmail(@PathVariable String email) {
         userService.checkEmail(email);
         return successResult("邮箱不存在，可注册");
     }
 
-    @GetMapping("/username/check/{username}")
+    @GetMapping("/username/{username}/check")
     @ApiOperation("检测用户名是否已经存在")
     public Response<Boolean> checkUsername(@PathVariable String username) {
         userService.checkUsername(username);
