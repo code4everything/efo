@@ -33,8 +33,9 @@ public class UserController extends BaseController {
     public UserController(UserService userService) {this.userService = userService;}
 
     @PatchMapping("/user/avatar/update")
+    @ApiOperation("更新头像")
     public Response<String> updateAvatar(@RequestBody MultipartFile avatar) {
-
+        return successResult();
     }
 
     @PatchMapping("/user/username/{username}/update")

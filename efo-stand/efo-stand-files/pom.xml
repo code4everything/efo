@@ -11,4 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>efo-stand-files</artifactId>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.code4everything</groupId>
+            <artifactId>efo-stand-dao</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,6 +1,5 @@
 package org.code4everything.efo.stand.web;
 
-import cn.hutool.core.thread.ExecutorBuilder;
 import com.spring4all.swagger.EnableSwagger2Doc;
 import org.code4everything.boot.annotation.EnableSurfaceAutoLog;
 import org.code4everything.boot.annotation.EnableSurfaceConfiguration;
