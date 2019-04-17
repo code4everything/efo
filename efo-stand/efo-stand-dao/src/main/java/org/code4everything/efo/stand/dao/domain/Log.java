@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 @Table(name = "efo_log")
 public class Log implements BaseBean, Serializable {
 
+    private static final long serialVersionUID = 4691787201462323806L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)

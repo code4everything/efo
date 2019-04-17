@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>org.code4everything</groupId>
-            <artifactId>efo-stand-files</artifactId>
+            <artifactId>efo-stand-file</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
