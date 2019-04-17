@@ -9,7 +9,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.code4everything.boot.constant.MessageConsts;
-import org.code4everything.efo.stand.dao.domain.User;
+import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        User user = (User) principals.getPrimaryPrincipal();
+        UserDO user = (UserDO) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // TODO: 2019-04-15 获取用户权限
         return info;
@@ -42,7 +42,7 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
-        User user = userService.getByUsernameOrEmail(((UsernamePasswordToken) token).getUsername());
+        UserDO user = userService.getByUsernameOrEmail(((UsernamePasswordToken) token).getUsername());
         //账号不存在
         if (user == null) {
             throw new UnknownAccountException(MessageConsts.UNKNOWN_ACCOUNT_ZH);

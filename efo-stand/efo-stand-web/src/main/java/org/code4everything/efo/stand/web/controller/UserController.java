@@ -55,8 +55,8 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     @ApiOperation("用户注册")
-    public Response<UserInfoVO> register(@Valid @RequestBody RegisterVO registerVO) {
-        return successResult(userService.register(registerVO));
+    public Response<UserInfoVO> register(@Valid @RequestBody RegisterVO register) {
+        return successResult(userService.register(register));
     }
 
     @PostMapping("/login")

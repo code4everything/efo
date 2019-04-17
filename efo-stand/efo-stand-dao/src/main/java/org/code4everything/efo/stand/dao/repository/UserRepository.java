@@ -1,6 +1,6 @@
 package org.code4everything.efo.stand.dao.repository;
 
-import org.code4everything.efo.stand.dao.domain.User;
+import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
  * @since 2019-04-11
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserDO, Long> {
 
-    User getByUsernameOrEmail(String username, String email);
+    UserDO getByUsernameOrEmail(String username, String email);
 
     boolean existsByEmail(String email);
 

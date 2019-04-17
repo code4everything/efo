@@ -8,7 +8,7 @@ import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
 import org.code4everything.efo.base.service.impl.BaseUserServiceImpl;
 import org.code4everything.efo.base.util.ExceptionUtils;
-import org.code4everything.efo.stand.dao.domain.User;
+import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.dao.repository.UserRepository;
 import org.code4everything.efo.stand.web.service.UserService;
 import org.code4everything.efo.stand.web.shiro.ShiroUtils;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
  * @since 2019-04-11
  */
 @Service
-public class UserServiceImpl extends BaseUserServiceImpl<User> implements UserService {
+public class UserServiceImpl extends BaseUserServiceImpl<UserDO> implements UserService {
 
     private final UserRepository userRepository;
 
@@ -32,7 +32,7 @@ public class UserServiceImpl extends BaseUserServiceImpl<User> implements UserSe
     @Override
     @AopLog("更新用户名")
     public void updateUsername(String username) {
-        User user = ShiroUtils.getUser();
+        UserDO user = ShiroUtils.getUser();
         if (!user.getUsername().equals(username)) {
             checkUsername(username);
             user.setUsername(username);
@@ -44,7 +44,7 @@ public class UserServiceImpl extends BaseUserServiceImpl<User> implements UserSe
     @AopLog("更新邮箱")
     public void updateEmail(String email, String code) {
         ExceptionUtils.checkCode(email, code);
-        User user = ShiroUtils.getUser();
+        UserDO user = ShiroUtils.getUser();
         if (!user.getEmail().equals(email)) {
             checkEmail(email);
             user.setEmail(email);
@@ -68,7 +68,7 @@ public class UserServiceImpl extends BaseUserServiceImpl<User> implements UserSe
 
     @Override
     @AopLog("通过用户名或邮箱查询用户")
-    public User getByUsernameOrEmail(String loginName) {
+    public UserDO getByUsernameOrEmail(String loginName) {
         return userRepository.getByUsernameOrEmail(loginName, loginName);
     }
 
@@ -84,7 +84,7 @@ public class UserServiceImpl extends BaseUserServiceImpl<User> implements UserSe
         checkEmail(registerVO.getEmail());
 
         // 创建用户
-        User user = registerVO.copyInto(new User());
+        UserDO user = registerVO.copyInto(new UserDO());
         user.setSalt(RandomUtil.randomString(6));
         user.setPassword(new SimpleHash("SHA-256", registerVO.getPassword(), user.getSalt(), 16).toString());
         user.setCreateTime(LocalDateTime.now());

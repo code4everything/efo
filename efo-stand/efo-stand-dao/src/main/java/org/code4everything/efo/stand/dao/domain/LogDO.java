@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "efo_log")
-public class Log implements BaseBean, Serializable {
+public class LogDO implements BaseBean, Serializable {
 
     private static final long serialVersionUID = 4691787201462323806L;
 

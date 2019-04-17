@@ -1,7 +1,7 @@
 package org.code4everything.efo.stand.web.service.impl;
 
 import org.code4everything.boot.bean.LogBean;
-import org.code4everything.efo.stand.dao.domain.Log;
+import org.code4everything.efo.stand.dao.domain.LogDO;
 import org.code4everything.efo.stand.dao.repository.LogRepository;
 import org.code4everything.efo.stand.web.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +22,20 @@ public class LogServiceImpl implements LogService {
     public LogServiceImpl(LogRepository logRepository) {this.logRepository = logRepository;}
 
     @Override
-    public Log save(Log log) {
+    public LogDO save(LogDO log) {
         return logRepository.save(log);
     }
 
     @Override
-    public Log saveException(Log log, Throwable throwable) {
+    public LogDO saveException(LogDO log, Throwable throwable) {
         log.setExceptionClass(throwable.getClass().getName());
         log.setExceptionDetail(throwable.getMessage());
         return save(log);
     }
 
     @Override
-    public Log getLog(LogBean logBean) {
-        Log log = logBean.copyInto(new Log());
+    public LogDO getLog(LogBean logBean) {
+        LogDO log = logBean.copyInto(new LogDO());
         log.setCreateTime(LocalDateTime.now());
         return log;
     }

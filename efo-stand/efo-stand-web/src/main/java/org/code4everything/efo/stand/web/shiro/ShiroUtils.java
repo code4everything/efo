@@ -1,7 +1,7 @@
 package org.code4everything.efo.stand.web.shiro;
 
 import org.apache.shiro.SecurityUtils;
-import org.code4everything.efo.stand.dao.domain.User;
+import org.code4everything.efo.stand.dao.domain.UserDO;
 
 /**
  * @author pantao
@@ -11,7 +11,7 @@ public class ShiroUtils {
 
     private ShiroUtils() {}
 
-    public static User getUser() {
-        return (User) SecurityUtils.getSubject().getPrincipal();
+    public static UserDO getUser() {
+        return (UserDO) SecurityUtils.getSubject().getPrincipal();
     }
 }
