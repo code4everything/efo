@@ -6,11 +6,13 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.code4everything.boot.constant.MessageConsts;
 import org.code4everything.boot.web.CorsUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
+import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -31,6 +33,11 @@ public class EfoWebConfiguration implements WebMvcConfigurer {
         handler.addException(400, "参数校验失败", MethodArgumentNotValidException.class);
         handler.addException(400, "参数格式不正确", IllegalArgumentException.class);
         resolvers.add(handler);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new DefaultWebInterceptor());
     }
 
     @Bean
