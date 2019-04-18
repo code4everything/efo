@@ -54,6 +54,9 @@ public class FileDO implements BaseBean, Serializable {
 
     private Integer categoryId;
 
+    @Column(columnDefinition = "char(1) default '1' comment '状态：0不能被访问，1允许访问'")
+    private Character status;
+
     @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
     private LocalDateTime createTime;
 }

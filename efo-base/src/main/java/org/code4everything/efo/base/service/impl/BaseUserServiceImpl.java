@@ -16,7 +16,7 @@ public class BaseUserServiceImpl<T> implements BaseUserService<T> {
     private final Cache<String, T> userCache = CacheBuilder.newBuilder()
             // 初始化大小
             .initialCapacity(64)
-            // 12小时后后期
+            // 12小时后过期
             .expireAfterAccess(12, TimeUnit.HOURS)
             // 最大缓存大小
             .maximumSize(1024).build();
@@ -35,7 +35,7 @@ public class BaseUserServiceImpl<T> implements BaseUserService<T> {
     }
 
     @Override
-    public void put2cache(String token, T user) {
+    public void put2Cache(String token, T user) {
         userCache.put(token, user);
     }
 }

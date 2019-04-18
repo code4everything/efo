@@ -34,6 +34,6 @@ public class CategoryDO implements BaseBean, Serializable {
 
     private Integer parentId;
 
-    @Column(columnDefinition = "datetime default current_timestamp")
+    @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
     private LocalDateTime createTime;
 }

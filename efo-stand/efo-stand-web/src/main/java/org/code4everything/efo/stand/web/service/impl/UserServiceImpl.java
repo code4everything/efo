@@ -74,19 +74,19 @@ public class UserServiceImpl extends BaseUserServiceImpl<UserDO> implements User
 
     @Override
     @AopLog("注册用户")
-    public UserInfoVO register(RegisterVO registerVO) {
+    public UserInfoVO register(RegisterVO register) {
         // 校验参数
-        ExceptionUtils.checkPassword(registerVO.getPassword());
-        ExceptionUtils.checkUsername(registerVO.getUsername());
-        ExceptionUtils.checkCode(registerVO.getEmail(), registerVO.getCode());
+        ExceptionUtils.checkPassword(register.getPassword());
+        ExceptionUtils.checkUsername(register.getUsername());
+        ExceptionUtils.checkCode(register.getEmail(), register.getCode());
 
-        checkUsername(registerVO.getUsername());
-        checkEmail(registerVO.getEmail());
+        checkUsername(register.getUsername());
+        checkEmail(register.getEmail());
 
         // 创建用户
-        UserDO user = registerVO.copyInto(new UserDO());
+        UserDO user = register.copyInto(new UserDO());
         user.setSalt(RandomUtil.randomString(6));
-        user.setPassword(new SimpleHash("SHA-256", registerVO.getPassword(), user.getSalt(), 16).toString());
+        user.setPassword(new SimpleHash("SHA-256", register.getPassword(), user.getSalt(), 16).toString());
         user.setCreateTime(LocalDateTime.now());
         user.setNickname(user.getUsername());
         user.setGender("0");
