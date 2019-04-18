@@ -19,9 +19,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "efo_file", indexes = {@Index(name = "local_path_index", columnList = "local_path", unique = true),
-        @Index(name = "access_url_index", columnList = "access_url", unique = true), @Index(name = "user_id_index",
-        columnList = "user_id")})
+@Table(name = "efo_file", indexes = {@Index(name = "access_url_index", columnList = "accessUrl", unique = true),
+        @Index(name = "user_id_index", columnList = "userId")})
 public class FileDO implements BaseBean, Serializable {
 
     private static final long serialVersionUID = 5947621674068025981L;
@@ -37,7 +36,7 @@ public class FileDO implements BaseBean, Serializable {
     @Column(columnDefinition = "varchar(256)", nullable = false, unique = true)
     private String localPath;
 
-    @Column(columnDefinition = "varchar(256)", nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(128)", nullable = false)
     private String accessUrl;
 
     @Column(nullable = false)

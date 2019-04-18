@@ -30,10 +30,10 @@ public class UserDO implements BaseBean, Serializable {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, unique = true, columnDefinition = "varchar(64)")
+    @Column(nullable = false, columnDefinition = "varchar(64)")
     private String email;
 
-    @Column(nullable = false, columnDefinition = "varchar(12)", unique = true)
+    @Column(nullable = false, columnDefinition = "varchar(12)")
     private String username;
 
     @Column(columnDefinition = "varchar(12)")
