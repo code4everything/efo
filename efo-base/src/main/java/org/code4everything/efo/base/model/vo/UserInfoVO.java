@@ -30,7 +30,7 @@ public class UserInfoVO implements BaseBean, Serializable {
     @ApiModelProperty("昵称：为空时将显示用户名")
     private String nickname;
 
-    @ApiModelProperty("头像URL：需与域名拼接")
+    @ApiModelProperty("头像URL")
     private String avatar;
 
     @ApiModelProperty("性别：0未知，1男，2女")

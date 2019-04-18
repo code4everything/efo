@@ -38,7 +38,7 @@ public class LogDO implements BaseBean, Serializable {
     @Column(columnDefinition = "varchar(64)", nullable = false)
     private String methodName;
 
-    @Column(columnDefinition = "datetime default current_timestamp")
+    @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
     private LocalDateTime createTime;
 
     @Column(columnDefinition = "varchar(512)")

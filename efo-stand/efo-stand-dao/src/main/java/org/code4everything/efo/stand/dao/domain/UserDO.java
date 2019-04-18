@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "efo_user", indexes = {@Index(name = "username_index", columnList = "username"), @Index(name =
-        "email_index", columnList = "email")})
+@Table(name = "efo_user", indexes = {@Index(name = "username_index", columnList = "username", unique = true),
+        @Index(name = "email_index", columnList = "email", unique = true)})
 public class UserDO implements BaseBean, Serializable {
 
     private static final long serialVersionUID = -7213874850215589561L;
@@ -54,6 +54,6 @@ public class UserDO implements BaseBean, Serializable {
     @Column(columnDefinition = "char(1) default '7' comment '状态：0冻结，7正常'", nullable = false)
     private String status;
 
-    @Column(columnDefinition = "datetime default current_timestamp")
+    @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
     private LocalDateTime createTime;
 }
