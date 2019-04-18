@@ -3,7 +3,7 @@ package org.code4everything.efo.stand.file.service.impl;
 import org.code4everything.boot.bean.MultipartFileBean;
 import org.code4everything.efo.base.service.BaseFileService;
 import org.code4everything.efo.stand.dao.domain.FileDO;
-import org.springframework.stereotype.Service;
+import org.code4everything.efo.stand.dao.repository.FileRepository;
 
 import javax.annotation.Nullable;
 
@@ -11,8 +11,13 @@ import javax.annotation.Nullable;
  * @author pantao
  * @since 2019-04-17
  */
-@Service
 public class FileServiceImpl implements BaseFileService<FileDO> {
+
+    private final FileRepository fileRepository;
+
+    public FileServiceImpl(FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
+    }
 
     @Override
     public FileDO getBy(MultipartFileBean fileBean) {

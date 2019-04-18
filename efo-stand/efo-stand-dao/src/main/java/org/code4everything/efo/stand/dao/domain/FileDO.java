@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "efo_file", indexes = {@Index(name = "local_url_index", columnList = "local_url", unique = true),
-        @Index(name = "visit_url_index", columnList = "visit_url", unique = true), @Index(name = "user_id_index",
+@Table(name = "efo_file", indexes = {@Index(name = "local_path_index", columnList = "local_path", unique = true),
+        @Index(name = "access_url_index", columnList = "access_url", unique = true), @Index(name = "user_id_index",
         columnList = "user_id")})
 public class FileDO implements BaseBean, Serializable {
 
@@ -35,10 +35,10 @@ public class FileDO implements BaseBean, Serializable {
     private String filename;
 
     @Column(columnDefinition = "varchar(256)", nullable = false, unique = true)
-    private String localUrl;
+    private String localPath;
 
     @Column(columnDefinition = "varchar(256)", nullable = false, unique = true)
-    private String visitUrl;
+    private String accessUrl;
 
     @Column(nullable = false)
     private Long size;
@@ -54,7 +54,7 @@ public class FileDO implements BaseBean, Serializable {
 
     private Integer categoryId;
 
-    @Column(columnDefinition = "char(1) default '1' comment '状态：0不能被访问，1允许访问'")
+    @Column(columnDefinition = "char(1) default '1' comment '状态：0不能被访问，1允许访问但不列出，2允许访问并列出'")
     private Character status;
 
     @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
