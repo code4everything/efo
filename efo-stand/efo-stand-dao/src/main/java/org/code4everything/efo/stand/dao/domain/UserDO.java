@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.code4everything.boot.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "efo_user", indexes = {@Index(name = "username_index", columnList = "username", unique = true),
         @Index(name = "email_index", columnList = "email", unique = true)})
-public class UserDO implements BaseBean, Serializable {
+public class UserDO implements BaseDomain {
 
     private static final long serialVersionUID = -7213874850215589561L;
 
@@ -56,4 +56,9 @@ public class UserDO implements BaseBean, Serializable {
 
     @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
     private LocalDateTime createTime;
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
+    }
 }

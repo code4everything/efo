@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.code4everything.boot.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "efo_log")
-public class LogDO implements BaseBean, Serializable {
+public class LogDO implements BaseDomain {
 
     private static final long serialVersionUID = 4691787201462323806L;
 
@@ -51,4 +51,9 @@ public class LogDO implements BaseBean, Serializable {
     private String exceptionDetail;
 
     private Long executedTime;
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
+    }
 }

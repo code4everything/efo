@@ -15,26 +15,24 @@ import java.time.LocalDateTime;
  * @since 2019/5/13
  **/
 @Data
-@ToString
 @Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "efo_category", indexes = {@Index(name = "name_index", columnList = "name", unique = true),
-        @Index(name = "parent_id_index", columnList = "parentId")})
-public class CategoryDO implements BaseDomain {
-
-    private static final long serialVersionUID = -6971723545574282972L;
+@Table(name = "efo_tag", indexes = {@Index(name = "user_id_index", columnList = "userId"), @Index(name = "tag_index",
+        columnList = "tag", unique = true)})
+public class TagDO implements BaseDomain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
-    @Column(columnDefinition = "varchar(8)", nullable = false)
-    private String name;
+    @Column(nullable = false)
+    private Long userId;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private Integer parentId;
+    @Column(nullable = false, columnDefinition = "varchar(8)")
+    private String tag;
 
     @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
     private LocalDateTime createTime;

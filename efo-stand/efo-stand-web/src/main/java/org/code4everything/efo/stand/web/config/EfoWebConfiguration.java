@@ -3,10 +3,11 @@ package org.code4everything.efo.stand.web.config;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.code4everything.boot.constant.MessageConsts;
-import org.code4everything.boot.web.CorsUtils;
+import org.code4everything.boot.base.constant.MessageConsts;
+import org.code4everything.boot.web.cors.CorsUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
+import org.code4everything.boot.web.mvc.PathFilterHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -37,7 +39,13 @@ public class EfoWebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DefaultWebInterceptor());
+        registry.addInterceptor(new DefaultWebInterceptor(new PathFilterHandler() {
+
+            @Override
+            public String buildCacheKey(HttpServletRequest request) {
+                return request.getSession().getId() + request.getServletPath();
+            }
+        }));
     }
 
     @Bean

@@ -1,10 +1,13 @@
 package org.code4everything.efo.base.constant;
 
+import org.code4everything.boot.web.mvc.exception.ExceptionBiscuit;
+import org.springframework.http.HttpStatus;
+
 /**
  * @author pantao
  * @since 2019-04-11
  */
-public enum EfoError {
+public enum EfoError implements ExceptionBiscuit {
 
     /**
      *
@@ -30,12 +33,18 @@ public enum EfoError {
         this.msg = msg;
     }
 
+    @Override
     public int getCode() {
         return code;
     }
 
+    @Override
     public String getMsg() {
         return msg;
     }
 
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.OK;
+    }
 }
