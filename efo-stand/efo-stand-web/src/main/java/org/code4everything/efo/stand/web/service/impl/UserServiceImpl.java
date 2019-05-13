@@ -7,7 +7,6 @@ import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.efo.base.constant.EfoError;
 import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
-import org.code4everything.efo.base.service.impl.BaseUserServiceImpl;
 import org.code4everything.efo.base.util.Checker;
 import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.dao.repository.UserRepository;
@@ -23,12 +22,17 @@ import java.time.LocalDateTime;
  * @since 2019-04-11
  */
 @Service
-public class UserServiceImpl extends BaseUserServiceImpl<UserDO> implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {this.userRepository = userRepository;}
+
+    @Override
+    public UserDO getUserByToken(String token) {
+        return null;
+    }
 
     @Override
     @LogMethod("更新用户名")

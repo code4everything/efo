@@ -1,7 +1,7 @@
 spring:
   # 数据源配置
   datasource:
-    url: jdbc:mysql://192.168.1.210:3306/efo
+    url: jdbc:mysql://192.168.1.210:3306/efo?useSSL=false
     username: root
     password: root
     tomcat:

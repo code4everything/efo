@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "efo_user", indexes = {@Index(name = "username_index", columnList = "username"), @Index(name =
         "email_index", columnList = "email")})
-public class UserDO implements BaseDomain, Serializable {
+public class UserDO implements BaseDomain {
 
     private static final long serialVersionUID = -7213874850215589561L;
 

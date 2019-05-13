@@ -1,5 +1,6 @@
 package org.code4everything.efo.stand.web.service;
 
+import org.code4everything.boot.service.BootUserService;
 import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
 import org.code4everything.efo.stand.dao.domain.UserDO;
@@ -8,7 +9,7 @@ import org.code4everything.efo.stand.dao.domain.UserDO;
  * @author pantao
  * @since 2019-04-11
  */
-public interface UserService {
+public interface UserService extends BootUserService<UserDO> {
 
     void updateUsername(String username);
 

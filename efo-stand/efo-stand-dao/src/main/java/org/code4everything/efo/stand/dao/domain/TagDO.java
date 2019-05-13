@@ -12,18 +12,16 @@ import java.time.LocalDateTime;
 
 /**
  * @author pantao
- * @since 2019-04-17
- */
+ * @since 2019/5/13
+ **/
 @Data
-@ToString
 @Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "efo_file", indexes = {@Index(name = "access_url", columnList = "accessUrl"), @Index(name = "user_id",
-        columnList = "userId")})
-public class FileDO implements BaseDomain {
-
-    private static final long serialVersionUID = 5947621674068025981L;
+@Table(name = "efo_tag", indexes = {@Index(name = "user_id", columnList = "userId"), @Index(name = "tag", columnList
+        = "tag")})
+public class TagDO implements BaseDomain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,20 +31,8 @@ public class FileDO implements BaseDomain {
     @Column(nullable = false)
     private Long userId;
 
-    @Column(columnDefinition = "varchar(256)", nullable = false)
-    private String localPath;
-
-    @Column(columnDefinition = "varchar(64)", nullable = false, unique = true)
-    private String accessUrl;
-
-    @Column(nullable = false)
-    private Long size;
-
-    @Column(columnDefinition = "varchar(256)")
-    private String description;
-
-    @Column(nullable = false)
-    private Long categoryId;
+    @Column(nullable = false, columnDefinition = "varchar(8)")
+    private String tag;
 
     @Column(columnDefinition = "datetime default current_timestamp")
     private LocalDateTime createTime;
