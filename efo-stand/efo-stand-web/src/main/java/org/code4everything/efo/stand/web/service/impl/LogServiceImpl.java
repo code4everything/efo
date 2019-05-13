@@ -1,6 +1,6 @@
 package org.code4everything.efo.stand.web.service.impl;
 
-import org.code4everything.boot.bean.LogBean;
+import org.code4everything.boot.log.MethodLog;
 import org.code4everything.efo.stand.dao.domain.LogDO;
 import org.code4everything.efo.stand.dao.repository.LogRepository;
 import org.code4everything.efo.stand.web.service.LogService;
@@ -34,8 +34,8 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public LogDO getLog(LogBean logBean) {
-        LogDO log = logBean.copyInto(new LogDO());
+    public LogDO getLog(MethodLog methodLog) {
+        LogDO log = methodLog.copyInto(new LogDO());
         log.setCreateTime(LocalDateTime.now());
         return log;
     }

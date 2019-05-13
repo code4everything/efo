@@ -3,9 +3,9 @@ package org.code4everything.efo.base.util;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
-import org.code4everything.boot.bean.Response;
 import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.boot.web.mvc.BaseController;
+import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.efo.base.constant.EfoError;
 
 import javax.mail.MessagingException;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author pantao
  * @since 2019-04-11
  */
-public class CommonUtils {
+public class BaseUtils {
 
     static String codeTitle = "";
 
@@ -25,16 +25,15 @@ public class CommonUtils {
 
     private static boolean firstLoad = true;
 
-    private CommonUtils() {}
+    private BaseUtils() {}
 
     public static Response sendCode(BaseController controller, String email) throws MessagingException {
         if (VerifyCodeUtils.isFrequently(email)) {
-            EfoError error = EfoError.CODE_FREQUENTLY;
-            return controller.errorResult(error.getCode(), error.getMsg());
+            return controller.errorResult(EfoError.CODE_FREQUENTLY);
         }
 
         if (firstLoad) {
-            synchronized (CommonUtils.class) {
+            synchronized (BaseUtils.class) {
                 if (firstLoad) {
                     loadCodeTemplate();
                 }
@@ -47,7 +46,7 @@ public class CommonUtils {
 
     static void loadCodeTemplate() {
         // 加载验证码模板
-        InputStream is = CommonUtils.class.getResourceAsStream("/code-template.txt");
+        InputStream is = BaseUtils.class.getResourceAsStream("/code-template.txt");
         List<String> lines = IoUtil.readLines(is, CharsetUtil.UTF_8, new ArrayList<>());
 
         StringBuilder builder = new StringBuilder();

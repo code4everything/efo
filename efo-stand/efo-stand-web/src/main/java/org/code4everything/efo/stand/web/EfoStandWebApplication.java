@@ -1,9 +1,9 @@
 package org.code4everything.efo.stand.web;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
-import org.code4everything.boot.annotation.EnableSurfaceAutoLog;
-import org.code4everything.boot.annotation.EnableSurfaceConfiguration;
-import org.code4everything.boot.annotation.EnableSurfaceMailSender;
+import org.code4everything.boot.config.EnableSurfaceConfiguration;
+import org.code4everything.boot.config.EnableSurfaceLog;
+import org.code4everything.boot.config.EnableSurfaceMail;
 import org.code4everything.efo.stand.dao.config.EnableEfoDaoConfiguration;
 import org.code4everything.efo.stand.file.config.EnableEfoFileConfiguration;
 import org.springframework.boot.SpringApplication;
@@ -15,8 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @EnableSwagger2Doc
-@EnableSurfaceMailSender
-@EnableSurfaceAutoLog
+@EnableSurfaceMail
+@EnableSurfaceLog
 @EnableSurfaceConfiguration
 @EnableEfoDaoConfiguration
 @EnableEfoFileConfiguration

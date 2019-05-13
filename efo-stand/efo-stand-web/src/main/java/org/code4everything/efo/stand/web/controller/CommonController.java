@@ -3,10 +3,10 @@ package org.code4everything.efo.stand.web.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.code4everything.boot.bean.Response;
 import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.boot.web.mvc.BaseController;
-import org.code4everything.efo.base.util.CommonUtils;
+import org.code4everything.boot.web.mvc.Response;
+import org.code4everything.efo.base.util.BaseUtils;
 import org.code4everything.efo.stand.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,7 @@ public class CommonController extends BaseController {
     @PostMapping("/code/{email}/send")
     @ApiOperation("发送验证码")
     public Response sendCode(@PathVariable String email) throws MessagingException {
-        return CommonUtils.sendCode(this, email);
+        return BaseUtils.sendCode(this, email);
     }
 
     @GetMapping("/code/{email}/validate")

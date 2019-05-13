@@ -7,8 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.code4everything.boot.bean.Response;
 import org.code4everything.boot.web.mvc.BaseController;
+import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
 import org.code4everything.efo.stand.web.service.UserService;
@@ -55,8 +55,8 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     @ApiOperation("用户注册")
-    public Response<UserInfoVO> register(@Valid @RequestBody RegisterVO register) {
-        return successResult(userService.register(register));
+    public Response<UserInfoVO> register(@Valid @RequestBody RegisterVO registerVO) {
+        return successResult(userService.register(registerVO));
     }
 
     @PostMapping("/login")

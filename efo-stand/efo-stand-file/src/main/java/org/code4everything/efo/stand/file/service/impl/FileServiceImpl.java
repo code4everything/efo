@@ -1,6 +1,6 @@
 package org.code4everything.efo.stand.file.service.impl;
 
-import org.code4everything.boot.bean.MultipartFileBean;
+import org.code4everything.boot.web.http.DustFile;
 import org.code4everything.efo.stand.dao.domain.FileDO;
 import org.code4everything.efo.stand.file.service.FileService;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import javax.annotation.Nullable;
 public class FileServiceImpl implements FileService {
 
     @Override
-    public FileDO getBy(MultipartFileBean fileBean) {
+    public FileDO getBy(DustFile dustFile) {
         return null;
     }
 
     @Override
-    public FileDO save(MultipartFileBean fileBean, @Nullable FileDO file) {
+    public FileDO save(DustFile dustFile, @Nullable FileDO file) {
         return null;
     }
 

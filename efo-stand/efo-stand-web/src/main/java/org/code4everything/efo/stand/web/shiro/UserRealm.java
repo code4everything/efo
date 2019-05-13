@@ -8,7 +8,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.code4everything.boot.constant.MessageConsts;
+import org.code4everything.boot.base.constant.MessageConsts;
 import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

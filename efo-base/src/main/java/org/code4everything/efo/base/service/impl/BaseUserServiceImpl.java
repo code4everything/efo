@@ -19,7 +19,7 @@ public class BaseUserServiceImpl<T> implements BaseUserService<T> {
             // 12小时后后期
             .expireAfterAccess(12, TimeUnit.HOURS)
             // 最大缓存大小
-            .maximumSize(1024).build();
+            .maximumSize(1024).softValues().build();
 
     @Override
     public void removeFromCache(String token) {
@@ -35,7 +35,7 @@ public class BaseUserServiceImpl<T> implements BaseUserService<T> {
     }
 
     @Override
-    public void put2cache(String token, T user) {
+    public void put2Cache(String token, T user) {
         userCache.put(token, user);
     }
 }
