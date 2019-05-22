@@ -45,6 +45,3 @@ swagger:
     url: https://github.com/easepan
   base-package: org.code4everything.efo
   exclude-path: /error, /ops/**
-boot:
-  surface:
-    debug: true

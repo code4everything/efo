@@ -28,6 +28,3 @@ spring:
             required: true
 server:
   port: 8808
-boot:
-  surface:
-    debug: false
