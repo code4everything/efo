@@ -18,6 +18,7 @@ import javax.mail.MessagingException;
  * @since 2019-04-11
  */
 @RestController
+@RequestMapping("/")
 @Api(tags = "公共接口")
 public class CommonController extends BaseController {
 

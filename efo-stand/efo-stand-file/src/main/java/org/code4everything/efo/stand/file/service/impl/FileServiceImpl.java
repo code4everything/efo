@@ -1,9 +1,9 @@
 package org.code4everything.efo.stand.file.service.impl;
 
 import org.code4everything.boot.web.http.DustFile;
-import org.code4everything.efo.base.service.BaseFileService;
 import org.code4everything.efo.stand.dao.domain.FileDO;
 import org.code4everything.efo.stand.dao.repository.FileRepository;
+import org.code4everything.efo.stand.file.service.FileService;
 
 import javax.annotation.Nullable;
 
@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
  * @author pantao
  * @since 2019-04-17
  */
-public class FileServiceImpl implements BaseFileService<FileDO> {
+public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
 

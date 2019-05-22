@@ -24,6 +24,7 @@ import javax.validation.Valid;
  * @since 2019-04-11
  */
 @RestController
+@RequestMapping("/")
 @Api(tags = "用户接口")
 public class UserController extends BaseController {
 
