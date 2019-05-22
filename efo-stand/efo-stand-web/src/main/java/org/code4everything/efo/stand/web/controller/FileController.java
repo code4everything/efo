@@ -2,7 +2,7 @@ package org.code4everything.efo.stand.web.controller;
 
 import io.swagger.annotations.Api;
 import org.code4everything.boot.web.mvc.BaseController;
-import org.code4everything.efo.stand.file.service.FileService;
+import org.code4everything.efo.stand.web.file.FileService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

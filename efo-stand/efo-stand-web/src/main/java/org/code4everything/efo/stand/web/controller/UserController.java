@@ -11,6 +11,7 @@ import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
+import org.code4everything.efo.base.util.Checker;
 import org.code4everything.efo.stand.web.service.UserService;
 import org.code4everything.efo.stand.web.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class UserController extends BaseController {
     @ApiOperation("更新邮箱")
     @ApiImplicitParam(name = "code", value = "验证码")
     public Response<String> updateEmail(@PathVariable String email, @RequestParam String code) {
+        Checker.checkCode(email, code);
         userService.updateEmail(email, code);
         return successResult("邮箱更新成功", email);
     }
@@ -57,6 +59,10 @@ public class UserController extends BaseController {
     @PostMapping("/register")
     @ApiOperation("用户注册")
     public Response<UserInfoVO> register(@Valid @RequestBody RegisterVO registerVO) {
+        // 校验参数
+        Checker.checkPassword(registerVO.getPassword());
+        Checker.checkUsername(registerVO.getUsername());
+        Checker.checkCode(registerVO.getEmail(), registerVO.getCode());
         return successResult(userService.register(registerVO));
     }
 

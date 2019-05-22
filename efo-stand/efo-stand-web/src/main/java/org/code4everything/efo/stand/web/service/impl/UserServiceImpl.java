@@ -7,7 +7,6 @@ import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.efo.base.constant.EfoError;
 import org.code4everything.efo.base.model.vo.RegisterVO;
 import org.code4everything.efo.base.model.vo.UserInfoVO;
-import org.code4everything.efo.base.util.Checker;
 import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.dao.repository.UserRepository;
 import org.code4everything.efo.stand.web.service.UserService;
@@ -48,7 +47,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @LogMethod("更新邮箱")
     public void updateEmail(String email, String code) {
-        Checker.checkCode(email, code);
         UserDO user = ShiroUtils.getUser();
         if (!user.getEmail().equals(email)) {
             checkEmail(email);
@@ -78,11 +76,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @LogMethod("注册用户")
     public UserInfoVO register(RegisterVO registerVO) {
-        // 校验参数
-        Checker.checkPassword(registerVO.getPassword());
-        Checker.checkUsername(registerVO.getUsername());
-        Checker.checkCode(registerVO.getEmail(), registerVO.getCode());
-
         // 检测邮箱和用户名是否已经注册
         checkUsername(registerVO.getUsername());
         checkEmail(registerVO.getEmail());

@@ -5,7 +5,6 @@ import org.code4everything.boot.config.EnableSurfaceConfiguration;
 import org.code4everything.boot.config.EnableSurfaceLog;
 import org.code4everything.boot.config.EnableSurfaceMail;
 import org.code4everything.efo.stand.dao.config.EnableEfoDaoConfiguration;
-import org.code4everything.efo.stand.file.config.EnableEfoFileConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -19,7 +18,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableSurfaceLog
 @EnableSurfaceConfiguration
 @EnableEfoDaoConfiguration
-@EnableEfoFileConfiguration
 public class EfoStandWebApplication {
 
     public static void main(String[] args) {
