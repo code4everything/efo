@@ -3,6 +3,7 @@ package org.code4everything.efo.stand.web.file.impl;
 import org.code4everything.boot.service.BootFileService;
 import org.code4everything.boot.web.http.DustFile;
 import org.code4everything.boot.web.http.HttpUtils;
+import org.code4everything.efo.base.config.EfoConfig;
 import org.code4everything.efo.base.model.vo.FileInfoVO;
 import org.code4everything.efo.stand.dao.domain.FileDO;
 import org.code4everything.efo.stand.dao.repository.FileRepository;
@@ -28,7 +29,7 @@ class LocalFileServiceImpl implements BootFileService<FileDO>, BaseFileService {
 
     @Override
     public FileInfoVO upload(MultipartFile file, Map<String, Object> params) {
-        HttpUtils.upload(this, file, "", false, params, false);
+        HttpUtils.upload(this, file, EfoConfig.getInstance().getStorageRoot(), false, params, false);
         return null;
     }
 
