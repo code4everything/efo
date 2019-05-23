@@ -38,9 +38,13 @@ public class UserController extends BaseController {
         return successResult();
     }
 
-    @PatchMapping("/user/username/{username}/update")
-    @ApiOperation("更新用户名")
+    /**
+     * 暂时不开放修改用户名
+     * <p>
+     * #@PatchMapping("/user/username/{username}/update") #@ApiOperation("更新用户名")
+     */
     public Response<String> updateUsername(@PathVariable String username) {
+        Checker.checkUsername(username);
         userService.updateUsername(username);
         return successResult("用户名更新成功", username);
     }

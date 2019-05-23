@@ -1,10 +1,11 @@
 package org.code4everything.efo.base.config;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.*;
 import org.code4everything.boot.base.FileUtils;
 import org.code4everything.boot.base.bean.BaseBean;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -40,6 +41,14 @@ public class EfoConfig implements BaseBean, Serializable {
 
     @Generated
     public String getStorageRoot() {
-        return ObjectUtil.defaultIfNull(storageRoot, DEFAULT_STORAGE_ROOT);
+        if (StrUtil.isEmpty(storageRoot)) {
+            storageRoot = DEFAULT_STORAGE_ROOT;
+        }
+        if (!storageRoot.endsWith(File.separator)) {
+            storageRoot += File.separator;
+        }
+        return storageRoot;
     }
+
+
 }

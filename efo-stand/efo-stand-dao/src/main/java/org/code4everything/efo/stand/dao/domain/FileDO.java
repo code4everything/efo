@@ -45,14 +45,14 @@ public class FileDO implements BaseDomain {
     @Column(nullable = false)
     private Integer categoryId;
 
-    @Column(columnDefinition = "char(1) default '1' comment '状态：0不能被访问，1允许访问但不列出，2允许访问并列出'")
+    @Column(columnDefinition = "char(1) default '3' comment '状态：0标记删除，1不能被访问，2允许访问但不列出，3允许访问并列出'")
     private Character status;
 
     @Column(columnDefinition = "varchar(256)")
     private String description;
 
     @Column(columnDefinition = "varchar(64) comment '标签：使用英文逗号分隔，并且首尾都添加，方便[%,tag,%]匹配，比如,image,anime,'")
-    private String tags;
+    private String tag;
 
     @Column(columnDefinition = "char(1) default '1' comment '存储模式：1本地，2七牛'")
     private Character mode;

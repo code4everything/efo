@@ -32,7 +32,7 @@ public class FileInfoVO implements BaseBean, Serializable {
     private Long size;
 
     @ApiModelProperty("文件分类")
-    private List<String> category;
+    private List<String> categories;
 
     @ApiModelProperty("文件状态：0不能被访问，1允许访问但不列出，2允许访问并列出'")
     private Character status;

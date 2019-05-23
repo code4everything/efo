@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
  * @since 2019-04-18
  */
 @Repository
-public interface FileRepository extends JpaRepository<FileDO, Long> {}
+public interface FileRepository extends JpaRepository<FileDO, Long> {
+
+    FileDO getByAccessUrl(String accessUrl);
+}

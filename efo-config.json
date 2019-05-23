@@ -1,6 +1,7 @@
 {
   "boot": {
-    "debug": true
+    "debug": true,
+    "maxUploadFileSize": 1073741824
   },
   "storageRoot": null,
   "storageMode": 1

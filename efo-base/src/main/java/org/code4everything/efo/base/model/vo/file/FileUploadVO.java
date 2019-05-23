@@ -35,9 +35,19 @@ public class FileUploadVO implements BaseBean, Serializable {
     @ApiModelProperty(hidden = true)
     private Long userId;
 
+    @ApiModelProperty(hidden = true)
+    private String username;
+
+    @Generated
     public Long getUserId() {
         Objects.requireNonNull(userId, "userId must no be null");
         return userId;
+    }
+
+    @Generated
+    public String getUsername() {
+        Objects.requireNonNull(userId, "username must no be null");
+        return username;
     }
 
     @Generated

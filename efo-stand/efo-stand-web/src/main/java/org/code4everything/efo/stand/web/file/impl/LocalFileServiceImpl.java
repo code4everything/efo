@@ -1,10 +1,14 @@
 package org.code4everything.efo.stand.web.file.impl;
 
-import org.code4everything.boot.config.BootConfig;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.crypto.digest.DigestUtil;
+import org.code4everything.boot.base.DateUtils;
 import org.code4everything.boot.service.BootFileService;
 import org.code4everything.boot.web.http.DustFile;
 import org.code4everything.boot.web.http.HttpUtils;
 import org.code4everything.boot.web.mvc.Response;
+import org.code4everything.boot.web.mvc.exception.ExceptionFactory;
+import org.code4everything.efo.base.constant.EfoError;
 import org.code4everything.efo.base.model.vo.file.FileUploadVO;
 import org.code4everything.efo.stand.dao.domain.FileDO;
 import org.code4everything.efo.stand.dao.repository.FileRepository;
@@ -14,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * @author pantao
@@ -40,33 +45,44 @@ class LocalFileServiceImpl implements BootFileService<FileDO>, BaseFileService {
         Response<FileDO> response = HttpUtils.upload(this, file, storagePath, false, true);
         if (response.isOk()) {
             return response.getData();
-        } else if (response.getCode() == BootConfig.DEFAULT_ERROR_CODE) {
-            // 文件大小超出限制
         }
-        // 文件写入失败
-        return null;
+        throw ExceptionFactory.exception(EfoError.UPLOAD_ERROR);
     }
 
     @Override
     public FileDO getBy(DustFile dustFile) {
-        return null;
+        // 拼接映射路径
+        StringJoiner urlJoiner = new StringJoiner("/", "/", "/");
+        urlJoiner.add(local.get().getUsername());
+        urlJoiner.add(DateUtil.format(DateUtils.getEndOfToday(), "yyyy/MM/dd"));
+        String accessUrl = urlJoiner.toString() + DigestUtil.md5Hex(dustFile.getFilename());
+        dustFile.addParam("url", accessUrl);
+        return fileRepository.getByAccessUrl(accessUrl);
     }
 
     @Override
     public FileDO save(DustFile dustFile, @Nullable FileDO file) {
+        FileUploadVO uploadVO = local.get();
         if (Objects.isNull(file)) {
             // 没有发生文件覆盖
             file = new FileDO();
             file.setCreateTime(LocalDateTime.now());
+            file.setUserId(uploadVO.getUserId());
+            // default status
+            file.setStatus('3');
         } else {
             // 发生了文件覆盖
             file.setSize(dustFile.getSize());
         }
+        // 设置文件信息
+        file.setSize(dustFile.getSize());
+        file.setAccessUrl((String) dustFile.getParam("url"));
+        file.setLocalPath(dustFile.getStoragePath() + dustFile.getFilename());
 
-        FileUploadVO uploadVO = local.get();
+        // 设置文件附加信息
         file.setCategoryId(uploadVO.getCategoryId());
         file.setDescription(uploadVO.getDescription());
-        file.setTags(uploadVO.getTags());
+        file.setTag(uploadVO.getTags());
         local.remove();
 
         file.setMode(MODE);

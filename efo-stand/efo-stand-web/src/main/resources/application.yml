@@ -45,3 +45,9 @@ swagger:
     url: https://github.com/easepan
   base-package: org.code4everything.efo
   exclude-path: /error, /ops/**
+  # 文件上传大小配置
+  spring:
+    servlet:
+      multipart:
+        max-file-size: 1099511627776
+        max-request-size: 1099511627776

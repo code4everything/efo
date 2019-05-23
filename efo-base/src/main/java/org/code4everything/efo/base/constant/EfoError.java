@@ -3,11 +3,13 @@ package org.code4everything.efo.base.constant;
 import org.code4everything.boot.web.mvc.exception.ExceptionBiscuit;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serializable;
+
 /**
  * @author pantao
  * @since 2019-04-11
  */
-public enum EfoError implements ExceptionBiscuit {
+public enum EfoError implements ExceptionBiscuit, Serializable {
 
     /**
      *
@@ -24,7 +26,9 @@ public enum EfoError implements ExceptionBiscuit {
 
     CODE_ERROR(1006, "验证码不正确"),
 
-    UPLOAD_ERROR(1007, "内部错误，文件上传失败");
+    UPLOAD_ERROR(1007, "内部错误，文件上传失败"),
+
+    FILE_SIZE_EXCEED(1008, "文件大小超出限制：%s");
 
     private final int code;
 
@@ -43,6 +47,10 @@ public enum EfoError implements ExceptionBiscuit {
     @Override
     public String getMsg() {
         return msg;
+    }
+
+    public String getMsg(Object... params) {
+        return String.format(msg, params);
     }
 
     @Override

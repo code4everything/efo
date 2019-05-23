@@ -24,7 +24,7 @@ import java.io.Serializable;
 public class RegisterVO implements BaseBean, Serializable {
 
     @NotBlank
-    @ApiModelProperty(value = "用户名：^[a-zA-Z][a-zA-Z0-9]{3,9}$", required = true)
+    @ApiModelProperty(value = "用户名（暂不支持修改）：^[a-zA-Z][a-zA-Z0-9]{3,9}$", required = true)
     private String username;
 
     @Email

@@ -9,12 +9,14 @@ import org.code4everything.efo.base.config.EfoConfig;
 import org.code4everything.efo.stand.dao.config.EnableEfoDaoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author pantao
  * @since 2019-04-10
  */
 @SpringBootApplication
+@EnableScheduling
 @EnableSwagger2Doc
 @EnableSurfaceMail
 @EnableSurfaceLog
