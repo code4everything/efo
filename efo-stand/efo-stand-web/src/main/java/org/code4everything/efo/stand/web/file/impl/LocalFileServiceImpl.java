@@ -21,6 +21,11 @@ import java.util.Objects;
  */
 class LocalFileServiceImpl implements BootFileService<FileDO>, BaseFileService {
 
+    /**
+     * 存储模式
+     */
+    private static final Character MODE = '1';
+
     private final FileRepository fileRepository;
 
     LocalFileServiceImpl(FileRepository fileRepository) {
@@ -48,6 +53,7 @@ class LocalFileServiceImpl implements BootFileService<FileDO>, BaseFileService {
             // 发生了文件覆盖
             file.setSize(dustFile.getSize());
         }
+        file.setMode(MODE);
         return fileRepository.save(file);
     }
 

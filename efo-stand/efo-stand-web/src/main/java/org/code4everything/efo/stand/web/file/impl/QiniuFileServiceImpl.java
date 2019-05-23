@@ -13,6 +13,8 @@ import java.util.Map;
  **/
 public class QiniuFileServiceImpl implements BaseFileService {
 
+    private static final Character MODE = '2';
+
     private final FileRepository fileRepository;
 
     QiniuFileServiceImpl(FileRepository fileRepository) {

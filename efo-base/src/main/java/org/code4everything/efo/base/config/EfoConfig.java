@@ -28,6 +28,12 @@ public class EfoConfig implements BaseBean, Serializable {
      */
     private String storageRoot;
 
+    /**
+     * 存储模式：0随机，1本地，2七牛
+     */
+    @NonNull
+    private Byte storageMode = 1;
+
     public static EfoConfig getInstance() {
         return CONFIG;
     }

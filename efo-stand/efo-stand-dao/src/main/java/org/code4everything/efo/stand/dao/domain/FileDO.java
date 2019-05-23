@@ -54,7 +54,7 @@ public class FileDO implements BaseDomain {
     @Column(columnDefinition = "varchar(64) comment '标签：使用英文逗号分隔，并且首尾都添加，比如[,image,anime,]'")
     private String tags;
 
-    @Column(columnDefinition = "char(1) default '0' comment '存储模式，可本地存储或外部存储'")
+    @Column(columnDefinition = "char(1) default '1' comment '存储模式：1本地，2七牛'")
     private Character mode;
 
     @Column(columnDefinition = "datetime default current_timestamp", nullable = false)
