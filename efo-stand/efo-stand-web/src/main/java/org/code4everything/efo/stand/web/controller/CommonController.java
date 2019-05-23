@@ -8,7 +8,6 @@ import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.efo.base.util.BaseUtils;
 import org.code4everything.efo.stand.web.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -24,7 +23,6 @@ public class CommonController extends BaseController {
 
     private final UserService userService;
 
-    @Autowired
     public CommonController(UserService userService) {this.userService = userService;}
 
     @PostMapping("/code/{email}/send")

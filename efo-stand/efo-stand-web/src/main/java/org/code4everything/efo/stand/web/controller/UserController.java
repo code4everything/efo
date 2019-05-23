@@ -9,12 +9,11 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.boot.web.mvc.Response;
-import org.code4everything.efo.base.model.vo.RegisterVO;
-import org.code4everything.efo.base.model.vo.UserInfoVO;
+import org.code4everything.efo.base.model.vo.user.RegisterVO;
+import org.code4everything.efo.base.model.vo.user.UserInfoVO;
 import org.code4everything.efo.base.util.Checker;
 import org.code4everything.efo.stand.web.service.UserService;
 import org.code4everything.efo.stand.web.shiro.ShiroUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +30,6 @@ public class UserController extends BaseController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {this.userService = userService;}
 
     @PatchMapping("/user/avatar/update")
@@ -68,9 +66,9 @@ public class UserController extends BaseController {
 
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "登录名：邮箱或用户名", required = true),
+    @ApiImplicitParams({@ApiImplicitParam(name = "login_name", value = "登录名：邮箱或用户名", required = true),
             @ApiImplicitParam(name = "password", value = "登录密码", required = true)})
-    public Response<UserInfoVO> login(@RequestParam String loginName, @RequestParam String password) {
+    public Response<UserInfoVO> login(@RequestParam("login_name") String loginName, @RequestParam String password) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(loginName, password, true);
         subject.login(token);

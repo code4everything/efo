@@ -22,7 +22,9 @@ public enum EfoError implements ExceptionBiscuit {
 
     ILLEGAL_USERNAME(1005, "用户名格式不合法"),
 
-    CODE_ERROR(1006, "验证码不正确");
+    CODE_ERROR(1006, "验证码不正确"),
+
+    UPLOAD_ERROR(1007, "内部错误，文件上传失败");
 
     private final int code;
 

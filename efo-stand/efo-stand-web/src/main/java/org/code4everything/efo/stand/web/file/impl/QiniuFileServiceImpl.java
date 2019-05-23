@@ -1,11 +1,10 @@
 package org.code4everything.efo.stand.web.file.impl;
 
-import org.code4everything.efo.base.model.vo.FileInfoVO;
+import org.code4everything.efo.base.model.vo.file.FileUploadVO;
+import org.code4everything.efo.stand.dao.domain.FileDO;
 import org.code4everything.efo.stand.dao.repository.FileRepository;
 import org.code4everything.efo.stand.web.file.BaseFileService;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Map;
 
 /**
  * @author pantao
@@ -22,7 +21,7 @@ public class QiniuFileServiceImpl implements BaseFileService {
     }
 
     @Override
-    public FileInfoVO upload(MultipartFile file, Map<String, Object> params) {
+    public FileDO upload(String storagePath, MultipartFile file, FileUploadVO uploadVO) {
         return null;
     }
 }

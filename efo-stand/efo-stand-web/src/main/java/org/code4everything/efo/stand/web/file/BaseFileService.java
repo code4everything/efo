@@ -1,9 +1,8 @@
 package org.code4everything.efo.stand.web.file;
 
-import org.code4everything.efo.base.model.vo.FileInfoVO;
+import org.code4everything.efo.base.model.vo.file.FileUploadVO;
+import org.code4everything.efo.stand.dao.domain.FileDO;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Map;
 
 /**
  * @author pantao
@@ -11,5 +10,5 @@ import java.util.Map;
  **/
 public interface BaseFileService {
 
-    FileInfoVO upload(MultipartFile file, Map<String, Object> params);
+    FileDO upload(String storagePath, MultipartFile file, FileUploadVO uploadVO);
 }

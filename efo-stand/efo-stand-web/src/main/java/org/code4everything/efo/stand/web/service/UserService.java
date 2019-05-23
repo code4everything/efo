@@ -1,8 +1,8 @@
 package org.code4everything.efo.stand.web.service;
 
 import org.code4everything.boot.service.BootUserService;
-import org.code4everything.efo.base.model.vo.RegisterVO;
-import org.code4everything.efo.base.model.vo.UserInfoVO;
+import org.code4everything.efo.base.model.vo.user.RegisterVO;
+import org.code4everything.efo.base.model.vo.user.UserInfoVO;
 import org.code4everything.efo.stand.dao.domain.UserDO;
 
 /**

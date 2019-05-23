@@ -1,4 +1,4 @@
-package org.code4everything.efo.base.model.vo;
+package org.code4everything.efo.base.model.vo.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

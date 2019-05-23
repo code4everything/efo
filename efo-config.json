@@ -2,5 +2,6 @@
   "boot": {
     "debug": true
   },
-  "storageRoot": null
+  "storageRoot": null,
+  "storageMode": 1
 }
