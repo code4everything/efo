@@ -49,6 +49,4 @@ public class EfoConfig implements BaseBean, Serializable {
         }
         return storageRoot;
     }
-
-
 }

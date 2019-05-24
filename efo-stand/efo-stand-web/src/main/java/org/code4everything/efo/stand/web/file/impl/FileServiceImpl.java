@@ -16,6 +16,7 @@ import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.dao.repository.FileRepository;
 import org.code4everything.efo.stand.web.file.BaseFileService;
 import org.code4everything.efo.stand.web.file.FileService;
+import org.code4everything.efo.stand.web.manager.CategoryManager;
 import org.code4everything.efo.stand.web.shiro.ShiroUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,12 +39,15 @@ public class FileServiceImpl implements FileService {
      */
     private static String datePath;
 
+    private final CategoryManager categoryManager;
+
     /**
      * 支持的文件服务，默认为选择第一个文件服务
      */
     private final List<BaseFileService> services = new ArrayList<>();
 
-    public FileServiceImpl(FileRepository repository) {
+    public FileServiceImpl(FileRepository repository, CategoryManager categoryManager) {
+        this.categoryManager = categoryManager;
         // 本地文件服务
         services.add(new LocalFileServiceImpl(repository));
         // 七牛云对象存储服务
@@ -80,9 +84,9 @@ public class FileServiceImpl implements FileService {
 
         FileDO fileDO = getService().upload(storagePath, file, uploadVO);
         FileInfoVO infoVO = fileDO.copyInto(new FileInfoVO());
-        // 格式化标签
+        // 格式化标签和分类
         infoVO.setTags(fileDO.trimTag().split(","));
-        // TODO: 2019/5/24 格式化分类
+        infoVO.setCategories(categoryManager.listParents(fileDO.getCategoryId()));
         return infoVO;
     }
 

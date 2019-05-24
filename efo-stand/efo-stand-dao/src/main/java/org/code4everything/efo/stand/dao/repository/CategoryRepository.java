@@ -14,4 +14,6 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<CategoryDO, Integer> {
 
     List<CategoryDO> getByParentId(Integer parentId);
+
+    CategoryDO getById(Integer id);
 }

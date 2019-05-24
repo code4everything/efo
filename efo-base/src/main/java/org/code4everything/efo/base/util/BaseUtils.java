@@ -17,7 +17,7 @@ import java.util.List;
  * @author pantao
  * @since 2019-04-11
  */
-public class BaseUtils {
+public final class BaseUtils {
 
     static String codeTitle = "";
 
@@ -27,6 +27,9 @@ public class BaseUtils {
 
     private BaseUtils() {}
 
+    /**
+     * 发送验证码
+     */
     public static Response sendCode(BaseController controller, String email) throws MessagingException {
         if (VerifyCodeUtils.isFrequently(email)) {
             return controller.errorResult(EfoError.CODE_FREQUENTLY);
@@ -44,6 +47,9 @@ public class BaseUtils {
         return controller.successResult("发送成功，请查收");
     }
 
+    /**
+     * 载入验证码格式模板
+     */
     static void loadCodeTemplate() {
         // 加载验证码模板
         InputStream is = BaseUtils.class.getResourceAsStream("/code-template.txt");
