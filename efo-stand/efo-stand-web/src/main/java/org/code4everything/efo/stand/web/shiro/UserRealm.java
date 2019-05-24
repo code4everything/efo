@@ -11,7 +11,6 @@ import org.apache.shiro.util.ByteSource;
 import org.code4everything.boot.base.constant.MessageConsts;
 import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.web.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,7 +22,6 @@ public class UserRealm extends AuthorizingRealm {
 
     private final UserService userService;
 
-    @Autowired
     public UserRealm(UserService userService) {this.userService = userService;}
 
     /**

@@ -11,12 +11,12 @@ import org.code4everything.efo.base.config.EfoConfig;
 import org.code4everything.efo.base.constant.EfoError;
 import org.code4everything.efo.base.model.vo.file.FileInfoVO;
 import org.code4everything.efo.base.model.vo.file.FileUploadVO;
+import org.code4everything.efo.stand.dao.domain.FileDO;
 import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.dao.repository.FileRepository;
 import org.code4everything.efo.stand.web.file.BaseFileService;
 import org.code4everything.efo.stand.web.file.FileService;
 import org.code4everything.efo.stand.web.shiro.ShiroUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +43,6 @@ public class FileServiceImpl implements FileService {
      */
     private final List<BaseFileService> services = new ArrayList<>();
 
-    @Autowired
     public FileServiceImpl(FileRepository repository) {
         // 本地文件服务
         services.add(new LocalFileServiceImpl(repository));
@@ -73,11 +72,18 @@ public class FileServiceImpl implements FileService {
             throw ExceptionFactory.exception(error.getCode(), error.getStatus(), error.getMsg(maxSize));
         }
         UserDO user = ShiroUtils.getUser();
+        // 携带用户编号和用户名
         uploadVO.setUserId(user.getId());
         uploadVO.setUsername(user.getUsername());
         // 路径格式：storage-root>username>year>month>day>
         String storagePath = EfoConfig.getInstance().getStorageRoot() + user.getUsername() + datePath;
-        return getService().upload(storagePath, file, uploadVO).copyInto(new FileInfoVO());
+
+        FileDO fileDO = getService().upload(storagePath, file, uploadVO);
+        FileInfoVO infoVO = fileDO.copyInto(new FileInfoVO());
+        // 格式化标签
+        infoVO.setTags(fileDO.trimTag().split(","));
+        // TODO: 2019/5/24 格式化分类
+        return infoVO;
     }
 
     private BaseFileService getService() {

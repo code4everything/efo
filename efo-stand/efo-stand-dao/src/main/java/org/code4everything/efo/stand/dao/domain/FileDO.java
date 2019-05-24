@@ -64,4 +64,11 @@ public class FileDO implements BaseDomain {
     public Serializable primaryKey() {
         return id;
     }
+
+    /**
+     * 去掉标签首尾的英文逗号
+     */
+    public String trimTag() {
+        return tag.substring(1, tag.length() - 1);
+    }
 }

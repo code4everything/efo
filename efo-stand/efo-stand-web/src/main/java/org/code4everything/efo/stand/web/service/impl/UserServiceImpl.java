@@ -11,7 +11,6 @@ import org.code4everything.efo.stand.dao.domain.UserDO;
 import org.code4everything.efo.stand.dao.repository.UserRepository;
 import org.code4everything.efo.stand.web.service.UserService;
 import org.code4everything.efo.stand.web.shiro.ShiroUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserServiceImpl(UserRepository userRepository) {this.userRepository = userRepository;}
 
     @Override

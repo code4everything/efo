@@ -4,7 +4,6 @@ import org.code4everything.boot.log.MethodLog;
 import org.code4everything.efo.stand.dao.domain.LogDO;
 import org.code4everything.efo.stand.dao.repository.LogRepository;
 import org.code4everything.efo.stand.web.service.LogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,7 +17,6 @@ public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
 
-    @Autowired
     public LogServiceImpl(LogRepository logRepository) {this.logRepository = logRepository;}
 
     @Override

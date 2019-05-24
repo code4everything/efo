@@ -51,10 +51,11 @@ class LocalFileServiceImpl implements BootFileService<FileDO>, BaseFileService {
 
     @Override
     public FileDO getBy(DustFile dustFile) {
-        // 拼接映射路径
+        // 拼接映射路径：/username/year/month/day/
         StringJoiner urlJoiner = new StringJoiner("/", "/", "/");
         urlJoiner.add(local.get().getUsername());
         urlJoiner.add(DateUtil.format(DateUtils.getEndOfToday(), "yyyy/MM/dd"));
+
         String accessUrl = urlJoiner.toString() + DigestUtil.md5Hex(dustFile.getFilename());
         dustFile.addParam("url", accessUrl);
         return fileRepository.getByAccessUrl(accessUrl);
@@ -70,19 +71,17 @@ class LocalFileServiceImpl implements BootFileService<FileDO>, BaseFileService {
             file.setUserId(uploadVO.getUserId());
             // default status
             file.setStatus('3');
-        } else {
-            // 发生了文件覆盖
-            file.setSize(dustFile.getSize());
         }
         // 设置文件信息
         file.setSize(dustFile.getSize());
-        file.setAccessUrl((String) dustFile.getParam("url"));
+        file.setAccessUrl(dustFile.getParamString("url"));
         file.setLocalPath(dustFile.getStoragePath() + dustFile.getFilename());
 
         // 设置文件附加信息
         file.setCategoryId(uploadVO.getCategoryId());
         file.setDescription(uploadVO.getDescription());
         file.setTag(uploadVO.getTags());
+
         local.remove();
 
         file.setMode(MODE);
