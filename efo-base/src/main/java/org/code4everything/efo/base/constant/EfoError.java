@@ -28,7 +28,9 @@ public enum EfoError implements ExceptionBiscuit, Serializable {
 
     UPLOAD_ERROR(1007, "内部错误，文件上传失败"),
 
-    FILE_SIZE_EXCEED(1008, "文件大小超出限制：%s");
+    FILE_SIZE_EXCEED(1008, "文件大小超出限制：%s"),
+
+    ENTITY_NOT_FOUND(1009, "未找到实体");
 
     private final int code;
 
